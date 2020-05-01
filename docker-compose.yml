@@ -1,0 +1,7 @@
+version: '3'
+services:
+  dev:
+    image: node:11
+    volumes:
+      - .:/user/src
+    working_dir: /usr/src

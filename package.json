@@ -1,0 +1,39 @@
+{
+  "name": "cavez.io",
+  "version": "1.0.0",
+  "description": "Multiplayer browser cave flying game",
+  "main": "server.js",
+  "scripts": {
+    "build": "webpack --config webpack.prod.js",
+    "develop": "cross-env NODE_ENV=development node src/server/server.js",
+    "start": "cross-env NODE_ENV=production node src/server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JLouhela/cavez.io.git"
+  },
+  "author": "Joni Louhela",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JLouhela/cavez.io/issues"
+  },
+  "homepage": "https://github.com/JLouhela/cavez.io#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "webpack": "^4.43.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "babel-loader": "^8.1.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.5.3",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "nodemon": "^2.0.3",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-merge": "^4.2.2"
+  }
+}
