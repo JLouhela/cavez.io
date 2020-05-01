@@ -1,7 +1,25 @@
-version: '3'
+version: '2'
 services:
-  dev:
+  base:
     image: node:11
     volumes:
-      - .:/user/src
+      - nodemodules:/usr/src/node_modules
+      - .:/usr/src
     working_dir: /usr/src
+  install:
+    extends:
+      service: base
+    command: npm install
+  build:
+    extends:
+      service: base
+    command: npm run build
+  develop:
+    extends:
+      service: base
+    command: npm run develop
+    ports:
+      - 1234:1234
+volumes:
+  nodemodules:
+    external: true
