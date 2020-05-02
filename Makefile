@@ -3,4 +3,4 @@ install:
 dev:
 	docker-compose up
 setup:
-	docker volume create nodemodules
+	npm run tsc && docker volume create nodemodules

@@ -1,11 +1,12 @@
-// https://victorzhou.com/blog/build-an-io-game-part-1/#2-builds--project-setup
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import * as path from 'path';
+import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 
-module.exports = {
+import * as webpack from 'webpack';
+
+const configuration: webpack.Configuration = {
   entry: {
-    game: './src/client/index.js',
+    game: './src/client/index.ts',
   },
   output: {
     filename: '[name].[contenthash].js',
@@ -14,14 +15,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
+        use: 'ts-loader',
       },
       {
         test: /\.css$/,
@@ -34,6 +30,9 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
@@ -41,6 +40,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/client/html/index.html',
+      favicon: "./public/assets/icon64.png"
     }),
   ],
 };
+
+export default configuration;

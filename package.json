@@ -4,9 +4,11 @@
   "description": "Multiplayer browser cave flying game",
   "main": "server.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "develop": "cross-env NODE_ENV=development node src/server/server.js",
-    "start": "cross-env NODE_ENV=production node src/server/server.js",
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "webpack --config dist/webpack.prod.js",
+    "develop": "tsc && cross-env NODE_ENV=development node dist/src/server/server.js",
+    "start": "cross-env NODE_ENV=production node dist/src/server/server.js",
+    "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,17 +24,25 @@
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0",
-    "webpack": "^4.43.0"
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "babel-loader": "^8.1.0",
+    "@types/express": "^4.17.6",
+    "@types/html-webpack-plugin": "^3.2.2",
+    "@types/mini-css-extract-plugin": "^0.9.1",
+    "@types/socket.io": "^2.1.4",
+    "@types/webpack": "^4.41.12",
+    "@types/webpack-dev-middleware": "^3.7.0",
+    "@types/webpack-merge": "^4.1.5",
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.3",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "nodemon": "^2.0.3",
+    "ts-loader": "^7.0.2",
+    "tslint": "^6.1.2",
+    "typescript": "^3.8.3",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-merge": "^4.2.2"
   }
