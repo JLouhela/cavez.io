@@ -1,6 +1,6 @@
 install:
-	sudo docker-compose -f docker-compose.yml run --rm install
+	docker-compose -f docker-compose.yml run --rm install
 dev:
-	sudo docker-compose up
+	docker-compose up
 setup:
-	sudo docker volume create nodemodules
+	docker volume create nodemodules
