@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as socketIo from 'socket.io';
-import * as webpack from 'webpack'
-import * as webpackDevMiddleware from 'webpack-dev-middleware'
+import * as webpack from 'webpack';
+import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import { createServer, Server } from 'http';
 
 import * as Constants from '../shared/constants';
@@ -13,8 +13,8 @@ export class GameServer {
   private io: SocketIO.Server;
   private port: string | number;
 
-  constructor () {
-    console.log("ctor");
+  constructor() {
+    console.log('ctor');
     this._app = express();
     this.port = process.env.PORT || Constants.DEFAULT_PORT;
     this.server = createServer(this._app);
@@ -34,11 +34,11 @@ export class GameServer {
     }
   }
 
-  private initSocket (): void {
+  private initSocket(): void {
     this.io = socketIo(this.server);
   }
 
-  private listen (): void {
+  private listen(): void {
     this.server.listen(this.port, () => {
       console.log('Running server on port %s', this.port);
     });
@@ -52,7 +52,7 @@ export class GameServer {
     });
   }
 
-  get app (): express.Application {
+  get app(): express.Application {
     return this._app;
   }
 }
