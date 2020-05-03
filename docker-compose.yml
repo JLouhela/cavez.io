@@ -18,6 +18,10 @@ services:
     extends:
       service: base
     command: npm run lint
+  compile:
+    extends:
+      service: base
+    command: npm run tsc
   develop:
     extends:
       service: base
