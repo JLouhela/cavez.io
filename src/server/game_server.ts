@@ -5,6 +5,7 @@ import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import { createServer, Server } from 'http';
 
 import * as Constants from '../shared/constants';
+import * as Protocol from '../shared/protocol';
 import * as webpackConfig from '../../webpack.dev';
 
 export class GameServer {
@@ -43,10 +44,10 @@ export class GameServer {
       console.log('Running server on port %s', this.port);
     });
 
-    this.io.on(Constants.SOCKET_EVENT.CONNECT, (socket: any) => {
+    this.io.on(Protocol.SOCKET_EVENT.CONNECT, (socket: any) => {
       console.log('Connected client on port %s.', this.port);
 
-      socket.on(Constants.SOCKET_EVENT.DISCONNECT, () => {
+      socket.on(Protocol.SOCKET_EVENT.DISCONNECT, () => {
         console.log('Client disconnected');
       });
     });
