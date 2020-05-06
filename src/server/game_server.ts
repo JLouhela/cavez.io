@@ -7,21 +7,25 @@ import { createServer, Server } from 'http';
 import * as Constants from '../shared/constants';
 import * as Protocol from '../shared/protocol';
 import * as webpackConfig from '../../webpack.dev';
+import { GameRoom } from './game_room';
 
 export class GameServer {
   private _app: express.Application;
   private server: Server;
   private io: SocketIO.Server;
   private port: string | number;
+  private rooms: { [index: number]: GameRoom } = {};
 
   constructor() {
-    console.log('ctor');
     this._app = express();
     this.port = process.env.PORT || Constants.DEFAULT_PORT;
     this.server = createServer(this._app);
     this.serveIndex();
     this.initSocket();
     this.listen();
+
+    // TODO: Let players create rooms, for now just init room 0
+    this.rooms[0] = new GameRoom(0, 'Test room');
   }
 
   private serveIndex(): void {
@@ -50,6 +54,13 @@ export class GameServer {
       socket.on(Protocol.SOCKET_EVENT.DISCONNECT, () => {
         console.log('Client disconnected');
       });
+
+      socket.on(
+        Protocol.SOCKET_EVENT.JOIN_GAME,
+        (playerName: string, roomIndex: number) => {
+          this.rooms[roomIndex].addPlayer({ name: playerName, socket });
+        }
+      );
     });
   }
 

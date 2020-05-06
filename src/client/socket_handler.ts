@@ -23,11 +23,11 @@ export class SocketHandler {
     console.log('Game update received');
   }
 
-  connect = () =>
+  public connect() {
     this.connectedPromise.then(() => {
       // Register callbacks
       this.socket.on(Protocol.SOCKET_EVENT.GAME_UPDATE, this.gameUpdate);
-      this.socket.on('disconnect', () => {
+      this.socket.on(Protocol.SOCKET_EVENT.DISCONNECT, () => {
         console.log('Disconnected from server.');
         // document.getElementById('disconnect-modal').classList.remove('hidden');
         // document.getElementById('reconnect-button').onclick = () => {
@@ -35,4 +35,9 @@ export class SocketHandler {
         // };
       });
     });
+  }
+
+  public joinGame(userName: string, roomIndex: number) {
+    this.socket.emit(Protocol.SOCKET_EVENT.JOIN_GAME, userName, roomIndex);
+  }
 }
