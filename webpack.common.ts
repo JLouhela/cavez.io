@@ -28,10 +28,14 @@ const configuration: webpack.Configuration = {
           'css-loader',
         ],
       },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ['file-loader'],
+      },
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -40,7 +44,7 @@ const configuration: webpack.Configuration = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/client/html/index.html',
-      favicon: "./public/assets/icon64.png"
+      favicon: './public/assets/icon64.png',
     }),
   ],
 };
