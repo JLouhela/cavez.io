@@ -11,7 +11,19 @@ export class GameRoom {
   }
 
   addPlayer(player: IPlayer) {
-    console.log('Player ' + player.name + ' joined room ' + this.index);
+    if (this.players.find((p) => p.socket === player.socket)) {
+      console.log('Player ' + player.name + ' already in room ' + this.index);
+      return;
+    }
+    console.log(
+      'Player ' +
+        player.name +
+        ' of color ' +
+        player.color +
+        ' joined room ' +
+        this.index
+    );
+
     this.players.push(player);
   }
 }

@@ -38,6 +38,14 @@ export class SocketHandler {
   }
 
   public joinGame(userName: string, roomIndex: number) {
-    this.socket.emit(Protocol.SOCKET_EVENT.JOIN_GAME, userName, roomIndex);
+    // Temporary copypaste color randomizer
+    const color: string =
+      '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
+    this.socket.emit(
+      Protocol.SOCKET_EVENT.JOIN_GAME,
+      userName,
+      color,
+      roomIndex
+    );
   }
 }

@@ -57,8 +57,12 @@ export class GameServer {
 
       socket.on(
         Protocol.SOCKET_EVENT.JOIN_GAME,
-        (playerName: string, roomIndex: number) => {
-          this.rooms[roomIndex].addPlayer({ name: playerName, socket });
+        (playerName: string, playerColor: string, roomIndex: number) => {
+          this.rooms[roomIndex].addPlayer({
+            name: playerName,
+            socket,
+            color: playerColor,
+          });
         }
       );
     });
