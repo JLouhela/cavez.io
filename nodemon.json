@@ -1,0 +1,5 @@
+{
+  "watch": ["src/server", "src/shared"],
+  "exec": "tsc && node dist/src/server/server.js",
+  "ext": "js, json, ts, proto"
+}

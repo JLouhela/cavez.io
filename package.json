@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "webpack --config dist/webpack.prod.js",
-    "develop": "tsc && cross-env NODE_ENV=development node dist/src/server/server.js",
+    "develop": "tsc && cross-env NODE_ENV=development nodemon dist/src/server/server.js",
     "start": "cross-env NODE_ENV=production node dist/src/server/server.js",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
