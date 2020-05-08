@@ -45,6 +45,7 @@ const configuration: webpack.Configuration = {
       filename: 'index.html',
       template: 'src/client/html/index.html',
       favicon: './public/assets/icon64.png',
+      css: './src/client/html/styles.css',
     }),
   ],
 };

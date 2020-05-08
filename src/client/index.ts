@@ -3,6 +3,9 @@ import { AssetManager } from './asset_manager';
 import * as Constants from '../shared/constants';
 import { GameRenderer } from './game_renderer';
 
+// Not state of the art way, but should be sufficient for this game.
+import './css/styles.css';
+
 console.log('Client index.ts: ' + Constants.TEST_VALUE);
 
 const playButton = document.getElementById('play-button');
