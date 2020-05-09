@@ -1,4 +1,5 @@
-import { SocketHandler } from './socket_handler';
+import { SocketHandler } from './websocket_handler';
+import { ISocketHandler } from './socket_handler_interface';
 import { AssetManager } from './asset_manager';
 import * as Constants from '../shared/constants';
 import { GameRenderer } from './game_renderer';
@@ -14,7 +15,8 @@ const usernameInput = document.getElementById(
 ) as HTMLInputElement;
 const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
-const socketHandler = new SocketHandler();
+// TODO use ISocketHandler?
+const socketHandler: ISocketHandler = new SocketHandler();
 const gameRenderer = new GameRenderer();
 
 Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {

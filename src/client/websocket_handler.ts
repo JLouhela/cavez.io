@@ -1,8 +1,8 @@
 import * as Protocol from '../shared/protocol';
+import { ISocketHandler } from './socket_handler_interface';
 import * as io from 'socket.io-client';
 
-// TODO interface for emiting messages to be forwarded to input manager
-export class SocketHandler {
+export class SocketHandler implements ISocketHandler {
   private socketProtocol = window.location.protocol.includes('https')
     ? 'wss'
     : 'ws';

@@ -1,27 +1,31 @@
 import * as express from 'express';
-import * as socketIo from 'socket.io';
 import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import { createServer, Server } from 'http';
 
 import * as Constants from '../shared/constants';
-import * as Protocol from '../shared/protocol';
 import * as webpackConfig from '../../webpack.dev';
 import { GameRoom } from './game_room';
+import { IPlayer } from './player_interface';
 
-export class GameServer {
+import { ISocketServer } from './socket_server_interface';
+import { ISocketServerDep } from './socket_server_dep_interface';
+import { IRoomHandler } from './room_handler_interface';
+
+export class GameServer implements ISocketServerDep, IRoomHandler {
   private _app: express.Application;
   private server: Server;
-  private io: SocketIO.Server;
+  private socketServer: ISocketServer;
   private port: string | number;
   private rooms: { [index: number]: GameRoom } = {};
 
-  constructor() {
+  constructor(socketServer: ISocketServer) {
     this._app = express();
     this.port = process.env.PORT || Constants.DEFAULT_PORT;
     this.server = createServer(this._app);
     this.serveIndex();
-    this.initSocket();
+    this.socketServer = socketServer;
+    this.socketServer.init(this, this);
     this.listen();
 
     // TODO: Let players create rooms, for now just init room 0
@@ -39,36 +43,22 @@ export class GameServer {
     }
   }
 
-  private initSocket(): void {
-    this.io = socketIo(this.server);
-  }
-
   private listen(): void {
     this.server.listen(this.port, () => {
       console.log('Running server on port %s', this.port);
     });
-
-    this.io.on(Protocol.SOCKET_EVENT.CONNECT, (socket: any) => {
-      console.log('Connected client on port %s.', this.port);
-
-      socket.on(Protocol.SOCKET_EVENT.DISCONNECT, () => {
-        console.log('Client disconnected');
-      });
-
-      socket.on(
-        Protocol.SOCKET_EVENT.JOIN_GAME,
-        (playerName: string, playerColor: string, roomIndex: number) => {
-          this.rooms[roomIndex].addPlayer({
-            name: playerName,
-            socket,
-            color: playerColor,
-          });
-        }
-      );
-    });
+    this.socketServer.registerEvents();
   }
 
   get app(): express.Application {
     return this._app;
+  }
+
+  public getServer(): Server {
+    return this.server;
+  }
+
+  public addToRoom(player: IPlayer, roomIndex: number) {
+    this.rooms[roomIndex].addPlayer(player);
   }
 }

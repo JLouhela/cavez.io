@@ -1,4 +1,4 @@
-import { IPlayer } from './player';
+import { IPlayer } from './player_interface';
 
 export class GameRoom {
   private index: number = -1;
