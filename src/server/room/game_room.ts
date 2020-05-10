@@ -1,4 +1,4 @@
-import { IPlayer } from './player_interface';
+import { IPlayer } from '../player/player_interface';
 
 export class GameRoom {
   private index: number = -1;
@@ -25,5 +25,9 @@ export class GameRoom {
     );
 
     this.players.push(player);
+  }
+
+  playerCount(): number {
+    return this.players.length;
   }
 }

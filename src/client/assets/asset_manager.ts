@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import ship_basic_white from '../../public/assets/ship_basic_white.png';
+import ship_basic_white from '../../../public/assets/ship_basic_white.png';
 
 export class AssetManager {
   private ASSET_URIS: { [assetName: string]: string } = {};

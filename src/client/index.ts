@@ -1,13 +1,9 @@
-import { SocketHandler } from './websocket_handler';
-import { ISocketHandler } from './socket_handler_interface';
-import { AssetManager } from './asset_manager';
-import * as Constants from '../shared/constants';
-import { GameRenderer } from './game_renderer';
+import { GeckosSocketHandler } from './network/geckos_socket_handler';
+import { AssetManager } from './assets/asset_manager';
+import { GameRenderer } from './rendering/game_renderer';
 
 // Not state of the art way, but should be sufficient for this game.
 import './css/styles.css';
-
-console.log('Client index.ts: ' + Constants.TEST_VALUE);
 
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById(
@@ -15,8 +11,8 @@ const usernameInput = document.getElementById(
 ) as HTMLInputElement;
 const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
-// TODO use ISocketHandler?
-const socketHandler: ISocketHandler = new SocketHandler();
+
+const socketHandler = new GeckosSocketHandler();
 const gameRenderer = new GameRenderer();
 
 Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {

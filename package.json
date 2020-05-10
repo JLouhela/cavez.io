@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/JLouhela/cavez.io#readme",
   "dependencies": {
+    "@geckos.io/client": "^1.4.1",
+    "@geckos.io/server": "^1.4.1",
     "express": "^4.17.1",
     "pixi.js": "^5.2.3",
     "socket.io": "^2.3.0",

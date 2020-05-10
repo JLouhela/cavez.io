@@ -5,31 +5,25 @@ import { createServer, Server } from 'http';
 
 import * as Constants from '../shared/constants';
 import * as webpackConfig from '../../webpack.dev';
-import { GameRoom } from './game_room';
-import { IPlayer } from './player_interface';
 
-import { ISocketServer } from './socket_server_interface';
-import { ISocketServerDep } from './socket_server_dep_interface';
-import { IRoomHandler } from './room_handler_interface';
+import { RoomManager } from './room/room_manager';
+import { GeckosSocketServer } from './socket/geckos_socket_server';
 
-export class GameServer implements ISocketServerDep, IRoomHandler {
+export class GameServer {
   private _app: express.Application;
   private server: Server;
-  private socketServer: ISocketServer;
+  private socketServer: GeckosSocketServer;
   private port: string | number;
-  private rooms: { [index: number]: GameRoom } = {};
+  private roomManager: RoomManager;
 
-  constructor(socketServer: ISocketServer) {
+  constructor() {
     this._app = express();
-    this.port = process.env.PORT || Constants.DEFAULT_PORT;
+    this.port = Constants.DEFAULT_PORT;
     this.server = createServer(this._app);
+    this.roomManager = new RoomManager(1, 10);
     this.serveIndex();
-    this.socketServer = socketServer;
-    this.socketServer.init(this, this);
+    this.socketServer = new GeckosSocketServer(this.roomManager, this.server);
     this.listen();
-
-    // TODO: Let players create rooms, for now just init room 0
-    this.rooms[0] = new GameRoom(0, 'Test room');
   }
 
   private serveIndex(): void {
@@ -56,9 +50,5 @@ export class GameServer implements ISocketServerDep, IRoomHandler {
 
   public getServer(): Server {
     return this.server;
-  }
-
-  public addToRoom(player: IPlayer, roomIndex: number) {
-    this.rooms[roomIndex].addPlayer(player);
   }
 }
