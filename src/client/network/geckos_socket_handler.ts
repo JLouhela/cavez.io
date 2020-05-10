@@ -6,7 +6,7 @@ export class GeckosSocketHandler {
   private channel: any = null;
 
   connectedPromise = new Promise((resolve) => {
-    this.channel = geckos({ port: Constants.DEFAULT_PORT }); // default port is 9208
+    this.channel = geckos({ port: Constants.DEFAULT_PORT });
 
     this.channel.onConnect((error: any) => {
       if (error) {
@@ -39,18 +39,15 @@ export class GeckosSocketHandler {
     // Temporary copypaste color randomizer
     const color: string =
       '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
-    // TODO emit as cannot-drop
-    this.channel.emit(
-      Protocol.SOCKET_EVENT.JOIN_GAME,
-      {
-        name: userName,
-        color,
-        room: roomIndex,
-      },
-      {
-        // Send as reliable
-        reliable: true,
-      }
-    );
+
+    const event: Protocol.IJoinGameEvent = {
+      name: userName,
+      color: color,
+      room: roomIndex,
+    };
+    this.channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME, event, {
+      // Try to ensure this packet is not lost
+      reliable: true,
+    });
   }
 }

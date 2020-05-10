@@ -20,18 +20,19 @@ export class GeckosSocketServer {
         console.log(`${channel.id} disconnected`);
       });
 
-      // TODO if this works: define msg struct in protocol.ts
-      channel.on(Protocol.SOCKET_EVENT.JOIN_GAME, (data: any) => {
-        console.log(`got ${data} from "chat message"`);
-        this.roomManager.addToRoom(
-          {
-            name: data.name,
-            socket: channel,
-            color: data.color,
-          },
-          data.room
-        );
-      });
+      channel.on(
+        Protocol.SOCKET_EVENT.JOIN_GAME,
+        (event: Protocol.IJoinGameEvent) => {
+          this.roomManager.addToRoom(
+            {
+              name: event.name,
+              socket: channel,
+              color: event.color,
+            },
+            event.room
+          );
+        }
+      );
     });
   }
 }
