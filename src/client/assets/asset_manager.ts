@@ -3,10 +3,11 @@ import ship_basic_white from '../../../public/assets/ship_basic_white.png';
 
 export class AssetManager {
   private ASSET_URIS: { [assetName: string]: string } = {};
-  private sprites: { [spriteName: string]: object } = {};
+  private textures: { [textureName: string]: object } = {};
 
   private loader = PIXI.Loader.shared; // Premade shared instance
 
+  // TODO support sprite sheet instead
   constructor() {
     this.ASSET_URIS.basic_ship = ship_basic_white;
   }
@@ -18,9 +19,7 @@ export class AssetManager {
         this.loader.add(assetId, assetUri);
       }
       this.loader.load((loader, resources) => {
-        this.sprites[resources.basic_ship.name] = new PIXI.Sprite(
-          resources.basic_ship.texture
-        );
+        this.textures[resources.basic_ship.name] = resources.basic_ship.texture;
         console.log(resources.basic_ship.name + ' loaded');
       });
       this.loader.onComplete.add(() => {
@@ -31,7 +30,7 @@ export class AssetManager {
     return loadedPromise;
   }
 
-  getSprite(spritename: string) {
-    return this.sprites[spritename];
+  getTexture(name: string) {
+    return this.textures[name];
   }
 }

@@ -1,8 +1,8 @@
 import { GeckosSocketHandler } from './network/geckos_socket_handler';
 import { AssetManager } from './assets/asset_manager';
-import { GameRenderer } from './rendering/game_renderer';
+import { SpriteCache } from './assets/sprite_cache';
+import { WorldManager } from '../shared/game/world_manager';
 
-// Not state of the art way, but should be sufficient for this game.
 import './css/styles.css';
 
 const playButton = document.getElementById('play-button');
@@ -13,7 +13,8 @@ const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
 
 const socketHandler = new GeckosSocketHandler();
-const gameRenderer = new GameRenderer();
+const worldManager = new WorldManager();
+const spriteCache = new SpriteCache();
 
 Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {
   playMenu.classList.remove('hidden');
@@ -23,7 +24,9 @@ Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {
     const roomNumber: number = 0;
     socketHandler.joinGame(usernameInput.value, roomNumber);
     playMenu.classList.add('hidden');
-    gameRenderer.init();
+
+    worldManager.initClientExtras(spriteCache);
+    worldManager.start();
     //  initState();
     //  startCapturingInput();
     //  startRendering();

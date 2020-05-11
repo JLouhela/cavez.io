@@ -24,6 +24,7 @@
   "dependencies": {
     "@geckos.io/client": "^1.4.1",
     "@geckos.io/server": "^1.4.1",
+    "ecsy": "^0.2.3",
     "express": "^4.17.1",
     "pixi.js": "^5.2.3",
     "webpack": "^4.43.0",

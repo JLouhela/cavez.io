@@ -42,7 +42,7 @@ export class GeckosSocketHandler {
 
     const event: Protocol.IJoinGameEvent = {
       name: userName,
-      color: color,
+      color,
       room: roomIndex,
     };
     this.channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME, event, {
