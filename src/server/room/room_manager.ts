@@ -2,7 +2,7 @@ import { GameRoom } from './game_room';
 import { IPlayer } from '../player/player_interface';
 
 export interface IRoomManager {
-  addToRoom(player: IPlayer, roomIndex: number): void;
+  addToRoom(player: IPlayer, roomIndex: number): boolean;
 }
 
 export class RoomManager implements IRoomManager {
@@ -19,12 +19,17 @@ export class RoomManager implements IRoomManager {
   public addToRoom(player: IPlayer, roomIndex: number) {
     if (!this.rooms[roomIndex]) {
       console.log('Room ' + roomIndex + ' does not exist');
-      return;
+      return false;
     }
     if (this.rooms[roomIndex].playerCount() >= this.playersPerRoom) {
       console.log('Room ' + roomIndex + ' is full');
-      return;
+      return false;
     }
     this.rooms[roomIndex].addPlayer(player);
+    return true;
+  }
+
+  public removePlayer(player: IPlayer) {
+    this.rooms[player.socket.roomId].removePlayer(player);
   }
 }

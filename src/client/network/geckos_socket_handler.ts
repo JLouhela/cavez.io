@@ -31,6 +31,13 @@ export class GeckosSocketHandler {
         console.log('Disconnected from server');
         this.channel = null;
       });
+
+      this.channel.on(
+        Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE,
+        (response: Protocol.IJoinGameEventResponse) => {
+          console.log('Join ' + response.ok);
+        }
+      );
     });
     return this.connectedPromise;
   }

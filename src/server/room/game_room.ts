@@ -11,7 +11,7 @@ export class GameRoom {
   }
 
   addPlayer(player: IPlayer) {
-    if (this.players.find((p) => p.socket === player.socket)) {
+    if (this.players.find((p) => p.socket.id === player.socket.id)) {
       console.log('Player ' + player.name + ' already in room ' + this.index);
       return;
     }
@@ -24,7 +24,17 @@ export class GameRoom {
         this.index
     );
 
+    player.socket.join(this.index);
     this.players.push(player);
+  }
+
+  removePlayer(player: IPlayer) {
+    let p = this.players.find((p) => p.socket.id === player.socket.id);
+    if (p) {
+      console.log('Erased player ' + p.name + ' from room ' + this.index);
+      p.socket.leave();
+      this.players.splice(this.players.indexOf(p), 1);
+    }
   }
 
   playerCount(): number {

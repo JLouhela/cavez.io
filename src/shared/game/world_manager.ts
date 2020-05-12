@@ -34,7 +34,7 @@ export class WorldManager {
       requestAnimationFrame(step);
     }
     let lastTime = performance.now();
-    let world = this.world;
+    const world = this.world;
     step();
   }
 }

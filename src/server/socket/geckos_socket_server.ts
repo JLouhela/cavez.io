@@ -23,7 +23,7 @@ export class GeckosSocketServer {
       channel.on(
         Protocol.SOCKET_EVENT.JOIN_GAME,
         (event: Protocol.IJoinGameEvent) => {
-          this.roomManager.addToRoom(
+          const ok = this.roomManager.addToRoom(
             {
               name: event.name,
               socket: channel,
@@ -31,6 +31,10 @@ export class GeckosSocketServer {
             },
             event.room
           );
+          if (ok) {
+            const response = { ok: ok, room: event.room };
+            channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE, response);
+          }
         }
       );
     });
