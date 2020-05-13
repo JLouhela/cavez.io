@@ -9,6 +9,7 @@ export class GeckosSocketServer {
 
   constructor(roomManager: IRoomManager, server: Server) {
     // TODO check & study ice
+    console.log(iceServers);
     this.io = geckos({ iceServers });
     this.io.addServer(server);
     this.roomManager = roomManager;
@@ -17,6 +18,7 @@ export class GeckosSocketServer {
   public registerEvents(): void {
     this.io.onConnection((channel) => {
       channel.onDisconnect(() => {
+        this.roomManager.removeFromRoom(channel);
         console.log(`${channel.id} disconnected`);
       });
 
@@ -32,11 +34,20 @@ export class GeckosSocketServer {
             event.room
           );
           if (ok) {
-            const response = { ok: ok, room: event.room };
+            const response: Protocol.IJoinGameEventResponse = {
+              ok,
+              room: event.room,
+            };
             channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE, response);
           }
         }
       );
+
+      channel.on(Protocol.SOCKET_EVENT.SPAWN, () => {
+        // TODO query for spawnpoint
+        const response: Protocol.ISpawnResponse = { x: 50, y: 50 };
+        channel.emit(Protocol.SOCKET_EVENT.SPAWN_RESPONSE, response);
+      });
     });
   }
 }

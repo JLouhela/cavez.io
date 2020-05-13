@@ -3,6 +3,7 @@ import { IPlayer } from '../player/player_interface';
 
 export interface IRoomManager {
   addToRoom(player: IPlayer, roomIndex: number): boolean;
+  removeFromRoom(socket: any): void;
 }
 
 export class RoomManager implements IRoomManager {
@@ -29,7 +30,7 @@ export class RoomManager implements IRoomManager {
     return true;
   }
 
-  public removePlayer(player: IPlayer) {
-    this.rooms[player.socket.roomId].removePlayer(player);
+  public removeFromRoom(socket: any) {
+    this.rooms[socket.roomId].removePlayer(socket.id);
   }
 }

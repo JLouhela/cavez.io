@@ -28,12 +28,12 @@ export class GameRoom {
     this.players.push(player);
   }
 
-  removePlayer(player: IPlayer) {
-    let p = this.players.find((p) => p.socket.id === player.socket.id);
-    if (p) {
-      console.log('Erased player ' + p.name + ' from room ' + this.index);
-      p.socket.leave();
-      this.players.splice(this.players.indexOf(p), 1);
+  removePlayer(socketId: any) {
+    const found = this.players.find((p) => p.socket.id === socketId);
+    if (found) {
+      console.log('Erased player ' + found.name + ' from room ' + this.index);
+      found.socket.leave();
+      this.players.splice(this.players.indexOf(found), 1);
     }
   }
 

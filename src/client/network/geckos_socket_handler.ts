@@ -1,6 +1,7 @@
 import * as Protocol from '../../shared/protocol';
 import * as Constants from '../../shared/constants';
 import geckos from '@geckos.io/client';
+import { request } from 'express';
 
 export class GeckosSocketHandler {
   private channel: any = null;
@@ -25,7 +26,8 @@ export class GeckosSocketHandler {
 
   public connect() {
     this.connectedPromise.then(() => {
-      // Register callbacks
+      // Register callbacks:
+
       // listens for a disconnection
       this.channel.onDisconnect(() => {
         console.log('Disconnected from server');
@@ -36,6 +38,16 @@ export class GeckosSocketHandler {
         Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE,
         (response: Protocol.IJoinGameEventResponse) => {
           console.log('Join ' + response.ok);
+          this.requestSpawn();
+        }
+      );
+
+      this.channel.on(
+        Protocol.SOCKET_EVENT.SPAWN_RESPONSE,
+        (response: Protocol.ISpawnResponse) => {
+          console.log('Spawnpoint received ' + response.x + ', ' + response.y);
+          // TODO create entity with position component x,y
+          // => factory
         }
       );
     });
@@ -53,8 +65,17 @@ export class GeckosSocketHandler {
       room: roomIndex,
     };
     this.channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME, event, {
-      // Try to ensure this packet is not lost
       reliable: true,
     });
+  }
+
+  public requestSpawn() {
+    this.channel.emit(
+      Protocol.SOCKET_EVENT.SPAWN,
+      {},
+      {
+        reliable: true,
+      }
+    );
   }
 }
