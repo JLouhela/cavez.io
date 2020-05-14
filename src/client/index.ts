@@ -1,7 +1,7 @@
 import { GeckosSocketHandler } from './network/geckos_socket_handler';
 import { AssetManager } from './assets/asset_manager';
 import { SpriteCache } from './assets/sprite_cache';
-import { WorldManager } from '../shared/game/world_manager';
+import { ClientWorldManager } from './client_world_manager';
 
 import './css/styles.css';
 
@@ -13,8 +13,8 @@ const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
 
 const socketHandler = new GeckosSocketHandler();
-const worldManager = new WorldManager();
 const spriteCache = new SpriteCache();
+const worldManager = new ClientWorldManager(spriteCache);
 
 Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {
   playMenu.classList.remove('hidden');
@@ -24,8 +24,6 @@ Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {
     const roomNumber: number = 0;
     socketHandler.joinGame(usernameInput.value, roomNumber);
     playMenu.classList.add('hidden');
-
-    worldManager.initClientExtras(spriteCache);
     worldManager.start();
     //  initState();
     //  startCapturingInput();

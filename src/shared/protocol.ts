@@ -4,8 +4,7 @@ export enum SOCKET_EVENT {
   GAME_UPDATE = 'game_update',
   JOIN_GAME = 'join_game',
   JOIN_GAME_RESPONSE = 'join_game_response',
-  SPAWN = 'spawn',
-  SPAWN_RESPONSE = 'spawn_response',
+  SPAWN_PLAYER = 'spawn',
 }
 
 export interface IJoinGameEvent {
@@ -17,9 +16,4 @@ export interface IJoinGameEvent {
 export interface IJoinGameEventResponse {
   ok: boolean;
   room: number;
-}
-
-export interface ISpawnResponse {
-  x: number;
-  y: number;
 }

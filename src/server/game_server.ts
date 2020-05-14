@@ -8,6 +8,7 @@ import * as webpackConfig from '../../webpack.dev';
 
 import { RoomManager } from './room/room_manager';
 import { GeckosSocketServer } from './socket/geckos_socket_server';
+import { Game } from './game';
 
 export class GameServer {
   private _app: express.Application;
@@ -15,14 +16,20 @@ export class GameServer {
   private socketServer: GeckosSocketServer;
   private port: string | number;
   private roomManager: RoomManager;
+  private game: Game;
 
   constructor() {
     this._app = express();
     this.port = Constants.DEFAULT_PORT;
     this.server = createServer(this._app);
     this.roomManager = new RoomManager(1, 10);
+    this.game = new Game();
     this.serveIndex();
-    this.socketServer = new GeckosSocketServer(this.roomManager, this.server);
+    this.socketServer = new GeckosSocketServer(
+      this.roomManager,
+      this.server,
+      this.game
+    );
     this.listen();
   }
 

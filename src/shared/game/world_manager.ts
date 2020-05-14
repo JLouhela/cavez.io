@@ -1,8 +1,7 @@
 import { World } from 'ecsy';
 
-import { RenderSystem } from '../../client/rendering/render_system';
-import { SpriteCache } from '../../client/assets/sprite_cache';
-
+// Server and client inherits
+// This is to avoid dependency leaking (e.g. pixi) to server
 export class WorldManager {
   private world: World = null;
 
@@ -15,26 +14,40 @@ export class WorldManager {
     console.log('init common: NOT IMPLEMENTED');
   }
 
-  public initClientExtras(spriteCache: SpriteCache) {
-    this.world.registerSystem(RenderSystem, { spriteCache });
-  }
-
   public getWorld(): World {
     return this.world;
   }
 
-  public start(): void {
-    function step() {
+  public client_start(): void {
+    function client_step() {
       const time = performance.now();
       const delta = time - lastTime;
 
       // Run all the systems
       world.execute(delta, time);
       lastTime = time;
-      requestAnimationFrame(step);
+      requestAnimationFrame(client_step);
     }
     let lastTime = performance.now();
     const world = this.world;
-    step();
+    client_step();
+  }
+
+  public server_start(): void {
+    const milliSecondsPerFrame = 1 / 60;
+    function server_step() {
+      const time = performance.now();
+      const delta = time - lastTime;
+
+      if (delta > milliSecondsPerFrame) {
+        world.execute(delta, time);
+        lastTime = time;
+      }
+      // Run all the systems
+      setImmediate(server_step);
+    }
+    let lastTime = performance.now();
+    const world = this.world;
+    server_step();
   }
 }
