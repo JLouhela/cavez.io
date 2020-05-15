@@ -48,10 +48,7 @@ export class GeckosSocketServer {
       );
 
       channel.on(Protocol.SOCKET_EVENT.SPAWN_PLAYER, () => {
-        // TODO query for spawnpoint
-        const spawnPoint = { x: 50, y: 50 };
-        // TODO instead of coordinates, just spawn an entity and send it's data
-        // Player has it's id -> CPlayer
+        this.game.spawnPlayer(channel.id, channel.roomId);
       });
     });
   }

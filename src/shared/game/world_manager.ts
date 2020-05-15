@@ -34,7 +34,7 @@ export class WorldManager {
   }
 
   public server_start(): void {
-    const milliSecondsPerFrame = 1 / 60;
+    const milliSecondsPerFrame = 1 / 30;
     function server_step() {
       const time = performance.now();
       const delta = time - lastTime;
@@ -43,7 +43,6 @@ export class WorldManager {
         world.execute(delta, time);
         lastTime = time;
       }
-      // Run all the systems
       setImmediate(server_step);
     }
     let lastTime = performance.now();

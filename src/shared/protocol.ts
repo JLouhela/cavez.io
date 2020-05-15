@@ -17,3 +17,17 @@ export interface IJoinGameEventResponse {
   ok: boolean;
   room: number;
 }
+
+export interface IComponentChange {
+  type: string;
+  data: object;
+}
+
+export interface IEntityChange {
+  entity: string;
+  components: IComponentChange[];
+}
+
+export interface IGameUpdateEvent {
+  entities: IEntityChange[];
+}

@@ -23,7 +23,7 @@ export class GameServer {
     this.port = Constants.DEFAULT_PORT;
     this.server = createServer(this._app);
     this.roomManager = new RoomManager(1, 10);
-    this.game = new Game();
+    this.game = new Game(this.roomManager);
     this.serveIndex();
     this.socketServer = new GeckosSocketServer(
       this.roomManager,

@@ -33,4 +33,8 @@ export class RoomManager implements IRoomManager {
   public removeFromRoom(socket: any) {
     this.rooms[socket.roomId].removePlayer(socket.id);
   }
+
+  public getPlayer(socketId: string, roomIndex: number) {
+    return this.rooms[roomIndex].getPlayer(socketId);
+  }
 }
