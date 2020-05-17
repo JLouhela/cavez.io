@@ -1,4 +1,5 @@
 import { World } from 'ecsy';
+import * as Constants from './../constants';
 
 // Server and client inherits
 // This is to avoid dependency leaking (e.g. pixi) to server
@@ -33,19 +34,24 @@ export class WorldManager {
     client_step();
   }
 
-  public server_start(): void {
-    const milliSecondsPerFrame = 1 / 30;
+  public server_start(tickCallback: (deltaTime: number) => void): void {
     function server_step() {
       const time = performance.now();
-      const delta = time - lastTime;
+      const updateDelta = time - lastWorldUpdate;
+      const tickDelta = time - lastTick;
 
-      if (delta > milliSecondsPerFrame) {
-        world.execute(delta, time);
-        lastTime = time;
+      if (updateDelta > Constants.SERVER_WORLD_STEP_RATE) {
+        world.execute(updateDelta, time);
+        lastWorldUpdate = time;
+      }
+      if (tickDelta > Constants.SERVER_TICK_RATE) {
+        tickCallback(tickDelta);
+        lastTick = time;
       }
       setImmediate(server_step);
     }
-    let lastTime = performance.now();
+    let lastTick = performance.now();
+    let lastWorldUpdate = performance.now();
     const world = this.world;
     server_step();
   }

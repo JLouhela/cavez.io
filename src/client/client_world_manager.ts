@@ -7,7 +7,7 @@ export class ClientWorldManager {
   constructor(spriteCache: SpriteCache) {
     this.worldManager = new WorldManager();
     this.initClientExtras(spriteCache);
-    this.worldManager.server_start();
+    this.worldManager.client_start();
   }
 
   public initClientExtras(spriteCache: SpriteCache) {
