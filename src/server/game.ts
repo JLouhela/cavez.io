@@ -11,6 +11,7 @@ export class Game {
 
   public spawnPlayer(socketId: string, roomIndex: number) {
     const player = this.roomManager.getPlayer(socketId, roomIndex);
-    console.log('spawning player ' + player.name);
+    // TODO level manager..
+    this.worldManager.spawnPlayer(player, { x: 50, y: 50 });
   }
 }

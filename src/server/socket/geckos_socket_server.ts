@@ -37,7 +37,6 @@ export class GeckosSocketServer {
             event.room
           );
           if (ok) {
-            // TODO add player id
             const response: Protocol.IJoinGameEventResponse = {
               ok,
               room: event.room,

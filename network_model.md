@@ -8,7 +8,7 @@ All simulation is run on the server-side and client-side. Server is authoritativ
 First approach taken for syncing such behavior is as follows:
 
 - Server sends all entities and all necessary components to each player
-- Player entity id matches socket id thus it can identify it's own entity
+- Player entity name matches socket id thus it can identify it's own entity
 
 Approach shall be designed to allow progress towards next steps, which are
 
