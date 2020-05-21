@@ -2,19 +2,26 @@ import { IRoomManager } from '../room/room_manager';
 import geckos, { GeckosServer, iceServers } from '@geckos.io/server';
 import { Server } from 'http';
 import * as Protocol from '../../shared/protocol';
-import { Game } from '../game';
+import { Game } from '../game/game';
 
 export class GeckosSocketServer {
   private io: GeckosServer;
   private roomManager: IRoomManager;
   private game: Game;
 
-  constructor(roomManager: IRoomManager, server: Server, game: Game) {
+  constructor(roomManager: IRoomManager, server: Server) {
     // TODO check & study ice
     console.log(iceServers);
     this.io = geckos({ iceServers });
     this.io.addServer(server);
     this.roomManager = roomManager;
+  }
+
+  public getIO(): GeckosServer {
+    return this.io;
+  }
+
+  public setGame(game: Game): void {
     this.game = game;
   }
 

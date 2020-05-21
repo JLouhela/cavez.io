@@ -18,7 +18,7 @@ export class EntityFactory {
   }
 
   public createPlayerEntity(name: string, color: string) {
-    let e = this.createEntity(name, [CPlayer, CPosition]);
+    const e = this.createEntity(name, [CPlayer, CPosition]);
     e.getMutableComponent(CPlayer).color = color;
   }
 }
