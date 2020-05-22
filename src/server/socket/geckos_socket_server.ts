@@ -9,20 +9,21 @@ export class GeckosSocketServer {
   private roomManager: IRoomManager;
   private game: Game;
 
-  constructor(roomManager: IRoomManager, server: Server) {
+  constructor(server: Server) {
     // TODO check & study ice
     console.log(iceServers);
     this.io = geckos({ iceServers });
     this.io.addServer(server);
-    this.roomManager = roomManager;
   }
 
   public getIO(): GeckosServer {
     return this.io;
   }
 
-  public setGame(game: Game): void {
+  // TODO fix init order
+  public setDependencies(game: Game, roomManager: IRoomManager): void {
     this.game = game;
+    this.roomManager = roomManager;
   }
 
   public registerEvents(): void {

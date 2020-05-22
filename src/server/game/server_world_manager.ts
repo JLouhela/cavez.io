@@ -8,9 +8,11 @@ import { SyncSystem } from './sync_system';
 export class ServerWorldManager {
   private worldManager: WorldManager = null;
   private entityFactory: EntityFactory = null;
+  private roomIndex: number = -1;
 
-  constructor(socketEmit: ISocketEmit) {
+  constructor(socketEmit: ISocketEmit, roomIndex: number) {
     this.worldManager = new WorldManager();
+    this.roomIndex = roomIndex;
     this.entityFactory = new EntityFactory(this.worldManager.getWorld());
     this.initServerExtras(socketEmit);
     this.worldManager.server_start();

@@ -1,9 +1,12 @@
 import { GameRoom } from './game_room';
 import { IPlayer } from '../player/player_interface';
+import { ISocketEmit } from '../socket/socket_emit_interface';
 
 export interface IRoomManager {
   addToRoom(player: IPlayer, roomIndex: number): boolean;
   removeFromRoom(socket: any): void;
+  getRoom(index: number): GameRoom;
+  getPlayer(socketId: string, roomIndex: number): IPlayer;
 }
 
 export class RoomManager implements IRoomManager {
@@ -11,10 +14,14 @@ export class RoomManager implements IRoomManager {
   private playersPerRoom: number = 10;
   private rooms: { [index: number]: GameRoom } = {};
 
-  constructor(maxRoomCount: number, playersPerRoom: number) {
+  constructor(
+    maxRoomCount: number,
+    playersPerRoom: number,
+    socketEmit: ISocketEmit
+  ) {
     this.maxRoomCount = maxRoomCount;
     this.playersPerRoom = playersPerRoom;
-    this.rooms[0] = new GameRoom(0, 'Test room');
+    this.rooms[0] = new GameRoom(0, 'Test room', socketEmit);
   }
 
   public addToRoom(player: IPlayer, roomIndex: number) {
@@ -36,5 +43,9 @@ export class RoomManager implements IRoomManager {
 
   public getPlayer(socketId: string, roomIndex: number) {
     return this.rooms[roomIndex].getPlayer(socketId);
+  }
+
+  public getRoom(roomIndex: number) {
+    return this.rooms[roomIndex];
   }
 }

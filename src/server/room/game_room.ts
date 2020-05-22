@@ -1,13 +1,19 @@
 import { IPlayer } from '../player/player_interface';
+import { ServerWorldManager } from '../game/server_world_manager';
+import { ISocketEmit } from '../socket/socket_emit_interface';
+import { Vec2 } from '../../shared/math/vector';
 
 export class GameRoom {
   private index: number = -1;
   private title: string = 'undefined;';
   private players: IPlayer[] = [];
+  private socketEmit: ISocketEmit = null;
+  private worldManager: ServerWorldManager = null;
 
-  constructor(index: number, title: string) {
+  constructor(index: number, title: string, socketEmit: ISocketEmit) {
     this.index = index;
     this.title = title;
+    this.worldManager = new ServerWorldManager(socketEmit, index);
   }
 
   addPlayer(player: IPlayer) {
@@ -43,5 +49,19 @@ export class GameRoom {
 
   playerCount(): number {
     return this.players.length;
+  }
+
+  spawnPlayer(socketId: string, pos: Vec2) {
+    const player = this.getPlayer(socketId);
+    if (!player) {
+      console.log(
+        'Could not spawn player with socket id ' +
+          socketId +
+          ' to room ' +
+          this.index
+      );
+      return;
+    }
+    this.worldManager.spawnPlayer(player, pos);
   }
 }

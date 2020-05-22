@@ -10,7 +10,6 @@ import { RoomManager } from '../room/room_manager';
 import { GeckosSocketServer } from '../socket/geckos_socket_server';
 import { Game } from './game';
 import { GeckosSocketEmit } from '../socket/geckos_socket_emit';
-import { ServerWorldManager } from './server_world_manager';
 
 export class GameServer {
   private _app: express.Application;
@@ -20,29 +19,23 @@ export class GameServer {
   private port: string | number;
   private roomManager: RoomManager;
   private game: Game;
-  private worldManager: ServerWorldManager;
 
   constructor() {
     this._app = express();
     this.port = Constants.DEFAULT_PORT;
     this.server = createServer(this._app);
-    this.roomManager = new RoomManager(1, 10);
     this.serveIndex();
 
-    this.socketServer = new GeckosSocketServer(this.roomManager, this.server);
+    this.socketServer = new GeckosSocketServer(this.server);
+    this.socketEmit = new GeckosSocketEmit(this.socketServer.getIO());
+    this.roomManager = new RoomManager(1, 10, this.socketEmit);
 
-    this.socketEmit = new GeckosSocketEmit(
-      this.roomManager,
-      this.socketServer.getIO()
-    );
-
-    this.worldManager = new ServerWorldManager(this.socketEmit);
-    this.game = new Game(this.roomManager, this.worldManager);
+    this.game = new Game(this.roomManager);
 
     // Cyclic depdency, as the socket emiter depends on socketserver
-    // socket server depends on game, and game depends on socket emiter.
+    // socket server depends on game, and game depends on room manager, which needs socket emiter.
     // TODO: Fix when inputs are being handled, need proxy between game and socket.
-    this.socketServer.setGame(this.game);
+    this.socketServer.setDependencies(this.game, this.roomManager);
     this.listen();
   }
 
