@@ -15,7 +15,7 @@ export class GeckosSocketHandler {
         console.error(error.message);
         return;
       }
-      console.log('Connected to server!');
+      console.log('Connected to server, channel id ' + this.channel.id);
       resolve();
     });
   });
@@ -29,12 +29,13 @@ export class GeckosSocketHandler {
     this.connectedPromise.then(() => {
       // Register callbacks:
 
-      // listens for a disconnection
+      // Disconnect
       this.channel.onDisconnect(() => {
         console.log('Disconnected from server');
         this.channel = null;
       });
 
+      // Join game
       this.channel.on(
         Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE,
         (response: Protocol.IJoinGameEventResponse) => {
@@ -54,6 +55,14 @@ export class GeckosSocketHandler {
             return;
           }
           this.requestSpawn();
+        }
+      );
+
+      // Game update
+      this.channel.on(
+        Protocol.SOCKET_EVENT.ENTITY_UPDATE,
+        (syncPackets: Protocol.IEntityUpdate) => {
+          console.log(syncPackets);
         }
       );
     });

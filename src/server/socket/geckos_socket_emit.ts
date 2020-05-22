@@ -1,7 +1,7 @@
 import { ISocketEmit } from './socket_emit_interface';
 import { GeckosServer } from '@geckos.io/server';
-import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { IPlayer } from '../player/player_interface';
+import * as Protocol from '../../shared/protocol';
 
 export class GeckosSocketEmit implements ISocketEmit {
   private io: GeckosServer;
@@ -12,15 +12,11 @@ export class GeckosSocketEmit implements ISocketEmit {
 
   public emitSyncPackets(
     listeners: IPlayer[],
-    packets: { [entityId: number]: CNetworkSync }
+    packets: Protocol.IEntityUpdate
   ) {
     for (const listener of listeners) {
-      for (const entityId in packets) {
-        // TODO: performance of this unnecessary check? We know data layout
-        if (packets.hasOwnProperty(entityId)) {
-          this.io.emit(listener.socket, packets[entityId]);
-        }
-      }
+      console.log('Sending to ' + listener.socket.id);
+      listener.socket.emit(Protocol.SOCKET_EVENT.ENTITY_UPDATE, packets);
     }
   }
 }
