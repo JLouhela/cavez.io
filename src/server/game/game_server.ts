@@ -8,7 +8,6 @@ import * as webpackConfig from '../../../webpack.dev';
 
 import { RoomManager } from '../room/room_manager';
 import { GeckosSocketServer } from '../socket/geckos_socket_server';
-import { Game } from './game';
 import { GeckosSocketEmit } from '../socket/geckos_socket_emit';
 
 export class GameServer {
@@ -18,7 +17,6 @@ export class GameServer {
   private socketEmit: GeckosSocketEmit;
   private port: string | number;
   private roomManager: RoomManager;
-  private game: Game;
 
   constructor() {
     this._app = express();
@@ -30,12 +28,10 @@ export class GameServer {
     this.socketEmit = new GeckosSocketEmit(this.socketServer.getIO());
     this.roomManager = new RoomManager(1, 10, this.socketEmit);
 
-    this.game = new Game(this.roomManager);
-
     // Cyclic depdency, as the socket emiter depends on socketserver
     // socket server depends on game, and game depends on room manager, which needs socket emiter.
     // TODO: Fix when inputs are being handled, need proxy between game and socket.
-    this.socketServer.setDependencies(this.game, this.roomManager);
+    this.socketServer.setDependencies(this.roomManager);
     this.listen();
   }
 

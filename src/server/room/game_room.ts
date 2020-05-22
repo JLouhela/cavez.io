@@ -3,7 +3,11 @@ import { ServerWorldManager } from '../game/server_world_manager';
 import { ISocketEmit } from '../socket/socket_emit_interface';
 import { Vec2 } from '../../shared/math/vector';
 
-export class GameRoom {
+export interface IGameRoom {
+  getPlayers(): IPlayer[];
+}
+
+export class GameRoom implements IGameRoom {
   private index: number = -1;
   private title: string = 'undefined;';
   private players: IPlayer[] = [];
@@ -13,7 +17,11 @@ export class GameRoom {
   constructor(index: number, title: string, socketEmit: ISocketEmit) {
     this.index = index;
     this.title = title;
-    this.worldManager = new ServerWorldManager(socketEmit, index);
+    this.worldManager = new ServerWorldManager(socketEmit, this);
+  }
+
+  getPlayers() {
+    return this.players;
   }
 
   addPlayer(player: IPlayer) {

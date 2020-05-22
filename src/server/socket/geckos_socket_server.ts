@@ -2,12 +2,10 @@ import { IRoomManager } from '../room/room_manager';
 import geckos, { GeckosServer, iceServers } from '@geckos.io/server';
 import { Server } from 'http';
 import * as Protocol from '../../shared/protocol';
-import { Game } from '../game/game';
 
 export class GeckosSocketServer {
   private io: GeckosServer;
   private roomManager: IRoomManager;
-  private game: Game;
 
   constructor(server: Server) {
     // TODO check & study ice
@@ -21,8 +19,7 @@ export class GeckosSocketServer {
   }
 
   // TODO fix init order
-  public setDependencies(game: Game, roomManager: IRoomManager): void {
-    this.game = game;
+  public setDependencies(roomManager: IRoomManager): void {
     this.roomManager = roomManager;
   }
 
@@ -55,7 +52,9 @@ export class GeckosSocketServer {
       );
 
       channel.on(Protocol.SOCKET_EVENT.SPAWN_PLAYER, () => {
-        this.game.spawnPlayer(channel.id, channel.roomId);
+        const room = this.roomManager.getRoom(channel.roomId);
+        // TODO level manager or something
+        room.spawnPlayer(channel.id, { x: 50, y: 50 });
       });
     });
   }

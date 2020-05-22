@@ -3,23 +3,24 @@ import { IPlayer } from '../player/player_interface';
 import { Vec2 } from '../../shared/math/vector';
 import { EntityFactory } from '../../shared/game/entity/entity_factory';
 import { ISocketEmit } from '../socket/socket_emit_interface';
-import { SyncSystem } from './sync_system';
+import { ServerSyncSystem } from './server_sync_system';
+import { IGameRoom } from '../room/game_room';
 
 export class ServerWorldManager {
   private worldManager: WorldManager = null;
   private entityFactory: EntityFactory = null;
-  private roomIndex: number = -1;
 
-  constructor(socketEmit: ISocketEmit, roomIndex: number) {
+  constructor(socketEmit: ISocketEmit, gameRoom: IGameRoom) {
     this.worldManager = new WorldManager();
-    this.roomIndex = roomIndex;
     this.entityFactory = new EntityFactory(this.worldManager.getWorld());
-    this.initServerExtras(socketEmit);
+    this.initServerExtras(socketEmit, gameRoom);
     this.worldManager.server_start();
   }
 
-  public initServerExtras(socketEmit: ISocketEmit) {
-    this.worldManager.getWorld().registerSystem(SyncSystem, { socketEmit });
+  public initServerExtras(socketEmit: ISocketEmit, gameRoom: IGameRoom) {
+    this.worldManager
+      .getWorld()
+      .registerSystem(ServerSyncSystem, { socketEmit, gameRoom });
   }
 
   public spawnPlayer(player: IPlayer, pos: Vec2) {
