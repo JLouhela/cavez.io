@@ -4,6 +4,7 @@ import { SpriteCache } from './assets/sprite_cache';
 import { ClientWorldManager } from './client_world_manager';
 
 import './css/styles.css';
+import { GameState } from './game/game_state';
 
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById(
@@ -11,10 +12,10 @@ const usernameInput = document.getElementById(
 ) as HTMLInputElement;
 const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
-
-const socketHandler = new GeckosSocketHandler();
+const gameState = new GameState();
+const socketHandler = new GeckosSocketHandler(gameState);
 const spriteCache = new SpriteCache();
-const worldManager = new ClientWorldManager(spriteCache);
+const worldManager = new ClientWorldManager(spriteCache, gameState);
 
 Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {
   playMenu.classList.remove('hidden');

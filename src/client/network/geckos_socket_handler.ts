@@ -1,10 +1,16 @@
 import * as Protocol from '../../shared/protocol';
 import * as Constants from '../../shared/constants';
+import { GameState } from '../game/game_state';
 import geckos from '@geckos.io/client';
 
 export class GeckosSocketHandler {
   private channel: any = null;
   private roomIndex: number = -1;
+  private gameState: GameState = null;
+
+  constructor(gameState: GameState) {
+    this.gameState = gameState;
+  }
 
   connectedPromise = new Promise((resolve) => {
     this.channel = geckos({ port: Constants.DEFAULT_PORT });
@@ -55,8 +61,8 @@ export class GeckosSocketHandler {
       // Game update
       this.channel.on(
         Protocol.SOCKET_EVENT.ENTITY_UPDATE,
-        (syncPackets: Protocol.IEntityUpdateEvent) => {
-          console.log(syncPackets);
+        (event: Protocol.IEntityUpdateEvent) => {
+          this.gameState.addSyncEvent(event);
         }
       );
     });

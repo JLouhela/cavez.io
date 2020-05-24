@@ -3,7 +3,7 @@ import { Component } from 'ecsy';
 
 export class CNetworkSync extends Component {
   public pos: CPosition;
-  public entityId: any;
+  public entityId: number;
 
   constructor() {
     super();

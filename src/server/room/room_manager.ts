@@ -38,7 +38,10 @@ export class RoomManager implements IRoomManager {
   }
 
   public removeFromRoom(socket: any) {
-    this.rooms[socket.roomId].removePlayer(socket.id);
+    // Mainly dev check, if clients connected after nodemon restart
+    if (socket.roomId in this.rooms) {
+      this.rooms[socket.roomId].removePlayer(socket.id);
+    }
   }
 
   public getPlayer(socketId: string, roomIndex: number) {
