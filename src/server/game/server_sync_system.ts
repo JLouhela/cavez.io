@@ -27,6 +27,8 @@ export class ServerSyncSystem extends System {
     if (this.cumulativeTime > Constants.SERVER_TICK_RATE) {
       this.cumulativeTime %= Constants.SERVER_TICK_RATE;
 
+      const timeStamp = performance.now();
+
       this.queries.all.results.forEach((entity) => {
         this.gameState.updateEntity(entity);
         const entityDelta = this.gameState.getDelta(entity.id);
@@ -38,7 +40,8 @@ export class ServerSyncSystem extends System {
       });
       this.socketEmit.emitSyncPackets(
         this.gameRoom.getPlayers(),
-        this.syncComponents
+        this.syncComponents,
+        time
       );
     }
   }

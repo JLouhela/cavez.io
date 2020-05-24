@@ -12,11 +12,13 @@ export class GeckosSocketEmit implements ISocketEmit {
 
   public emitSyncPackets(
     listeners: IPlayer[],
-    packets: Protocol.IEntityUpdate
+    packets: Protocol.IEntityUpdate,
+    timestamp: number
   ) {
     for (const listener of listeners) {
       console.log('Sending to ' + listener.socket.id);
-      listener.socket.emit(Protocol.SOCKET_EVENT.ENTITY_UPDATE, packets);
+      const event = { timestamp, entityUpdates: packets };
+      listener.socket.emit(Protocol.SOCKET_EVENT.ENTITY_UPDATE, event);
     }
   }
 }

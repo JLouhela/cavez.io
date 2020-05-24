@@ -11,6 +11,11 @@ export enum SOCKET_EVENT {
 
 export type IEntityUpdate = { [entityId: number]: CNetworkSync };
 
+export interface IEntityUpdateEvent {
+  timestamp: number;
+  entityUpdates: IEntityUpdate;
+}
+
 export interface IJoinGameEvent {
   name: string;
   color: string;

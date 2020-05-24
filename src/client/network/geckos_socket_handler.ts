@@ -1,7 +1,6 @@
 import * as Protocol from '../../shared/protocol';
 import * as Constants from '../../shared/constants';
 import geckos from '@geckos.io/client';
-import { request } from 'express';
 
 export class GeckosSocketHandler {
   private channel: any = null;
@@ -19,11 +18,6 @@ export class GeckosSocketHandler {
       resolve();
     });
   });
-
-  private gameUpdate() {
-    // TODO interface / callback / object for game state update
-    console.log('Game update received');
-  }
 
   public connect() {
     this.connectedPromise.then(() => {
@@ -61,7 +55,7 @@ export class GeckosSocketHandler {
       // Game update
       this.channel.on(
         Protocol.SOCKET_EVENT.ENTITY_UPDATE,
-        (syncPackets: Protocol.IEntityUpdate) => {
+        (syncPackets: Protocol.IEntityUpdateEvent) => {
           console.log(syncPackets);
         }
       );

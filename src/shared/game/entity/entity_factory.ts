@@ -9,17 +9,23 @@ export class EntityFactory {
     this.world = world;
   }
 
-  public createEntity(name: string, components: any[]) {
-    const entity = this.world.createEntity(name);
+  public createEntity(components: any[]) {
+    const entity = this.world.createEntity(null);
     for (const component of components) {
       entity.addComponent(component);
     }
     return entity;
   }
 
-  public createPlayerEntity(name: string, color: string, pos: Vec2) {
-    const e = this.createEntity(name, [CPlayer, CPosition]);
+  public createPlayerEntity(
+    id: string,
+    name: string,
+    color: string,
+    pos: Vec2
+  ) {
+    const e = this.createEntity([CPlayer, CPosition]);
     e.getMutableComponent(CPlayer).color = color;
+    e.getMutableComponent(CPlayer).id = name;
     e.getMutableComponent(CPosition).x = pos.x;
     e.getMutableComponent(CPosition).y = pos.x;
   }
