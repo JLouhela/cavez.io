@@ -2,7 +2,7 @@ import { Component } from 'ecsy';
 
 export class CPlayer extends Component {
   public color: string;
-  public id: string;
+  public name: string;
   constructor() {
     super();
     this.reset();
@@ -10,16 +10,16 @@ export class CPlayer extends Component {
 
   clear() {
     this.color = '';
-    this.id = '';
+    this.name = '';
   }
 
   copy(src: CPlayer) {
     this.color = src.color;
-    this.id = src.id;
+    this.name = src.name;
   }
 
   reset() {
     this.color = '#000000';
-    this.id = '';
+    this.name = '';
   }
 }

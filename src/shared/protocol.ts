@@ -9,7 +9,7 @@ export enum SOCKET_EVENT {
   ENTITY_UPDATE = 'entity_update',
 }
 
-export type IEntityUpdate = { [entityName: string]: CNetworkSync };
+export type IEntityUpdate = { [id: number]: CNetworkSync };
 
 export interface IEntityUpdateEvent {
   timestamp: number;

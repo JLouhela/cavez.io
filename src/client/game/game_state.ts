@@ -1,10 +1,9 @@
 import * as Protocol from '../../shared/protocol';
 
-// TODO: update sync packets to game state
-// fetch from game state to sync system
-
 export class GameState {
   private syncEvents: Protocol.IEntityUpdateEvent[] = [];
+  private playerEntityId: number = -1;
+  private playerName: string = '';
 
   public addSyncEvent(event: Protocol.IEntityUpdateEvent) {
     this.syncEvents.push(event);
@@ -22,5 +21,21 @@ export class GameState {
     if (this.syncEvents.length > 2) {
       this.syncEvents.shift();
     }
+  }
+
+  public setPlayerId(id: number) {
+    this.playerEntityId = id;
+  }
+
+  public getPlayerId(): number {
+    return this.playerEntityId;
+  }
+
+  public setPlayerName(name: string) {
+    this.playerName = name;
+  }
+
+  public getPlayerName(): string {
+    return this.playerName;
   }
 }

@@ -1,8 +1,10 @@
 import { CPosition } from './cposition';
 import { Component } from 'ecsy';
+import { CPlayer } from './cplayer';
 
 export class CNetworkSync extends Component {
   public pos: CPosition;
+  public player: CPlayer;
   public entityId: number;
 
   constructor() {
@@ -12,16 +14,19 @@ export class CNetworkSync extends Component {
 
   clear() {
     this.pos = null;
+    this.player = null;
     this.entityId = -1;
   }
 
   copy(src: CNetworkSync) {
     this.pos = src.pos;
+    this.player = src.player;
     this.entityId = src.entityId;
   }
 
   reset() {
-    this.pos = new CPosition();
+    this.pos = null;
+    this.player = null;
     this.entityId = -1;
   }
 }

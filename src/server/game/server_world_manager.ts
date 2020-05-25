@@ -27,11 +27,6 @@ export class ServerWorldManager {
     console.log(
       'spawning player ' + player.name + ' to ' + pos.x + ', ' + pos.y
     );
-    this.entityFactory.createPlayerEntity(
-      player.socket.id,
-      player.name,
-      player.color,
-      pos
-    );
+    this.entityFactory.createPlayerEntity(player.name, player.color, pos);
   }
 }
