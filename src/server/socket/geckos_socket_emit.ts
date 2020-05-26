@@ -16,7 +16,6 @@ export class GeckosSocketEmit implements ISocketEmit {
     timestamp: number
   ) {
     for (const listener of listeners) {
-      console.log('Sending to ' + listener.socket.id);
       const event = { timestamp, entityUpdates: packets };
       listener.socket.emit(Protocol.SOCKET_EVENT.ENTITY_UPDATE, event);
     }

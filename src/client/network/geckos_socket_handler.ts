@@ -2,6 +2,7 @@ import * as Protocol from '../../shared/protocol';
 import * as Constants from '../../shared/constants';
 import { GameState } from '../game/game_state';
 import geckos from '@geckos.io/client';
+import { ClientWorldManager } from '../client_world_manager';
 
 export class GeckosSocketHandler {
   private channel: any = null;
@@ -25,7 +26,7 @@ export class GeckosSocketHandler {
     });
   });
 
-  public connect() {
+  public connect(world: ClientWorldManager) {
     this.connectedPromise.then(() => {
       // Register callbacks:
 
@@ -33,6 +34,7 @@ export class GeckosSocketHandler {
       this.channel.onDisconnect(() => {
         // TODO teardown ecsy
         console.log('Disconnected from server');
+        world.stop();
         this.channel = null;
       });
 

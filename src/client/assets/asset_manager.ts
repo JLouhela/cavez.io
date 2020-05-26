@@ -1,15 +1,16 @@
 import * as PIXI from 'pixi.js';
+import { AssetName } from './asset_names';
 import ship_basic_white from '../../../public/assets/ship_basic_white.png';
 
 export class AssetManager {
   private ASSET_URIS: { [assetName: string]: string } = {};
-  private textures: { [textureName: string]: object } = {};
+  private textures: { [textureName: string]: PIXI.Texture } = {};
 
   private loader = PIXI.Loader.shared; // Premade shared instance
 
   // TODO support sprite sheet instead
   constructor() {
-    this.ASSET_URIS.basic_ship = ship_basic_white;
+    this.ASSET_URIS[AssetName.PLAYER_BASIC_SHIP] = ship_basic_white;
   }
 
   loadAssets() {
@@ -19,8 +20,9 @@ export class AssetManager {
         this.loader.add(assetId, assetUri);
       }
       this.loader.load((loader, resources) => {
-        this.textures[resources.basic_ship.name] = resources.basic_ship.texture;
-        console.log(resources.basic_ship.name + ' loaded');
+        this.textures[resources[AssetName.PLAYER_BASIC_SHIP].name] =
+          resources[AssetName.PLAYER_BASIC_SHIP].texture;
+        console.log(resources[AssetName.PLAYER_BASIC_SHIP].name + ' loaded');
       });
       this.loader.onComplete.add(() => {
         resolve();
@@ -30,7 +32,7 @@ export class AssetManager {
     return loadedPromise;
   }
 
-  getTexture(name: string) {
+  getTexture(name: string): PIXI.Texture {
     return this.textures[name];
   }
 }

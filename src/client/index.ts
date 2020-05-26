@@ -14,10 +14,13 @@ const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
 const gameState = new GameState();
 const socketHandler = new GeckosSocketHandler(gameState);
-const spriteCache = new SpriteCache();
+const spriteCache = new SpriteCache(assetManager);
 const worldManager = new ClientWorldManager(spriteCache, gameState);
 
-Promise.all([socketHandler.connect(), assetManager.loadAssets()]).then(() => {
+Promise.all([
+  socketHandler.connect(worldManager),
+  assetManager.loadAssets(),
+]).then(() => {
   playMenu.classList.remove('hidden');
   usernameInput.focus();
   playButton.onclick = () => {

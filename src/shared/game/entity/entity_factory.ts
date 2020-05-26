@@ -4,9 +4,15 @@ import { CPlayer } from './../component/cplayer';
 import { Vec2 } from './../../math/vector';
 import { CNetworkSync } from '../component/cnetwork_sync';
 import { CNetworkEntity } from '../component/cnetwork_entity';
+import { CCameraFollow } from '../component/ccamera_follow';
+import { CSprite } from '../component/csprite';
+import { CInput } from '../component/cinput';
+
+// TODO: Clear server / client separation
 
 export class EntityFactory {
   private world: World = null;
+
   constructor(world: World) {
     this.world = world;
   }
@@ -49,5 +55,16 @@ export class EntityFactory {
       clientId: entity.id,
     });
     return entity;
+  }
+
+  public addClientPlayerComponents(playerEntity: Entity, spriteId: number) {
+    playerEntity.addComponent(CCameraFollow, {
+      followEntityId: playerEntity.id,
+    });
+    playerEntity.addComponent(CSprite, {
+      spriteId,
+      hue: playerEntity.getComponent(CPlayer).color,
+    });
+    playerEntity.addComponent(CInput);
   }
 }

@@ -30,6 +30,7 @@ export class RenderSystem extends System {
       const sprite: PIXI.Sprite = this.spriteCache.getSprite(
         spriteComp.spriteId
       );
+
       sprite.position.x = posComp.x;
       sprite.position.y = posComp.y;
       this.renderer.render(sprite);

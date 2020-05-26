@@ -20,10 +20,15 @@ export class ClientWorldManager {
     this.worldManager.getWorld().registerSystem(ClientSyncSystem, {
       gameState,
       entityFactory: this.entityFactory,
+      spriteCache,
     });
   }
 
   public start() {
     this.worldManager.client_start();
+  }
+
+  public stop() {
+    this.worldManager.getWorld().stop();
   }
 }
