@@ -58,7 +58,7 @@ export class GameStateSystem extends System {
 
   // Proper place..?
   private initializeClientPlayer(player: Entity) {
-    console.log('Found myself!');
+    console.log('Found myself! player id = ' + player.id);
     const spriteId = this.spriteCache.createSprite(AssetName.PLAYER_BASIC_SHIP);
     this.entityFactory.addClientPlayerComponents(player, spriteId);
     this.gameState.setPlayerId(player.id);

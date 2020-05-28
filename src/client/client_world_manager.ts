@@ -16,7 +16,9 @@ export class ClientWorldManager {
   }
 
   public initClientExtras(spriteCache: SpriteCache, gameState: GameState) {
-    this.worldManager.getWorld().registerSystem(RenderSystem, { spriteCache });
+    this.worldManager
+      .getWorld()
+      .registerSystem(RenderSystem, { spriteCache, gameState });
     this.worldManager.getWorld().registerSystem(GameStateSystem, {
       gameState,
       entityFactory: this.entityFactory,
