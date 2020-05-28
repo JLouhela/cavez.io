@@ -8,7 +8,7 @@ import { EntityFactory } from '../../shared/game/entity/entity_factory';
 import { SpriteCache } from '../assets/sprite_cache';
 import { AssetName } from '../assets/asset_names';
 
-export class ClientSyncSystem extends System {
+export class GameStateSystem extends System {
   private gameState: GameState;
   private entityFactory: EntityFactory;
   private spriteCache: SpriteCache;
@@ -35,25 +35,22 @@ export class ClientSyncSystem extends System {
         (entity) => entity.getComponent(CNetworkEntity).serverId === +id
       );
 
-      if (!found) {
-        // Create entity client side
-        const entity = this.entityFactory.copyNetworkEntity(update, +id);
-        if (!entity) {
-          console.log('Failed to create entity client side');
-          return;
-        }
-        // Check if we just created our player entity
-        if (
-          update.player &&
-          update.player.name === this.gameState.getPlayerName()
-        ) {
-          this.initializeClientPlayer(entity);
-        }
-      } else {
-        const clientId = found.getComponent(CNetworkEntity).clientId;
-        console.log(
-          'Found entity id ' + id + ' from client having id ' + clientId
-        );
+      if (found) {
+        // This system does not operate on existing entities
+        continue;
+      }
+      // Create entity client side
+      const newEntity = this.entityFactory.copyNetworkEntity(update, +id);
+      if (!newEntity) {
+        console.log('Failed to create entity client side');
+        return;
+      }
+      // Check if we just created our player entity
+      if (
+        update.player &&
+        update.player.name === this.gameState.getPlayerName()
+      ) {
+        this.initializeClientPlayer(newEntity);
       }
     }
     this.gameState.clean();
@@ -68,7 +65,7 @@ export class ClientSyncSystem extends System {
   }
 }
 
-ClientSyncSystem.queries = {
+GameStateSystem.queries = {
   all: {
     components: [CNetworkEntity, CNetworkSync],
   },

@@ -1,7 +1,7 @@
 import { WorldManager } from '../shared/game/world_manager';
 import { RenderSystem } from './rendering/render_system';
 import { SpriteCache } from './assets/sprite_cache';
-import { ClientSyncSystem } from './network/client_sync_system';
+import { GameStateSystem } from './network/game_state_system';
 import { GameState } from './game/game_state';
 import { EntityFactory } from '../shared/game/entity/entity_factory';
 
@@ -17,7 +17,7 @@ export class ClientWorldManager {
 
   public initClientExtras(spriteCache: SpriteCache, gameState: GameState) {
     this.worldManager.getWorld().registerSystem(RenderSystem, { spriteCache });
-    this.worldManager.getWorld().registerSystem(ClientSyncSystem, {
+    this.worldManager.getWorld().registerSystem(GameStateSystem, {
       gameState,
       entityFactory: this.entityFactory,
       spriteCache,

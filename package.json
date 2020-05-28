@@ -26,6 +26,7 @@
     "@geckos.io/server": "^1.4.1",
     "ecsy": "https://github.com/JLouhela/ecsy/tarball/master",
     "express": "^4.17.1",
+    "keycode-js": "^2.0.3",
     "pixi.js": "^5.2.3",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
