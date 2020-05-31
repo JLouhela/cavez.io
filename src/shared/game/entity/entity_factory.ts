@@ -8,6 +8,7 @@ import { CCameraFollow } from '../component/ccamera_follow';
 import { CSprite } from '../component/csprite';
 import { CInput } from '../component/cinput';
 import { CPhysics } from '../component/cphysics';
+import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
 
 // TODO: Clear server / client separation
@@ -28,7 +29,7 @@ export class EntityFactory {
   }
 
   public createPlayerEntity(name: string, color: string, pos: IVec2): Entity {
-    const e = this.createEntity([CPlayer, CPosition, CPhysics]);
+    const e = this.createEntity([CPlayer, CPosition, CPhysics, CSync]);
     e.getMutableComponent(CPlayer).color = color;
     e.getMutableComponent(CPlayer).name = name;
     e.getMutableComponent(CPosition).x = pos.x;
@@ -39,13 +40,19 @@ export class EntityFactory {
     return e;
   }
 
-  public copyPlayerEntity(playerComp: CPlayer, posComp: CPosition): Entity {
-    return this.createPlayerEntity(playerComp.name, playerComp.color, posComp);
+  public copyPlayerEntity(syncComp: CNetworkSync): Entity {
+    let player = this.createPlayerEntity(
+      syncComp.player.name,
+      syncComp.player.color,
+      syncComp.pos
+    );
+    player.getMutableComponent(CPhysics).copy(syncComp.physics);
+    return player;
   }
 
   public copyEntity(syncComp: CNetworkSync) {
     if (syncComp.player) {
-      return this.copyPlayerEntity(syncComp.player, syncComp.pos);
+      return this.copyPlayerEntity(syncComp);
     }
   }
 

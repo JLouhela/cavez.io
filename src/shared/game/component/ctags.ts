@@ -1,3 +1,3 @@
 import { TagComponent } from 'ecsy';
 
-// export class CGravity extends TagComponent {}
+export class CSync extends TagComponent {}

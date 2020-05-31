@@ -6,6 +6,8 @@ import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { ISocketEmit } from '../socket/socket_emit_interface';
 import { IGameRoom } from '../room/game_room';
 import * as Constants from '../../shared/constants';
+import { CPhysics } from '../../shared/game/component/cphysics';
+import { CSync } from '../../shared/game/component/ctags';
 
 export class ServerSyncSystem extends System {
   private gameState: GameState;
@@ -54,12 +56,15 @@ export class ServerSyncSystem extends System {
     if (entity.hasComponent(CPlayer)) {
       csync.player = entity.getComponent(CPlayer);
     }
+    if (entity.hasComponent(CPhysics)) {
+      csync.physics = entity.getComponent(CPhysics);
+    }
     csync.entityId = entity.id;
   }
 }
 
 ServerSyncSystem.queries = {
   all: {
-    components: [CPosition],
+    components: [CSync],
   },
 };
