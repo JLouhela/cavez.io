@@ -6,6 +6,15 @@ import * as Constants from '../../constants';
 import { Vec2, IVec2 } from '../../math/vector';
 
 export class PhysicsSystem extends System {
+  private worldBounds: IVec2 = null;
+
+  constructor(world: any, attributes: any) {
+    // Missing from ts ctor -> ts-ignore
+    // @ts-ignore
+    super(world, attributes);
+    this.worldBounds = attributes.worldBounds;
+  }
+
   execute(delta: number, time: number) {
     this.queries.all.results.forEach((entity) => {
       const physComp = entity.getMutableComponent(CPhysics);
@@ -36,8 +45,8 @@ export class PhysicsSystem extends System {
       }
 
       physComp.acceleration = new Vec2(
-        (throttleForce.x - dragVec.x) / physComp.mass,
-        (throttleForce.y - (gravitationForce + dragVec.y)) / physComp.mass
+        (throttleForce.x + dragVec.x) / physComp.mass,
+        (throttleForce.y + gravitationForce + dragVec.y) / physComp.mass
       );
 
       physComp.velocity = new Vec2(
@@ -48,6 +57,12 @@ export class PhysicsSystem extends System {
       const posComp = entity.getMutableComponent(CPosition);
       posComp.x += physComp.velocity.x * delta;
       posComp.y += physComp.velocity.y * delta;
+
+      // TODO: wrap screen properly
+      if (this.worldBounds) {
+        posComp.x %= this.worldBounds.x;
+        posComp.y %= this.worldBounds.y;
+      }
     });
   }
 }

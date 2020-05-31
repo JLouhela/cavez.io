@@ -41,7 +41,7 @@ export class EntityFactory {
   }
 
   public copyPlayerEntity(syncComp: CNetworkSync): Entity {
-    let player = this.createPlayerEntity(
+    const player = this.createPlayerEntity(
       syncComp.player.name,
       syncComp.player.color,
       syncComp.pos

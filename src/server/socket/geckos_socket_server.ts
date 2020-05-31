@@ -54,7 +54,7 @@ export class GeckosSocketServer {
       channel.on(Protocol.SOCKET_EVENT.SPAWN_PLAYER, () => {
         const room = this.roomManager.getRoom(channel.roomId);
         // TODO level manager or something
-        room.spawnPlayer(channel.id, { x: 50, y: 50 });
+        room.spawnPlayer(channel.id);
       });
     });
   }

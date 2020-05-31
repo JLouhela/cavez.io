@@ -1,11 +1,12 @@
 import { WorldManager } from '../../shared/game/world_manager';
 import { IPlayer } from '../player/player_interface';
-import { Vec2, IVec2 } from '../../shared/math/vector';
+import { IVec2 } from '../../shared/math/vector';
 import { EntityFactory } from '../../shared/game/entity/entity_factory';
 import { ISocketEmit } from '../socket/socket_emit_interface';
 import { ServerSyncSystem } from './server_sync_system';
 import { IGameRoom } from '../room/game_room';
 import { PhysicsSystem } from '../../shared/game/system/physics_system';
+import * as Constants from '../../shared/constants';
 
 export class ServerWorldManager {
   private worldManager: WorldManager = null;
@@ -22,7 +23,7 @@ export class ServerWorldManager {
     this.worldManager
       .getWorld()
       .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
-      .registerSystem(PhysicsSystem);
+      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS });
   }
 
   public spawnPlayer(player: IPlayer, pos: IVec2) {
