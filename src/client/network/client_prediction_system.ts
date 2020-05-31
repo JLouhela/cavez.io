@@ -1,10 +1,9 @@
-import { System, Entity } from 'ecsy';
+import { System } from 'ecsy';
 import { GameState } from '../game/game_state';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { CPosition } from '../../shared/game/component/cposition';
-import { Sprite } from 'pixi.js';
 import { CSprite } from '../../shared/game/component/csprite';
 
 export class ClientPredictionSystem extends System {
@@ -48,6 +47,6 @@ export class ClientPredictionSystem extends System {
 
 ClientPredictionSystem.queries = {
   all: {
-    components: [CPlayer, CNetworkEntity, CSprite],
+    components: [CPlayer, CNetworkEntity],
   },
 };

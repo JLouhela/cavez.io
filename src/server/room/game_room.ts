@@ -46,6 +46,7 @@ export class GameRoom implements IGameRoom {
   }
 
   removePlayer(socketId: string) {
+    // TODO: remove entity from world
     const found = this.players.find((p) => p.socket.id === socketId);
     if (found) {
       console.log('Erased player ' + found.name + ' from room ' + this.index);

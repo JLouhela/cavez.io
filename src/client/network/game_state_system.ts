@@ -45,6 +45,7 @@ export class GameStateSystem extends System {
         console.log('Failed to create entity client side');
         return;
       }
+      console.log('Created new entity: id ' + newEntity.id);
       // Check if we just created our player entity
       if (
         update.player &&

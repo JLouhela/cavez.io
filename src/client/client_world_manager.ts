@@ -4,6 +4,8 @@ import { SpriteCache } from './assets/sprite_cache';
 import { GameStateSystem } from './network/game_state_system';
 import { GameState } from './game/game_state';
 import { EntityFactory } from '../shared/game/entity/entity_factory';
+import { InterpolateSystem } from './network/interpolate_system';
+import { ClientPredictionSystem } from './network/client_prediction_system';
 
 export class ClientWorldManager {
   private worldManager: WorldManager = null;
@@ -18,12 +20,14 @@ export class ClientWorldManager {
   public initClientExtras(spriteCache: SpriteCache, gameState: GameState) {
     this.worldManager
       .getWorld()
-      .registerSystem(RenderSystem, { spriteCache, gameState });
-    this.worldManager.getWorld().registerSystem(GameStateSystem, {
-      gameState,
-      entityFactory: this.entityFactory,
-      spriteCache,
-    });
+      .registerSystem(RenderSystem, { spriteCache, gameState })
+      .registerSystem(GameStateSystem, {
+        gameState,
+        entityFactory: this.entityFactory,
+        spriteCache,
+      })
+      .registerSystem(ClientPredictionSystem, { gameState })
+      .registerSystem(InterpolateSystem, { gameState });
   }
 
   public start() {
