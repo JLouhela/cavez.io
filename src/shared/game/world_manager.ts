@@ -37,13 +37,17 @@ export class WorldManager {
   public server_start(): void {
     function server_step() {
       const time = performance.now();
-      const delta = time - lastWorldUpdate;
-
+      const delta = (time - lastWorldUpdate) / 1000.0;
       if (delta > Constants.SERVER_WORLD_STEP_RATE) {
         world.execute(delta, time);
         lastWorldUpdate = time;
       }
-      setImmediate(server_step);
+      // Schedule timeout to get closer (save cpu), until fixed threshold (20% for now)
+      if (time - lastWorldUpdate < 0.8 * Constants.SERVER_WORLD_STEP_RATE) {
+        setTimeout(server_step);
+      } else {
+        setImmediate(server_step);
+      }
     }
     let lastWorldUpdate = performance.now();
     const world = this.world;

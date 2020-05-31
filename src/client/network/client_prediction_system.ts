@@ -31,11 +31,16 @@ export class ClientPredictionSystem extends System {
       return;
     }
     const latestUpdate = this.gameState.getLatest();
-    if (latestUpdate == null) {
+    if (!latestUpdate) {
       console.log('No gamestate updates yet');
       return;
     }
 
+    const syncData = latestUpdate.entityUpdates[playerId];
+    if (!syncData) {
+      console.log('No sync data for client in game state');
+      return;
+    }
     const pos = player.getMutableComponent(CPosition);
     // TODO: check against server position and do something
   }

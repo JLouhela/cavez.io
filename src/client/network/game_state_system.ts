@@ -67,6 +67,6 @@ export class GameStateSystem extends System {
 
 GameStateSystem.queries = {
   all: {
-    components: [CNetworkEntity, CNetworkSync],
+    components: [CNetworkEntity],
   },
 };

@@ -6,7 +6,7 @@ import { CSprite } from '../../shared/game/component/csprite';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
-import { Vec2 } from '../../shared/math/vector';
+import { IVec2 } from '../../shared/math/vector';
 
 export class RenderSystem extends System {
   private canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -70,13 +70,13 @@ export class RenderSystem extends System {
           );
         }
         this.renderPlayerGhost(
-          clientPlayerEntity.getComponent(CNetworkSync).pos
+          this.gameState.getLatest().entityUpdates[clientPlayerEntity.id].pos
         );
       }
     }
   }
 
-  private renderPlayerGhost(networkPos: Vec2): void {
+  private renderPlayerGhost(networkPos: IVec2): void {
     const ghostSprite = this.spriteCache.getSprite(this.ghostSpriteId);
     ghostSprite.x = networkPos.x;
     ghostSprite.y = networkPos.y;
@@ -98,6 +98,6 @@ RenderSystem.queries = {
     components: [CSprite, CPosition],
   },
   ghost: {
-    components: [CPlayer, CSprite, CNetworkSync],
+    components: [CPlayer, CSprite],
   },
 };

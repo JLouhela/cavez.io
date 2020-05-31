@@ -1,7 +1,7 @@
 import { IPlayer } from '../player/player_interface';
 import { ServerWorldManager } from '../game/server_world_manager';
 import { ISocketEmit } from '../socket/socket_emit_interface';
-import { Vec2 } from '../../shared/math/vector';
+import { IVec2 } from '../../shared/math/vector';
 
 export interface IGameRoom {
   getPlayers(): IPlayer[];
@@ -59,7 +59,7 @@ export class GameRoom implements IGameRoom {
     return this.players.length;
   }
 
-  spawnPlayer(socketId: string, pos: Vec2) {
+  spawnPlayer(socketId: string, pos: IVec2) {
     const player = this.getPlayer(socketId);
     if (!player) {
       console.log(

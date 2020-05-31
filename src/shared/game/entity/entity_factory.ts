@@ -1,12 +1,14 @@
 import { World, Entity } from 'ecsy';
 import { CPosition } from './../component/cposition';
 import { CPlayer } from './../component/cplayer';
-import { Vec2 } from './../../math/vector';
+import { IVec2 } from './../../math/vector';
 import { CNetworkSync } from '../component/cnetwork_sync';
 import { CNetworkEntity } from '../component/cnetwork_entity';
 import { CCameraFollow } from '../component/ccamera_follow';
 import { CSprite } from '../component/csprite';
 import { CInput } from '../component/cinput';
+import { CPhysics } from '../component/cphysics';
+import * as Constants from '../../constants';
 
 // TODO: Clear server / client separation
 
@@ -25,12 +27,15 @@ export class EntityFactory {
     return entity;
   }
 
-  public createPlayerEntity(name: string, color: string, pos: Vec2): Entity {
-    const e = this.createEntity([CPlayer, CPosition]);
+  public createPlayerEntity(name: string, color: string, pos: IVec2): Entity {
+    const e = this.createEntity([CPlayer, CPosition, CPhysics]);
     e.getMutableComponent(CPlayer).color = color;
     e.getMutableComponent(CPlayer).name = name;
     e.getMutableComponent(CPosition).x = pos.x;
     e.getMutableComponent(CPosition).y = pos.y;
+
+    e.getMutableComponent(CPhysics).mass = Constants.SHIP_MASS;
+
     return e;
   }
 
@@ -49,7 +54,6 @@ export class EntityFactory {
     if (!entity) {
       return null;
     }
-    entity.addComponent(CNetworkSync, syncComp);
     entity.addComponent(CNetworkEntity, {
       serverId,
       clientId: entity.id,
