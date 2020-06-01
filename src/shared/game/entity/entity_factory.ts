@@ -73,10 +73,7 @@ export class EntityFactory {
     playerEntity.addComponent(CSprite, {
       spriteId,
       // TODO consider using number everywhere
-      hue: parseInt(
-        playerEntity.getComponent(CPlayer).color.replace(/^#/, ''),
-        16
-      ),
+      hue: parseInt(playerEntity.getComponent(CPlayer).color.substring(1), 16),
     });
   }
 
