@@ -2,7 +2,7 @@ import { Component } from 'ecsy';
 
 export class CSprite extends Component {
   public spriteId: number;
-  public hue: string;
+  public hue: number;
 
   constructor() {
     super();
@@ -20,6 +20,6 @@ export class CSprite extends Component {
 
   reset() {
     this.spriteId = -1;
-    this.hue = 'FFFFFF';
+    this.hue = 0xffffff;
   }
 }

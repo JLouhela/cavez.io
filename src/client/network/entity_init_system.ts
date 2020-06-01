@@ -58,7 +58,7 @@ export class EntityInitSystem extends System {
     const spriteId = this.spriteCache.createSprite(AssetName.PLAYER_BASIC_SHIP);
     this.entityFactory.addPlayerComponents(player, spriteId);
     if (player.getComponent(CPlayer).name === this.gameState.getPlayerName()) {
-      this.entityFactory.addClientPlayerComponents(player, spriteId);
+      this.entityFactory.addClientPlayerComponents(player);
       this.gameState.setPlayerId(player.id);
     }
   }

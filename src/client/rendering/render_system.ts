@@ -48,6 +48,7 @@ export class RenderSystem extends System {
 
       sprite.position.x = posComp.x;
       sprite.position.y = posComp.y;
+      sprite.tint = spriteComp.hue;
       this.container.addChild(sprite);
     });
 

@@ -72,12 +72,16 @@ export class EntityFactory {
   public addPlayerComponents(playerEntity: Entity, spriteId: number) {
     playerEntity.addComponent(CSprite, {
       spriteId,
-      hue: playerEntity.getComponent(CPlayer).color,
+      // TODO consider using number everywhere
+      hue: parseInt(
+        playerEntity.getComponent(CPlayer).color.replace(/^#/, ''),
+        16
+      ),
     });
   }
 
   // For client controlled player
-  public addClientPlayerComponents(playerEntity: Entity, spriteId: number) {
+  public addClientPlayerComponents(playerEntity: Entity) {
     playerEntity.addComponent(CCameraFollow, {
       followEntityId: playerEntity.id,
     });
