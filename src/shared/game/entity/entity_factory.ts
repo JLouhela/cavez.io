@@ -68,13 +68,18 @@ export class EntityFactory {
     return entity;
   }
 
-  public addClientPlayerComponents(playerEntity: Entity, spriteId: number) {
-    playerEntity.addComponent(CCameraFollow, {
-      followEntityId: playerEntity.id,
-    });
+  // For all players
+  public addPlayerComponents(playerEntity: Entity, spriteId: number) {
     playerEntity.addComponent(CSprite, {
       spriteId,
       hue: playerEntity.getComponent(CPlayer).color,
+    });
+  }
+
+  // For client controlled player
+  public addClientPlayerComponents(playerEntity: Entity, spriteId: number) {
+    playerEntity.addComponent(CCameraFollow, {
+      followEntityId: playerEntity.id,
     });
     playerEntity.addComponent(CInput);
   }

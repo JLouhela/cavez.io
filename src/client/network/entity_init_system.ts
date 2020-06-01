@@ -1,9 +1,7 @@
 import { System, Entity } from 'ecsy';
-import * as Protocol from '../../shared/protocol';
 import { GameState } from '../game/game_state';
-import { CPosition } from '../../shared/game/component/cposition';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
-import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
+import { CPlayer } from '../../shared/game/component/cplayer';
 import { EntityFactory } from '../../shared/game/entity/entity_factory';
 import { SpriteCache } from '../assets/sprite_cache';
 import { AssetName } from '../assets/asset_names';
@@ -47,22 +45,22 @@ export class EntityInitSystem extends System {
       }
       console.log('Created new entity: id ' + newEntity.id);
       // Check if we just created our player entity
-      if (
-        update.player &&
-        update.player.name === this.gameState.getPlayerName()
-      ) {
-        this.initializeClientPlayer(newEntity);
+      if (update.player) {
+        this.initializePlayer(newEntity);
       }
     }
     this.gameState.clean();
   }
 
   // Proper place..?
-  private initializeClientPlayer(player: Entity) {
+  private initializePlayer(player: Entity) {
     console.log('Found myself! player id = ' + player.id);
     const spriteId = this.spriteCache.createSprite(AssetName.PLAYER_BASIC_SHIP);
-    this.entityFactory.addClientPlayerComponents(player, spriteId);
-    this.gameState.setPlayerId(player.id);
+    this.entityFactory.addPlayerComponents(player, spriteId);
+    if (player.getComponent(CPlayer).name === this.gameState.getPlayerName()) {
+      this.entityFactory.addClientPlayerComponents(player, spriteId);
+      this.gameState.setPlayerId(player.id);
+    }
   }
 }
 
