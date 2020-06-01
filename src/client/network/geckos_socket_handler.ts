@@ -32,7 +32,6 @@ export class GeckosSocketHandler {
 
       // Disconnect
       this.channel.onDisconnect(() => {
-        // TODO teardown ecsy
         console.log('Disconnected from server');
         world.stop();
         this.channel = null;
