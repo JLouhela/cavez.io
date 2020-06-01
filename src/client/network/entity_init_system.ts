@@ -8,7 +8,7 @@ import { EntityFactory } from '../../shared/game/entity/entity_factory';
 import { SpriteCache } from '../assets/sprite_cache';
 import { AssetName } from '../assets/asset_names';
 
-export class GameStateSystem extends System {
+export class EntityInitSystem extends System {
   private gameState: GameState;
   private entityFactory: EntityFactory;
   private spriteCache: SpriteCache;
@@ -66,7 +66,7 @@ export class GameStateSystem extends System {
   }
 }
 
-GameStateSystem.queries = {
+EntityInitSystem.queries = {
   all: {
     components: [CNetworkEntity],
   },

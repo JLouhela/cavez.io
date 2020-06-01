@@ -1,7 +1,7 @@
 import { WorldManager } from '../shared/game/world_manager';
 import { RenderSystem } from './rendering/render_system';
 import { SpriteCache } from './assets/sprite_cache';
-import { GameStateSystem } from './network/game_state_system';
+import { EntityInitSystem } from './network/entity_init_system';
 import { GameState } from './game/game_state';
 import { EntityFactory } from '../shared/game/entity/entity_factory';
 import { InterpolateSystem } from './network/interpolate_system';
@@ -21,7 +21,7 @@ export class ClientWorldManager {
     this.worldManager
       .getWorld()
       .registerSystem(RenderSystem, { spriteCache, gameState })
-      .registerSystem(GameStateSystem, {
+      .registerSystem(EntityInitSystem, {
         gameState,
         entityFactory: this.entityFactory,
         spriteCache,

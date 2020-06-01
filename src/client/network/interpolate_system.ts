@@ -37,7 +37,6 @@ export class InterpolateSystem extends System {
 
       // TODO interpolate: now just copies the pos as is
       entity.getMutableComponent(CPosition).copy(syncData.pos);
-      console.log(entity.getComponent(CPosition));
     });
   }
 }
