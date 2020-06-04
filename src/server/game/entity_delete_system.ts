@@ -15,7 +15,9 @@ export class EntityDeleteSystem extends System {
     this.queries.players.results.forEach((entity) => {
       const name = entity.getComponent(CPlayer).name;
       if (this.eraseByPlayerName.includes(name)) {
-        console.log('Erased player ' + name + ' from world');
+        console.log(
+          'Erased player ' + name + ' with id ' + entity.id + ' from  world'
+        );
         entity.remove();
         this.eraseByPlayerName.splice(this.eraseByPlayerName.indexOf(name), 1);
       }

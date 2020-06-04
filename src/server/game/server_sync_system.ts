@@ -27,26 +27,43 @@ export class ServerSyncSystem extends System {
 
   execute(delta: number, time: number) {
     this.cumulativeTime += delta;
-    if (this.cumulativeTime > Constants.SERVER_TICK_RATE) {
-      this.cumulativeTime %= Constants.SERVER_TICK_RATE;
-
-      const timeStamp = performance.now();
-
-      this.queries.all.results.forEach((entity) => {
-        this.gameState.updateEntity(entity);
-        const entityDelta = this.gameState.getDelta(entity.id);
-
-        if (!this.syncComponents[entity.id]) {
-          this.syncComponents[entity.id] = new CNetworkSync();
-        }
-        this.updateSyncComponent(this.syncComponents[entity.id], entityDelta);
-      });
-      this.socketEmit.emitSyncPackets(
-        this.gameRoom.getPlayers(),
-        this.syncComponents,
-        time
-      );
+    if (this.cumulativeTime < Constants.SERVER_TICK_RATE) {
+      return;
     }
+    this.cumulativeTime %= Constants.SERVER_TICK_RATE;
+
+    const processedEntities: Set<string> = new Set();
+    this.queries.all.results.forEach((entity) => {
+      this.gameState.updateEntity(entity);
+      processedEntities.add(entity.id.toString());
+      const entityDelta = this.gameState.getDelta(entity.id);
+
+      if (!this.syncComponents[entity.id]) {
+        this.syncComponents[entity.id] = new CNetworkSync();
+      }
+      this.updateSyncComponent(this.syncComponents[entity.id], entityDelta);
+    });
+
+    // Cross compare processed list with existing list
+    // => Collect entities not alive any longer
+    // TODO: If this is performance issue, can also delete player entities by name
+    const componentsToDelete: string[] = [];
+    Object.keys(this.syncComponents).forEach((key) => {
+      if (!processedEntities.has(key)) {
+        componentsToDelete.push(key);
+      }
+    });
+
+    // Finally delete removed entities
+    componentsToDelete.forEach((id) => {
+      delete this.syncComponents[+id];
+    });
+
+    this.socketEmit.emitSyncPackets(
+      this.gameRoom.getPlayers(),
+      this.syncComponents,
+      time
+    );
   }
 
   private updateSyncComponent(csync: CNetworkSync, entity: Entity) {
@@ -59,6 +76,7 @@ export class ServerSyncSystem extends System {
     if (entity.hasComponent(CPhysics)) {
       csync.physics = entity.getComponent(CPhysics);
     }
+    // TODO unnecessary, id is the key
     csync.entityId = entity.id;
   }
 }

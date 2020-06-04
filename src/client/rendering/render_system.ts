@@ -7,6 +7,7 @@ import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { IVec2 } from '../../shared/math/vector';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 
 export class RenderSystem extends System {
   private canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -70,8 +71,10 @@ export class RenderSystem extends System {
             clientPlayerEntity.getComponent(CSprite).spriteId
           );
         }
+        const serverId = clientPlayerEntity.getComponent(CNetworkEntity)
+          .serverId;
         this.renderPlayerGhost(
-          this.gameState.getLatest().entityUpdates[clientPlayerEntity.id].pos
+          this.gameState.getLatest().entityUpdates[serverId].pos
         );
       }
     }

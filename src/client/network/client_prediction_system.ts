@@ -35,7 +35,8 @@ export class ClientPredictionSystem extends System {
       return;
     }
 
-    const syncData = latestUpdate.entityUpdates[playerId];
+    const serverId = player.getComponent(CNetworkEntity).serverId;
+    const syncData = latestUpdate.entityUpdates[serverId];
     if (!syncData) {
       console.log('No sync data for client in game state');
       return;

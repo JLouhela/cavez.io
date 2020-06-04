@@ -6,6 +6,7 @@ import { GameState } from './game/game_state';
 import { EntityFactory } from '../shared/game/entity/entity_factory';
 import { InterpolateSystem } from './network/interpolate_system';
 import { ClientPredictionSystem } from './network/client_prediction_system';
+import { EntityDeleteSystem } from './network/entity_delete_system';
 
 export class ClientWorldManager {
   private worldManager: WorldManager = null;
@@ -24,6 +25,10 @@ export class ClientWorldManager {
       .registerSystem(EntityInitSystem, {
         gameState,
         entityFactory: this.entityFactory,
+        spriteCache,
+      })
+      .registerSystem(EntityDeleteSystem, {
+        gameState,
         spriteCache,
       })
       .registerSystem(ClientPredictionSystem, { gameState })

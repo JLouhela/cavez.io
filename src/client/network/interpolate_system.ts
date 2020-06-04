@@ -2,6 +2,7 @@ import { System } from 'ecsy';
 import { GameState } from '../game/game_state';
 import { CSync } from '../../shared/game/component/ctags';
 import { CPosition } from '../../shared/game/component/cposition';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 
 export class InterpolateSystem extends System {
   private gameState: GameState;
@@ -29,9 +30,16 @@ export class InterpolateSystem extends System {
         return;
       }
 
-      const syncData = latestUpdate.entityUpdates[entity.id];
+      const serverId = entity.getComponent(CNetworkEntity).serverId;
+      const syncData = latestUpdate.entityUpdates[serverId];
       if (!syncData) {
-        console.log('No sync data for entity ' + entity.id + ' in game state');
+        console.log(
+          'No sync data for entity ' +
+            entity.id +
+            ' (server: ' +
+            serverId +
+            ') in game state'
+        );
         return;
       }
 
