@@ -2,6 +2,7 @@ import { GeckosSocketHandler } from './network/geckos_socket_handler';
 import { AssetManager } from './assets/asset_manager';
 import { SpriteCache } from './assets/sprite_cache';
 import { ClientWorldManager } from './client_world_manager';
+import { InputReader } from './input/input_reader';
 
 import './css/styles.css';
 import { GameState } from './game/game_state';
@@ -15,7 +16,21 @@ const assetManager = new AssetManager();
 const gameState = new GameState();
 const socketHandler = new GeckosSocketHandler(gameState);
 const spriteCache = new SpriteCache(assetManager);
-const worldManager = new ClientWorldManager(spriteCache, gameState);
+const inputReader = new InputReader();
+
+document.addEventListener('keydown', (event) =>
+  inputReader.keyDownEventListener(event)
+);
+document.addEventListener('keyup', (event) =>
+  inputReader.keyUpEventListener(event)
+);
+
+const worldManager = new ClientWorldManager(
+  spriteCache,
+  gameState,
+  inputReader,
+  socketHandler
+);
 
 Promise.all([
   socketHandler.connect(worldManager),

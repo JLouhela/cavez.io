@@ -5,8 +5,8 @@ export class CPhysics extends Component {
   public mass: number;
   public velocity: Vec2;
   public acceleration: Vec2;
-  public rotation: number;
-  public angle: number;
+  public rotation: number; // Rad per frame
+  public angle: number; // Current direction in radians
   public drag: number;
 
   constructor() {

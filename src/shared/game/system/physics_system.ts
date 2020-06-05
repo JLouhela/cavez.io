@@ -36,12 +36,12 @@ export class PhysicsSystem extends System {
       };
 
       let throttleForce: IVec2 = { x: 0, y: 0 };
-
-      if (
-        entity.getComponent(CThrottle) &&
-        entity.getComponent(CThrottle).throttleOn
-      ) {
-        throttleForce = entity.getComponent(CThrottle).throttleForce;
+      const throttleComp = entity.getComponent(CThrottle);
+      if (throttleComp && throttleComp.throttleOn) {
+        throttleForce = {
+          x: throttleComp.throttlePower * Math.cos(physComp.angle),
+          y: throttleComp.throttlePower * Math.sin(physComp.angle),
+        };
       }
 
       physComp.acceleration = new Vec2(

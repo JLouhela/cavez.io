@@ -7,20 +7,34 @@ import { EntityFactory } from '../shared/game/entity/entity_factory';
 import { InterpolateSystem } from './network/interpolate_system';
 import { ClientPredictionSystem } from './network/client_prediction_system';
 import { EntityDeleteSystem } from './network/entity_delete_system';
+import { IInputReader } from './input/input_reader';
+import { InputReadSystem } from './input/input_read_system';
+import { ISocketEmit } from './network/geckos_socket_handler';
 
 export class ClientWorldManager {
   private worldManager: WorldManager = null;
   private entityFactory: EntityFactory = null;
 
-  constructor(spriteCache: SpriteCache, gameState: GameState) {
+  constructor(
+    spriteCache: SpriteCache,
+    gameState: GameState,
+    inputReader: IInputReader,
+    socketEmit: ISocketEmit
+  ) {
     this.worldManager = new WorldManager();
     this.entityFactory = new EntityFactory(this.worldManager.getWorld());
-    this.initClientExtras(spriteCache, gameState);
+    this.initClientExtras(spriteCache, gameState, inputReader, socketEmit);
   }
 
-  public initClientExtras(spriteCache: SpriteCache, gameState: GameState) {
+  public initClientExtras(
+    spriteCache: SpriteCache,
+    gameState: GameState,
+    inputReader: IInputReader,
+    socketEmit: ISocketEmit
+  ) {
     this.worldManager
       .getWorld()
+      .registerSystem(InputReadSystem, { inputReader, socketEmit })
       .registerSystem(RenderSystem, { spriteCache, gameState })
       .registerSystem(EntityInitSystem, {
         gameState,

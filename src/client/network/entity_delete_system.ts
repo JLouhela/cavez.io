@@ -24,8 +24,6 @@ export class EntityDeleteSystem extends System {
     }
     this.queries.all.results.forEach((entity) => {
       const serverId = entity.getComponent(CNetworkEntity).serverId;
-      console.log(latestUpdate.entityUpdates);
-      console.log(latestUpdate.entityUpdates[serverId]);
       if (latestUpdate.entityUpdates[serverId] !== undefined) {
         return;
       }

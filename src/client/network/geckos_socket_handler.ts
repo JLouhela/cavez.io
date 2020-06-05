@@ -4,7 +4,11 @@ import { GameState } from '../game/game_state';
 import geckos from '@geckos.io/client';
 import { ClientWorldManager } from '../client_world_manager';
 
-export class GeckosSocketHandler {
+export interface ISocketEmit {
+  sendInputState(keyMask: number): void;
+}
+
+export class GeckosSocketHandler implements ISocketEmit {
   private channel: any = null;
   private roomIndex: number = -1;
   private gameState: GameState = null;
@@ -94,5 +98,16 @@ export class GeckosSocketHandler {
         reliable: true,
       }
     );
+  }
+
+  public sendInputState(keyMask: number) {
+    const event: Protocol.IInputUpdateEvent = {
+      timestamp: performance.now(),
+      keyMask,
+    };
+
+    this.channel.emit(Protocol.SOCKET_EVENT.INPUT_UPDATE, event, {
+      reliable: true,
+    });
   }
 }

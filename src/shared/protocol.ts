@@ -7,6 +7,13 @@ export enum SOCKET_EVENT {
   JOIN_GAME_RESPONSE = 'join_game_response',
   SPAWN_PLAYER = 'spawn',
   ENTITY_UPDATE = 'entity_update',
+  INPUT_UPDATE = 'input_update',
+}
+
+export enum INPUT_MASK {
+  THROTTLE = 0x01,
+  ROT_CW = 0x02,
+  ROT_CCW = 0x04,
 }
 
 export type IEntityUpdate = { [id: number]: CNetworkSync };
@@ -14,6 +21,11 @@ export type IEntityUpdate = { [id: number]: CNetworkSync };
 export interface IEntityUpdateEvent {
   timestamp: number;
   entityUpdates: IEntityUpdate;
+}
+
+export interface IInputUpdateEvent {
+  timestamp: number;
+  keyMask: number;
 }
 
 export interface IJoinGameEvent {

@@ -8,6 +8,7 @@ import { CCameraFollow } from '../component/ccamera_follow';
 import { CSprite } from '../component/csprite';
 import { CInput } from '../component/cinput';
 import { CPhysics } from '../component/cphysics';
+import { CThrottle } from '../component/cthrottle';
 import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
 
@@ -29,13 +30,20 @@ export class EntityFactory {
   }
 
   public createPlayerEntity(name: string, color: string, pos: IVec2): Entity {
-    const e = this.createEntity([CPlayer, CPosition, CPhysics, CSync]);
+    const e = this.createEntity([
+      CPlayer,
+      CPosition,
+      CPhysics,
+      CThrottle,
+      CSync,
+    ]);
     e.getMutableComponent(CPlayer).color = color;
     e.getMutableComponent(CPlayer).name = name;
     e.getMutableComponent(CPosition).x = pos.x;
     e.getMutableComponent(CPosition).y = pos.y;
 
     e.getMutableComponent(CPhysics).mass = Constants.SHIP_MASS;
+    e.getMutableComponent(CThrottle).throttleOn = false;
 
     return e;
   }
