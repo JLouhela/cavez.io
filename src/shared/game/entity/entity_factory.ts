@@ -37,15 +37,15 @@ export class EntityFactory {
       CThrottle,
       CSync,
     ]);
-    let playerComp = e.getMutableComponent(CPlayer);
+    const playerComp = e.getMutableComponent(CPlayer);
     playerComp.color = color;
     playerComp.name = name;
 
-    let posComp = e.getMutableComponent(CPosition);
+    const posComp = e.getMutableComponent(CPosition);
     posComp.x = pos.x;
     posComp.y = pos.y;
 
-    let physComp = e.getMutableComponent(CPhysics);
+    const physComp = e.getMutableComponent(CPhysics);
     physComp.mass = Constants.SHIP_MASS;
 
     const angleNorth = Math.PI + Math.PI / 2;
