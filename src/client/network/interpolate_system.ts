@@ -3,6 +3,7 @@ import { GameState } from '../game/game_state';
 import { CSync } from '../../shared/game/component/ctags';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
+import { CPhysics } from '../../shared/game/component/cphysics';
 
 export class InterpolateSystem extends System {
   private gameState: GameState;
@@ -45,6 +46,7 @@ export class InterpolateSystem extends System {
 
       // TODO interpolate: now just copies the pos as is
       entity.getMutableComponent(CPosition).copy(syncData.pos);
+      entity.getMutableComponent(CPhysics).copy(syncData.physics);
     });
   }
 }

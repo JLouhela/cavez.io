@@ -83,7 +83,9 @@ export class InputHandleSystem extends System {
       if ((inputBuffer[i].keyMask & Protocol.INPUT_MASK.ROT_CCW) > 0) {
         dir = dir > -1 ? dir - 1 : dir;
       }
-      physicsComp.rotation = ((dir * physicsComp.mass) / 1000) * Math.PI;
+      physicsComp.rotation =
+        ((dir * physicsComp.mass) / Constants.SHIP_ROTATION_PER_MASS_INVERSE) *
+        Math.PI;
     }
   }
 }

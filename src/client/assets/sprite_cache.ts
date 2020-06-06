@@ -16,6 +16,10 @@ export class SpriteCache {
     const id =
       this.releasedIds.length > 0 ? this.releasedIds.pop() : this.nextId++;
     this.sprites[id] = new PIXI.Sprite(texture);
+    this.sprites[id].pivot.set(
+      this.sprites[id].width / 2,
+      this.sprites[id].height / 2
+    );
     return id;
   }
 

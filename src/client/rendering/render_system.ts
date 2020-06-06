@@ -8,6 +8,7 @@ import { CPosition } from '../../shared/game/component/cposition';
 import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { IVec2 } from '../../shared/math/vector';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
+import { CPhysics } from '../../shared/game/component/cphysics';
 
 export class RenderSystem extends System {
   private canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -42,10 +43,15 @@ export class RenderSystem extends System {
     this.queries.renderable.results.forEach((entity) => {
       const spriteComp = entity.getComponent(CSprite);
       const posComp = entity.getComponent(CPosition);
+      const physicsComp = entity.getComponent(CPhysics);
 
       const sprite: PIXI.Sprite = this.spriteCache.getSprite(
         spriteComp.spriteId
       );
+
+      if (physicsComp) {
+        sprite.rotation = physicsComp.angle;
+      }
 
       sprite.position.x = posComp.x;
       sprite.position.y = posComp.y;
@@ -74,16 +80,18 @@ export class RenderSystem extends System {
         const serverId = clientPlayerEntity.getComponent(CNetworkEntity)
           .serverId;
         this.renderPlayerGhost(
-          this.gameState.getLatest().entityUpdates[serverId].pos
+          this.gameState.getLatest().entityUpdates[serverId].pos,
+          this.gameState.getLatest().entityUpdates[serverId].physics.angle
         );
       }
     }
   }
 
-  private renderPlayerGhost(networkPos: IVec2): void {
+  private renderPlayerGhost(networkPos: IVec2, angle: number): void {
     const ghostSprite = this.spriteCache.getSprite(this.ghostSpriteId);
     ghostSprite.x = networkPos.x;
     ghostSprite.y = networkPos.y;
+    ghostSprite.rotation = angle;
     this.container.addChild(ghostSprite);
   }
 
