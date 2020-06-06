@@ -19,6 +19,9 @@ export class PhysicsSystem extends System {
     this.queries.all.results.forEach((entity) => {
       const physComp = entity.getMutableComponent(CPhysics);
 
+      physComp.angle += physComp.rotation;
+      physComp.angle %= 2 * Math.PI;
+
       const gravitationForce = Constants.GRAVITY * physComp.mass;
       const velocityNormal = physComp.velocity.normal;
       const dragForce = 0.5 * Constants.AIR_DENSITY * physComp.drag;

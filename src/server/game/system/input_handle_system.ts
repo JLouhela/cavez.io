@@ -28,6 +28,7 @@ export class InputHandleSystem extends System {
         // Rot CW and Rot CCW cancel each other out -> calculate delta based on timestamps
         // Throttle: calculate time throttle was on ->_ set on and adjust force
         this.handleThrottle(throttle, physics, inputBuffer);
+        this.handleRotation(physics, inputBuffer);
       }
 
       this.inputManager.eraseInputs(socketId);
@@ -67,6 +68,22 @@ export class InputHandleSystem extends System {
       throttleComp.throttlePower =
         (Constants.SHIP_THROTTLE_PER_MASS / physicsComp.mass) *
         Constants.SERVER_WORLD_STEP_RATE;
+    }
+  }
+
+  private handleRotation(
+    physicsComp: CPhysics,
+    inputBuffer: Protocol.IInputUpdateEvent[]
+  ) {
+    let dir = 0;
+    for (let i = 0; i < inputBuffer.length; ++i) {
+      if ((inputBuffer[i].keyMask & Protocol.INPUT_MASK.ROT_CW) > 0) {
+        dir = dir < 1 ? dir + 1 : dir;
+      }
+      if ((inputBuffer[i].keyMask & Protocol.INPUT_MASK.ROT_CCW) > 0) {
+        dir = dir > -1 ? dir - 1 : dir;
+      }
+      physicsComp.rotation = ((dir * physicsComp.mass) / 1000) * Math.PI;
     }
   }
 }
