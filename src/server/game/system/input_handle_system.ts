@@ -41,7 +41,6 @@ export class InputHandleSystem extends System {
   ) {
     // Empty checked before calling
     // Length 1: toggle on / off
-    // TODO: need to take time into account here too when calculating force
     if (inputBuffer.length === 1) {
       throttleComp.throttleOn =
         (inputBuffer[0].keyMask & Protocol.INPUT_MASK.THROTTLE) > 0;
