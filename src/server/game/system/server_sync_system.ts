@@ -1,13 +1,13 @@
 import { System, Entity } from 'ecsy';
-import { GameState } from './game_state';
-import { CPosition } from '../../shared/game/component/cposition';
-import { CPlayer } from '../../shared/game/component/cplayer';
-import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
-import { ISocketEmit } from '../socket/socket_emit_interface';
-import { IGameRoom } from '../room/game_room';
-import * as Constants from '../../shared/constants';
-import { CPhysics } from '../../shared/game/component/cphysics';
-import { CSync } from '../../shared/game/component/ctags';
+import { GameState } from '../game_state';
+import { CPosition } from '../../../shared/game/component/cposition';
+import { CPlayer } from '../../../shared/game/component/cplayer';
+import { CNetworkSync } from '../../../shared/game/component/cnetwork_sync';
+import { ISocketEmit } from '../../socket/socket_emit_interface';
+import { IGameRoom } from '../../room/game_room';
+import * as Constants from '../../../shared/constants';
+import { CPhysics } from '../../../shared/game/component/cphysics';
+import { CSync } from '../../../shared/game/component/ctags';
 
 export class ServerSyncSystem extends System {
   private gameState: GameState;

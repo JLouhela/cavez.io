@@ -28,10 +28,7 @@ export class GameServer {
     this.socketEmit = new GeckosSocketEmit(this.socketServer.getIO());
     this.roomManager = new RoomManager(1, 10, this.socketEmit);
 
-    // Cyclic depdency, as the socket emiter depends on socketserver
-    // socket server depends on game, and game depends on room manager, which needs socket emiter.
-    // TODO: Fix when inputs are being handled, need proxy between game and socket.
-    this.socketServer.setDependencies(this.roomManager);
+    this.socketServer.setRoomManager(this.roomManager);
     this.listen();
   }
 

@@ -1,8 +1,9 @@
 import { IPlayer } from '../player/player_interface';
 import { ServerWorldManager } from '../game/server_world_manager';
 import { ISocketEmit } from '../socket/socket_emit_interface';
-import { IVec2 } from '../../shared/math/vector';
 import { LevelManager } from '../game/level_manager';
+import * as Protocol from '../../shared/protocol';
+import { InputManager } from '../game/input_manager';
 
 export interface IGameRoom {
   getPlayers(): IPlayer[];
@@ -15,12 +16,18 @@ export class GameRoom implements IGameRoom {
   private socketEmit: ISocketEmit = null;
   private worldManager: ServerWorldManager = null;
   private levelManager: LevelManager = null;
+  private inputManager: InputManager = null;
 
   constructor(index: number, title: string, socketEmit: ISocketEmit) {
     this.index = index;
     this.title = title;
-    this.worldManager = new ServerWorldManager(socketEmit, this);
     this.levelManager = new LevelManager();
+    this.inputManager = new InputManager();
+    this.worldManager = new ServerWorldManager(
+      socketEmit,
+      this,
+      this.inputManager
+    );
   }
 
   getPlayers() {
@@ -75,5 +82,9 @@ export class GameRoom implements IGameRoom {
       return;
     }
     this.worldManager.spawnPlayer(player, this.levelManager.getSpawnPoint());
+  }
+
+  addInputUpdate(socketId: string, event: Protocol.IInputUpdateEvent) {
+    this.inputManager.addInputUpdate(socketId, event);
   }
 }

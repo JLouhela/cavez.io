@@ -6,6 +6,7 @@ export const SERVER_SEND_ALL_TICK_RATE = 1 / 10;
 export const SHIP_MASS = 100.0;
 export const GRAVITY = 5.0;
 export const AIR_DENSITY = 1.0;
+export const THROTTLE_PER_MASS = 1.0;
 
 // Propably will be dynamic later, for now just use something to test wrapping
 export const WORLD_BOUNDS = { x: 500, y: 500 };

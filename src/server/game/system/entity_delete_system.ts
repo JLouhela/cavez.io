@@ -1,5 +1,5 @@
 import { System, Entity } from 'ecsy';
-import { CPlayer } from '../../shared/game/component/cplayer';
+import { CPlayer } from '../../../shared/game/component/cplayer';
 
 export class EntityDeleteSystem extends System {
   private eraseByPlayerName: string[] = [];

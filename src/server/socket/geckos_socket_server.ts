@@ -18,8 +18,7 @@ export class GeckosSocketServer {
     return this.io;
   }
 
-  // TODO fix init order
-  public setDependencies(roomManager: IRoomManager): void {
+  public setRoomManager(roomManager: IRoomManager): void {
     this.roomManager = roomManager;
   }
 
@@ -52,10 +51,17 @@ export class GeckosSocketServer {
       );
 
       channel.on(Protocol.SOCKET_EVENT.SPAWN_PLAYER, () => {
-        const room = this.roomManager.getRoom(channel.roomId);
-        // TODO level manager or something
+        let room = this.roomManager.getRoom(channel.roomId);
         room.spawnPlayer(channel.id);
       });
+
+      channel.on(
+        Protocol.SOCKET_EVENT.INPUT_UPDATE,
+        (event: Protocol.IInputUpdateEvent) => {
+          let room = this.roomManager.getRoom(channel.roomId);
+          room.addInputUpdate(channel.id, event);
+        }
+      );
     });
   }
 }
