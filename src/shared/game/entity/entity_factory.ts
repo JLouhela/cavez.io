@@ -37,13 +37,19 @@ export class EntityFactory {
       CThrottle,
       CSync,
     ]);
-    e.getMutableComponent(CPlayer).color = color;
-    e.getMutableComponent(CPlayer).name = name;
-    e.getMutableComponent(CPosition).x = pos.x;
-    e.getMutableComponent(CPosition).y = pos.y;
+    let playerComp = e.getMutableComponent(CPlayer);
+    playerComp.color = color;
+    playerComp.name = name;
 
-    e.getMutableComponent(CPhysics).mass = Constants.SHIP_MASS;
-    e.getMutableComponent(CThrottle).throttleOn = false;
+    let posComp = e.getMutableComponent(CPosition);
+    posComp.x = pos.x;
+    posComp.y = pos.y;
+
+    let physComp = e.getMutableComponent(CPhysics);
+    physComp.mass = Constants.SHIP_MASS;
+
+    const angleNorth = Math.PI + Math.PI / 2;
+    physComp.angle = angleNorth;
 
     return e;
   }

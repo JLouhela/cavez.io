@@ -62,6 +62,12 @@ export class PhysicsSystem extends System {
       if (this.worldBounds) {
         posComp.x %= this.worldBounds.x;
         posComp.y %= this.worldBounds.y;
+        if (posComp.y < 0) {
+          posComp.y += this.worldBounds.y;
+        }
+        if (posComp.x < 0) {
+          posComp.x += this.worldBounds.x;
+        }
       }
     });
   }

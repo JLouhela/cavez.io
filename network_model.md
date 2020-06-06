@@ -15,6 +15,7 @@ Approach shall be designed to allow progress towards next steps, which are
 - Delta compression (only send deltas)
 
   - If player misses the package, also keep first approach to be done in larger intervals (e.g. once per second)
+  - Must contain all entities still even without any state changes, so that the client knows the entity must be kept alive.
 
 - Delta compression against client known state
   - Can get rid of the first approach completely

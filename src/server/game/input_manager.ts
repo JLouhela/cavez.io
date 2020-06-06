@@ -16,8 +16,8 @@ export class InputManager {
   }
 
   // Erase up to timestamp, keep equal
-  public eraseInputs(socketId: string, timestamp: number) {
-    let inputList = this.inputBuffer[socketId];
+  public eraseInputsByTime(socketId: string, timestamp: number) {
+    const inputList = this.inputBuffer[socketId];
     if (!inputList) {
       return;
     }
@@ -30,5 +30,9 @@ export class InputManager {
       }
     }
     inputList.splice(0, deleteIndex);
+  }
+
+  public eraseInputs(socketId: string) {
+    this.inputBuffer[socketId] = [];
   }
 }

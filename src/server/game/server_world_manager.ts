@@ -47,7 +47,7 @@ export class ServerWorldManager {
     console.log(
       'spawning player ' + player.name + ' to ' + pos.x + ', ' + pos.y
     );
-    let e = this.entityFactory.createPlayerEntity(
+    const e = this.entityFactory.createPlayerEntity(
       player.name,
       player.color,
       pos

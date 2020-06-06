@@ -51,14 +51,14 @@ export class GeckosSocketServer {
       );
 
       channel.on(Protocol.SOCKET_EVENT.SPAWN_PLAYER, () => {
-        let room = this.roomManager.getRoom(channel.roomId);
+        const room = this.roomManager.getRoom(channel.roomId);
         room.spawnPlayer(channel.id);
       });
 
       channel.on(
         Protocol.SOCKET_EVENT.INPUT_UPDATE,
         (event: Protocol.IInputUpdateEvent) => {
-          let room = this.roomManager.getRoom(channel.roomId);
+          const room = this.roomManager.getRoom(channel.roomId);
           room.addInputUpdate(channel.id, event);
         }
       );
