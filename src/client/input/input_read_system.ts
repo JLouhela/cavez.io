@@ -4,6 +4,7 @@ import { CThrottle } from '../../shared/game/component/cthrottle';
 import { IInputReader } from './input_reader';
 import { ISocketEmit } from '../network/geckos_socket_handler';
 import * as Protocol from '../../shared/protocol';
+import * as Constants from '../../shared/constants';
 import { CPhysics } from '../../shared/game/component/cphysics';
 
 export class InputReadSystem extends System {
@@ -25,7 +26,12 @@ export class InputReadSystem extends System {
       const throttle = entity.getMutableComponent(CThrottle);
       const physics = entity.getMutableComponent(CPhysics);
       let inputState: number = 0x00;
-      inputState = this.handleThrottle(0x00, throttle, inputComp.keyThrottle);
+      inputState = this.handleThrottle(
+        0x00,
+        throttle,
+        physics,
+        inputComp.keyThrottle
+      );
 
       inputState = this.handleRotate(
         inputState,
@@ -44,11 +50,14 @@ export class InputReadSystem extends System {
   private handleThrottle(
     inputState: number,
     throttleComp: CThrottle,
+    physicsComp: CPhysics,
     key: number
   ): number {
     if (this.inputReader.isKeyDown(key)) {
       inputState = inputState | Protocol.INPUT_MASK.THROTTLE;
       throttleComp.throttleOn = true;
+      throttleComp.throttlePower =
+        Constants.SHIP_THROTTLE_PER_MASS / physicsComp.mass;
     } else {
       throttleComp.throttleOn = false;
     }
@@ -63,13 +72,17 @@ export class InputReadSystem extends System {
   ): number {
     if (this.inputReader.isKeyDown(keyCW)) {
       inputState = inputState | Protocol.INPUT_MASK.ROT_CW;
-      physicsComp.rotation = (physicsComp.mass / 1000) * Math.PI;
+      physicsComp.rotation =
+        (physicsComp.mass / Constants.SHIP_ROTATION_PER_MASS_INVERSE) * Math.PI;
     } else if (this.inputReader.isKeyDown(keyCCW)) {
       inputState = inputState | Protocol.INPUT_MASK.ROT_CCW;
-      physicsComp.rotation = (-physicsComp.mass / 1000) * Math.PI;
+      physicsComp.rotation =
+        (-physicsComp.mass / Constants.SHIP_ROTATION_PER_MASS_INVERSE) *
+        Math.PI;
     } else {
       physicsComp.rotation = 0;
     }
+
     return inputState;
   }
 }

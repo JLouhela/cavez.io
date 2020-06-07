@@ -4,9 +4,8 @@ import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { CPosition } from '../../shared/game/component/cposition';
-import { CSprite } from '../../shared/game/component/csprite';
 
-export class ClientPredictionSystem extends System {
+export class ClientCorrectionSystem extends System {
   private gameState: GameState;
 
   constructor(world: any, attributes: any) {
@@ -46,7 +45,7 @@ export class ClientPredictionSystem extends System {
   }
 }
 
-ClientPredictionSystem.queries = {
+ClientCorrectionSystem.queries = {
   all: {
     components: [CPlayer, CNetworkEntity],
   },

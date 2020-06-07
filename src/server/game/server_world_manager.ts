@@ -37,10 +37,10 @@ export class ServerWorldManager {
       .getWorld()
       .registerSystem(InputHandleSystem, { inputManager })
       .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
-      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
       .registerSystem(EntityDeleteSystem, {
         eraseByPlayerName: this.eraseByPlayerName,
-      });
+      })
+      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS });
   }
 
   public spawnPlayer(player: IPlayer, pos: IVec2) {

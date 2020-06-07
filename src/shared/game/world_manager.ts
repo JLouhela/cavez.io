@@ -22,7 +22,7 @@ export class WorldManager {
   public client_start(): void {
     function client_step() {
       const time = performance.now();
-      const delta = time - lastTime;
+      const delta = (time - lastTime) / 1000.0;
 
       // Run all the systems
       world.execute(delta, time);

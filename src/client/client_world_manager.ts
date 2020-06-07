@@ -5,11 +5,13 @@ import { EntityInitSystem } from './network/entity_init_system';
 import { GameState } from './game/game_state';
 import { EntityFactory } from '../shared/game/entity/entity_factory';
 import { InterpolateSystem } from './network/interpolate_system';
-import { ClientPredictionSystem } from './network/client_prediction_system';
+import { ClientCorrectionSystem } from './network/client_correction_system';
 import { EntityDeleteSystem } from './network/entity_delete_system';
 import { IInputReader } from './input/input_reader';
 import { InputReadSystem } from './input/input_read_system';
 import { ISocketEmit } from './network/geckos_socket_handler';
+import { PhysicsSystem } from '../shared/game/system/physics_system';
+import * as Constants from '../shared/constants';
 
 export class ClientWorldManager {
   private worldManager: WorldManager = null;
@@ -45,8 +47,9 @@ export class ClientWorldManager {
         gameState,
         spriteCache,
       })
-      .registerSystem(ClientPredictionSystem, { gameState })
-      .registerSystem(InterpolateSystem, { gameState });
+      .registerSystem(ClientCorrectionSystem, { gameState })
+      .registerSystem(InterpolateSystem, { gameState })
+      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS });
   }
 
   public start() {
