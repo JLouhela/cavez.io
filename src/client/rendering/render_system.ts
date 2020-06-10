@@ -101,7 +101,7 @@ export class RenderSystem extends System {
       playerSprite.texture
     );
     const ghostSprite = this.spriteCache.getSprite(this.ghostSpriteId);
-    ghostSprite.alpha = 0.5;
+    ghostSprite.alpha = 0.2;
   }
 }
 

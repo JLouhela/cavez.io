@@ -76,11 +76,13 @@ export class InputHandleSystem extends System {
     inputBuffer: Protocol.IInputUpdateEvent[]
   ) {
     let dir = 0;
-    for (let i = 0; i < inputBuffer.length; ++i) {
-      if ((inputBuffer[i].keyMask & Protocol.INPUT_MASK.ROT_CW) > 0) {
+    // for (let i = 0; i < inputBuffer.length; ++i) {
+
+    for (const input of inputBuffer) {
+      if ((input.keyMask & Protocol.INPUT_MASK.ROT_CW) > 0) {
         dir = dir < 1 ? dir + 1 : dir;
       }
-      if ((inputBuffer[i].keyMask & Protocol.INPUT_MASK.ROT_CCW) > 0) {
+      if ((input.keyMask & Protocol.INPUT_MASK.ROT_CCW) > 0) {
         dir = dir > -1 ? dir - 1 : dir;
       }
       physicsComp.rotation =

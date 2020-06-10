@@ -4,6 +4,7 @@ import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { CPosition } from '../../shared/game/component/cposition';
+import { CPhysics } from '../../shared/game/component/cphysics';
 
 export class ClientCorrectionSystem extends System {
   private gameState: GameState;
@@ -40,8 +41,51 @@ export class ClientCorrectionSystem extends System {
       console.log('No sync data for client in game state');
       return;
     }
-    const pos = player.getMutableComponent(CPosition);
-    // TODO: check against server position and do something
+
+    const serverPos = syncData.pos;
+    const clientPos = player.getMutableComponent(CPosition);
+    const serverPhys = syncData.physics;
+    const clientPhys = player.getMutableComponent(CPhysics);
+
+    // TODO: Only correct after receiving ack for input?
+    this.correctPos(clientPos, serverPos, clientPhys);
+    this.correctAngle(clientPhys, serverPhys);
+  }
+
+  private correctPos(
+    clientPos: CPosition,
+    serverPos: CPosition,
+    clientPhys: CPhysics
+  ) {
+    // Use velocity to adapt pos threshold
+    const posThresholdX = Math.max(10, clientPhys.velocity.x / 5);
+    const posThresholdY = Math.max(10, clientPhys.velocity.y / 5);
+
+    if (Math.abs(clientPos.x - serverPos.x) < posThresholdX) {
+      clientPos.x -= (clientPos.x - serverPos.x) / 10;
+    } else {
+      clientPos.x = serverPos.x;
+    }
+    if (Math.abs(clientPos.y - serverPos.y) < posThresholdY) {
+      clientPos.y -= (clientPos.y - serverPos.y) / 10;
+    } else {
+      clientPos.y = serverPos.y;
+    }
+  }
+
+  private correctAngle(clientPhys: CPhysics, serverPhys: CPhysics) {
+    const angleThreshold = 0.2;
+    const normalizedClientAngle =
+      clientPhys.angle < 180 ? clientPhys.angle : clientPhys.angle + 180;
+    const normalizedServerAngle =
+      clientPhys.angle < 180 ? serverPhys.angle : serverPhys.angle + 180;
+    const dir = normalizedClientAngle > normalizedServerAngle ? -1 : 1;
+    const absDelta = Math.abs(normalizedClientAngle - normalizedServerAngle);
+    if (absDelta < angleThreshold) {
+      clientPhys.angle += (dir * absDelta) / 10;
+    } else {
+      clientPhys.angle = serverPhys.angle;
+    }
   }
 }
 
