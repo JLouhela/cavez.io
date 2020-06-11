@@ -76,9 +76,13 @@ export class ClientCorrectionSystem extends System {
   private correctAngle(clientPhys: CPhysics, serverPhys: CPhysics) {
     const angleThreshold = 0.2;
     const normalizedClientAngle =
-      clientPhys.angle < 180 ? clientPhys.angle : clientPhys.angle + 180;
+      clientPhys.angle < Math.PI
+        ? clientPhys.angle + Math.PI
+        : clientPhys.angle;
     const normalizedServerAngle =
-      clientPhys.angle < 180 ? serverPhys.angle : serverPhys.angle + 180;
+      clientPhys.angle < Math.PI
+        ? serverPhys.angle + Math.PI
+        : serverPhys.angle;
     const dir = normalizedClientAngle > normalizedServerAngle ? -1 : 1;
     const absDelta = Math.abs(normalizedClientAngle - normalizedServerAngle);
     if (absDelta < angleThreshold) {
