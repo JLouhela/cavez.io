@@ -9,6 +9,7 @@ import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { IVec2 } from '../../shared/math/vector';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPhysics } from '../../shared/game/component/cphysics';
+import { ParallaxBg } from './parallax_bg';
 
 export class RenderSystem extends System {
   private canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -16,6 +17,7 @@ export class RenderSystem extends System {
   private gameState: GameState = null;
   private renderer: PIXI.Renderer = null;
   private container: PIXI.Container = null;
+  private parallaxBg: ParallaxBg = null;
 
   // Options for rendering client server positions as received
   private ghostSpriteId: number = -1;
@@ -34,12 +36,22 @@ export class RenderSystem extends System {
     this.gameState = attributes.gameState;
     this.renderer = new PIXI.Renderer({ view: this.canvas });
     this.container = new PIXI.Container();
+    this.parallaxBg = new ParallaxBg(
+      this.spriteCache.getAssetManager(),
+      this.canvas.width,
+      this.canvas.height
+    );
   }
 
   execute(delta: number, time: number) {
-    // TODO: check if dirty removal provides benefits
-    // Depends on performance of remove => re-add all sprites
+    // TODO optimize: re-add on each frame is costly
+    // Could use access by name
     this.container.removeChildren();
+
+    // TODO: camera support
+    const cameraPos: IVec2 = { x: 0, y: 0 };
+    this.container.addChild(this.parallaxBg.render(cameraPos));
+
     this.queries.renderable.results.forEach((entity) => {
       const spriteComp = entity.getComponent(CSprite);
       const posComp = entity.getComponent(CPosition);
@@ -66,24 +78,22 @@ export class RenderSystem extends System {
   }
 
   private handleGhostRender(): void {
-    if (this.renderGhost) {
-      const clientPlayerEntity = this.queries.ghost.results.find((entity) => {
-        return entity.id === this.gameState.getPlayerId();
-      });
+    if (!this.renderGhost) {
+      return;
+    }
+    const clientPlayerEntity = this.queries.ghost.results.find((entity) => {
+      return entity.id === this.gameState.getPlayerId();
+    });
 
-      if (clientPlayerEntity) {
-        if (this.ghostSpriteId < 0) {
-          this.initPlayerGhost(
-            clientPlayerEntity.getComponent(CSprite).spriteId
-          );
-        }
-        const serverId = clientPlayerEntity.getComponent(CNetworkEntity)
-          .serverId;
-        this.renderPlayerGhost(
-          this.gameState.getLatest().entityUpdates[serverId].pos,
-          this.gameState.getLatest().entityUpdates[serverId].physics.angle
-        );
+    if (clientPlayerEntity) {
+      if (this.ghostSpriteId < 0) {
+        this.initPlayerGhost(clientPlayerEntity.getComponent(CSprite).spriteId);
       }
+      const serverId = clientPlayerEntity.getComponent(CNetworkEntity).serverId;
+      this.renderPlayerGhost(
+        this.gameState.getLatest().entityUpdates[serverId].pos,
+        this.gameState.getLatest().entityUpdates[serverId].physics.angle
+      );
     }
   }
 

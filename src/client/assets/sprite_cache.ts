@@ -35,7 +35,11 @@ export class SpriteCache {
     this.releasedIds.push(id);
   }
 
-  getSprite(id: number): PIXI.Sprite {
+  public getSprite(id: number): PIXI.Sprite {
     return this.sprites[id];
+  }
+
+  public getAssetManager(): AssetManager {
+    return this.assetManager;
   }
 }

@@ -13,9 +13,6 @@ const usernameInput = document.getElementById(
 ) as HTMLInputElement;
 const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
-const gameState = new GameState();
-const socketHandler = new GeckosSocketHandler(gameState);
-const spriteCache = new SpriteCache(assetManager);
 const inputReader = new InputReader();
 
 document.addEventListener('keydown', (event) =>
@@ -25,30 +22,38 @@ document.addEventListener('keyup', (event) =>
   inputReader.keyUpEventListener(event)
 );
 
-const worldManager = new ClientWorldManager(
-  spriteCache,
-  gameState,
-  inputReader,
-  socketHandler
-);
+let gameState: GameState = null;
+let socketHandler: GeckosSocketHandler = null;
+let spriteCache: SpriteCache = null;
+let worldManager: ClientWorldManager = null;
 
-Promise.all([
-  socketHandler.connect(worldManager),
-  assetManager.loadAssets(),
-]).then(() => {
-  playMenu.classList.remove('hidden');
-  usernameInput.focus();
-  playButton.onclick = () => {
-    // TODO: display list of rooms to join, for now push all to room 0
-    const roomNumber: number = 0;
-    // TODO validate, store to gamestate afterjoin game reply ok
-    const playerName: string = usernameInput.value;
-    socketHandler.joinGame(playerName, roomNumber);
-    gameState.setPlayerName(playerName);
-    playMenu.classList.add('hidden');
-    worldManager.start();
-    //  initState();
-    //  startCapturingInput();
-    //  startRendering();
-  };
+Promise.all([assetManager.loadAssets()]).then(() => {
+  Promise.all([
+    (gameState = new GameState()),
+    (socketHandler = new GeckosSocketHandler(gameState)),
+    (spriteCache = new SpriteCache(assetManager)),
+    (worldManager = new ClientWorldManager(
+      spriteCache,
+      gameState,
+      inputReader,
+      socketHandler
+    )),
+    socketHandler.connect(worldManager),
+  ]).then(() => {
+    playMenu.classList.remove('hidden');
+    usernameInput.focus();
+    playButton.onclick = () => {
+      // TODO: display list of rooms to join, for now push all to room 0
+      const roomNumber: number = 0;
+      // TODO validate, store to gamestate afterjoin game reply ok
+      const playerName: string = usernameInput.value;
+      socketHandler.joinGame(playerName, roomNumber);
+      gameState.setPlayerName(playerName);
+      playMenu.classList.add('hidden');
+      worldManager.start();
+      //  initState();
+      //  startCapturingInput();
+      //  startRendering();
+    };
+  });
 });
