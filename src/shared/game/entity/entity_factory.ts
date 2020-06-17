@@ -94,7 +94,7 @@ export class EntityFactory {
   // For client controlled player
   public addClientPlayerComponents(playerEntity: Entity) {
     playerEntity.addComponent(CCameraFollow, {
-      followEntityId: playerEntity.id,
+      cameraId: 1,
     });
     playerEntity.addComponent(CInput);
   }

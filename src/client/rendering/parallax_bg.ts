@@ -17,9 +17,9 @@ export class ParallaxBg {
   private parallaxMid: PIXI.TilingSprite = null;
   private parallaxNear: PIXI.TilingSprite = null;
 
-  private farSpeed: number = 0.1;
-  private midSpeed: number = 0.4;
-  private nearSpeed: number = 1.0;
+  private farSpeed: number = -0.2;
+  private midSpeed: number = -0.4;
+  private nearSpeed: number = -0.7;
 
   constructor(
     assetManager: AssetManager,
@@ -71,6 +71,7 @@ export class ParallaxBg {
       (this.nearSpeed * cameraPos.y + this.screenHeightHalf) %
       this.screenHeight;
 
+    //console.log(parallaxNear.tilePosition.x);
     return this.container;
   }
 }

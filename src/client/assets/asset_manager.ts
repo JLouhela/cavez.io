@@ -26,9 +26,7 @@ export class AssetManager {
         this.loader.add(assetId, assetUri);
       }
 
-      // Redundant check not desired
-      //@ts-ignore
-      for (const name in this.ASSET_URIS) {
+      for (const name of Object.keys(this.ASSET_URIS)) {
         this.loader.load((loader, resources) => {
           this.textures[resources[name].name] = resources[name].texture;
           console.log(resources[name].name + ' loaded');

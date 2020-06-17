@@ -1,21 +1,21 @@
 import { Component } from 'ecsy';
 
 export class CCameraFollow extends Component {
-  public followEntityId: number;
+  public cameraId: number;
   constructor() {
     super();
     this.reset();
   }
 
   clear() {
-    this.followEntityId = -1;
+    this.cameraId = -1;
   }
 
   copy(src: CCameraFollow) {
-    this.followEntityId = src.followEntityId;
+    this.cameraId = src.cameraId;
   }
 
   reset() {
-    this.followEntityId = -1;
+    this.cameraId = -1;
   }
 }

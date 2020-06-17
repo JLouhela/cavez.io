@@ -3,6 +3,7 @@ import { AssetManager } from './assets/asset_manager';
 import { SpriteCache } from './assets/sprite_cache';
 import { ClientWorldManager } from './client_world_manager';
 import { InputReader } from './input/input_reader';
+import { Camera } from './game/camera';
 
 import './css/styles.css';
 import { GameState } from './game/game_state';
@@ -14,6 +15,7 @@ const usernameInput = document.getElementById(
 const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
 const inputReader = new InputReader();
+const camera = new Camera();
 
 document.addEventListener('keydown', (event) =>
   inputReader.keyDownEventListener(event)
@@ -36,7 +38,8 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       spriteCache,
       gameState,
       inputReader,
-      socketHandler
+      socketHandler,
+      camera
     )),
     socketHandler.connect(worldManager),
   ]).then(() => {

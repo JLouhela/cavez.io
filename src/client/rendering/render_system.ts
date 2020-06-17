@@ -10,6 +10,7 @@ import { IVec2 } from '../../shared/math/vector';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPhysics } from '../../shared/game/component/cphysics';
 import { ParallaxBg } from './parallax_bg';
+import { Camera } from '../game/camera';
 
 export class RenderSystem extends System {
   private canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -18,6 +19,7 @@ export class RenderSystem extends System {
   private renderer: PIXI.Renderer = null;
   private container: PIXI.Container = null;
   private parallaxBg: ParallaxBg = null;
+  private camera: Camera;
 
   // Options for rendering client server positions as received
   private ghostSpriteId: number = -1;
@@ -34,6 +36,8 @@ export class RenderSystem extends System {
     this.canvas.height = scaleRatio * window.innerHeight;
     this.spriteCache = attributes.spriteCache;
     this.gameState = attributes.gameState;
+    this.camera = attributes.camera;
+    this.camera.setSize({ x: this.canvas.width, y: this.canvas.height });
     this.renderer = new PIXI.Renderer({ view: this.canvas });
     this.container = new PIXI.Container();
     this.parallaxBg = new ParallaxBg(
@@ -48,8 +52,8 @@ export class RenderSystem extends System {
     // Could use access by name
     this.container.removeChildren();
 
-    // TODO: camera support
-    const cameraPos: IVec2 = { x: 0, y: 0 };
+    const cameraPos: IVec2 = this.camera.getCenter();
+    // TODO get centerPos
     this.container.addChild(this.parallaxBg.render(cameraPos));
 
     this.queries.renderable.results.forEach((entity) => {
@@ -65,10 +69,24 @@ export class RenderSystem extends System {
         sprite.rotation = physicsComp.angle;
       }
 
-      sprite.position.x = posComp.x;
       sprite.position.y = posComp.y;
-      sprite.tint = spriteComp.hue;
-      this.container.addChild(sprite);
+      sprite.position.x = posComp.x;
+
+      const screenPos = this.camera.getScreenPos({
+        x: posComp.x,
+        y: posComp.y,
+        w: sprite.width,
+        h: sprite.height,
+      });
+      if (screenPos.visible) {
+        sprite.tint = spriteComp.hue;
+        sprite.x = screenPos.x;
+        sprite.y = screenPos.y;
+        sprite.visible = true;
+        this.container.addChild(sprite);
+      } else {
+        sprite.visible = false;
+      }
     });
 
     // Render unmodified server positions for client player
@@ -99,8 +117,15 @@ export class RenderSystem extends System {
 
   private renderPlayerGhost(networkPos: IVec2, angle: number): void {
     const ghostSprite = this.spriteCache.getSprite(this.ghostSpriteId);
-    ghostSprite.x = networkPos.x;
-    ghostSprite.y = networkPos.y;
+    const screenPos = this.camera.getScreenPos({
+      x: networkPos.x,
+      y: networkPos.y,
+      w: ghostSprite.width,
+      h: ghostSprite.height,
+    });
+
+    ghostSprite.x = screenPos.x;
+    ghostSprite.y = screenPos.y;
     ghostSprite.rotation = angle;
     this.container.addChild(ghostSprite);
   }

@@ -12,6 +12,8 @@ import { InputReadSystem } from './input/input_read_system';
 import { ISocketEmit } from './network/geckos_socket_handler';
 import { PhysicsSystem } from '../shared/game/system/physics_system';
 import * as Constants from '../shared/constants';
+import { Camera } from './game/camera';
+import { CameraSystem } from './game/camera_system';
 
 export class ClientWorldManager {
   private worldManager: WorldManager = null;
@@ -21,23 +23,31 @@ export class ClientWorldManager {
     spriteCache: SpriteCache,
     gameState: GameState,
     inputReader: IInputReader,
-    socketEmit: ISocketEmit
+    socketEmit: ISocketEmit,
+    camera: Camera
   ) {
     this.worldManager = new WorldManager();
     this.entityFactory = new EntityFactory(this.worldManager.getWorld());
-    this.initClientExtras(spriteCache, gameState, inputReader, socketEmit);
+    this.initClientExtras(
+      spriteCache,
+      gameState,
+      inputReader,
+      socketEmit,
+      camera
+    );
   }
 
   public initClientExtras(
     spriteCache: SpriteCache,
     gameState: GameState,
     inputReader: IInputReader,
-    socketEmit: ISocketEmit
+    socketEmit: ISocketEmit,
+    camera: Camera
   ) {
     this.worldManager
       .getWorld()
       .registerSystem(InputReadSystem, { inputReader, socketEmit })
-      .registerSystem(RenderSystem, { spriteCache, gameState })
+      .registerSystem(RenderSystem, { spriteCache, gameState, camera })
       .registerSystem(EntityInitSystem, {
         gameState,
         entityFactory: this.entityFactory,
@@ -49,7 +59,8 @@ export class ClientWorldManager {
       })
       .registerSystem(ClientCorrectionSystem, { gameState })
       .registerSystem(InterpolateSystem, { gameState })
-      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS });
+      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
+      .registerSystem(CameraSystem, { camera });
   }
 
   public start() {
