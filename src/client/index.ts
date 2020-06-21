@@ -54,9 +54,6 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       gameState.setPlayerName(playerName);
       playMenu.classList.add('hidden');
       worldManager.start();
-      //  initState();
-      //  startCapturingInput();
-      //  startRendering();
     };
   });
 });

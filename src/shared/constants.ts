@@ -10,4 +10,4 @@ export const SHIP_THROTTLE_PER_MASS = 500000.0;
 export const SHIP_ROTATION_PER_MASS_INVERSE = 100.0;
 
 // Propably will be dynamic later, for now just use something to test wrapping
-export const WORLD_BOUNDS = { x: 500, y: 500 };
+export const WORLD_BOUNDS = { x: 1000, y: 1000 };

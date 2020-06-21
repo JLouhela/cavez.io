@@ -29,16 +29,22 @@ export class RenderSystem extends System {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore
     super(world, attributes);
+
     // On small screens (e.g. phones), we want to "zoom out" so players can still see at least
-    // 800 in-game units of width.
-    const scaleRatio = Math.max(1, 800 / window.innerWidth);
-    this.canvas.width = scaleRatio * window.innerWidth;
-    this.canvas.height = scaleRatio * window.innerHeight;
+    // 800 in-game units of width. TODO: camera needs to be scaled too
+    // const scaleRatio = Math.max(1, 800 / window.innerWidth);
+    // this.canvas.width = scaleRatio * window.innerWidth;
+    // this.canvas.height = scaleRatio * window.innerHeight;
+
     this.spriteCache = attributes.spriteCache;
     this.gameState = attributes.gameState;
     this.camera = attributes.camera;
-    this.camera.setSize({ x: this.canvas.width, y: this.canvas.height });
     this.renderer = new PIXI.Renderer({ view: this.canvas });
+    // TODO why / 2? Screen area seems to be half of the render size :|
+    this.camera.setSize({
+      x: this.renderer.width / 2,
+      y: this.renderer.height / 2,
+    });
     this.container = new PIXI.Container();
     this.parallaxBg = new ParallaxBg(
       this.spriteCache.getAssetManager(),
@@ -52,8 +58,7 @@ export class RenderSystem extends System {
     // Could use access by name
     this.container.removeChildren();
 
-    const cameraPos: IVec2 = this.camera.getCenter();
-    // TODO get centerPos
+    const cameraPos: IVec2 = this.camera.getMovementDelta();
     this.container.addChild(this.parallaxBg.render(cameraPos));
 
     this.queries.renderable.results.forEach((entity) => {

@@ -30,48 +30,39 @@ export class ParallaxBg {
     this.screenHeight = screenHeight;
     this.screenWidthHalf = screenWidth / 2;
     this.screenHeightHalf = screenHeight / 2;
-    // TODO optimize: 2 x size can be multiplied by speed
+
     this.parallaxFar = new PIXI.TilingSprite(
       assetManager.getTexture(AssetName.PARALLAX_1),
-      2 * screenWidth,
-      2 * screenHeight
+      screenWidth,
+      screenHeight
     );
     this.parallaxMid = new PIXI.TilingSprite(
       assetManager.getTexture(AssetName.PARALLAX_2),
-      2 * screenWidth,
-      2 * screenHeight
+      screenWidth,
+      screenHeight
     );
     this.parallaxNear = new PIXI.TilingSprite(
       assetManager.getTexture(AssetName.PARALLAX_3),
-      2 * screenWidth,
-      2 * screenHeight
+      screenWidth,
+      screenHeight
     );
     this.container.addChild(this.parallaxFar);
     this.container.addChild(this.parallaxMid);
     this.container.addChild(this.parallaxNear);
   }
 
-  public render(cameraPos: IVec2): PIXI.Container {
+  public render(cameraDelta: IVec2): PIXI.Container {
     const parallaxFar = this.container.getChildAt(0) as PIXI.TilingSprite;
-    parallaxFar.tilePosition.x =
-      (this.farSpeed * cameraPos.x + this.screenWidthHalf) % this.screenWidth;
-    parallaxFar.tilePosition.y =
-      (this.farSpeed * cameraPos.y + this.screenHeightHalf) % this.screenHeight;
+    parallaxFar.tilePosition.x += this.farSpeed * cameraDelta.x;
+    parallaxFar.tilePosition.y += this.farSpeed * cameraDelta.y;
 
     const parallaxMid = this.container.getChildAt(1) as PIXI.TilingSprite;
-    parallaxMid.tilePosition.x =
-      (this.midSpeed * cameraPos.x + this.screenWidthHalf) % this.screenWidth;
-    parallaxMid.tilePosition.y =
-      (this.midSpeed * cameraPos.y + this.screenHeightHalf) % this.screenHeight;
+    parallaxMid.tilePosition.x += this.midSpeed * cameraDelta.x;
+    parallaxMid.tilePosition.y += this.midSpeed * cameraDelta.y;
 
     const parallaxNear = this.container.getChildAt(2) as PIXI.TilingSprite;
-    parallaxNear.tilePosition.x =
-      (this.nearSpeed * cameraPos.x + this.screenWidthHalf) % this.screenWidth;
-    parallaxNear.tilePosition.y =
-      (this.nearSpeed * cameraPos.y + this.screenHeightHalf) %
-      this.screenHeight;
-
-    //console.log(parallaxNear.tilePosition.x);
+    parallaxNear.tilePosition.x += this.nearSpeed * cameraDelta.x;
+    parallaxNear.tilePosition.y += this.nearSpeed * cameraDelta.y;
     return this.container;
   }
 }
