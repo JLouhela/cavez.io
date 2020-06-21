@@ -34,7 +34,6 @@ export class Camera {
       x: this.centerPos.x + deltaX,
       y: this.centerPos.y + deltaY,
     };
-    console.log(this.centerPos);
     this.movementDelta = { x: deltaX, y: deltaY };
     this.targetCenterPos = centerPos;
     this.updateBounds();
