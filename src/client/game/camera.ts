@@ -16,11 +16,15 @@ export class Camera {
   private levelSize: IVec2 = { x: 0, y: 0 };
   private targetCenterPos: IVec2 = { x: 0, y: 0 };
   private movementDelta: IVec2 = { x: 0, y: 0 };
-  private lerpSpeed: number = 1;
+  private lerpSpeed: number = 5;
 
   public setSize(size: IVec2) {
     this.bounds.w = size.x;
     this.bounds.h = size.y;
+    this.centerPos = {
+      x: this.centerPos.x + this.bounds.w / 2,
+      y: this.centerPos.y + this.bounds.h / 2,
+    };
   }
 
   public setLevelSize(size: IVec2) {
@@ -68,15 +72,19 @@ export class Camera {
   public getScreenPos(rect: IRect): IScreenPos {
     if (rect.x < this.bounds.x) {
       rect.x += this.levelSize.x;
+    } else if (rect.x > this.bounds.x + this.bounds.w) {
+      rect.x -= this.levelSize.x;
     }
     if (rect.y < this.bounds.y) {
       rect.y += this.levelSize.y;
+    } else if (rect.y > this.bounds.y + this.bounds.h) {
+      rect.y -= this.levelSize.y;
     }
 
     const ret = { x: 0, y: 0, visible: false };
     ret.visible = this.bounds.overlaps(rect);
-    ret.x = rect.x - this.bounds.x + this.bounds.w / 2;
-    ret.y = rect.y - this.bounds.y + this.bounds.h / 2;
+    ret.x = rect.x - this.bounds.x;
+    ret.y = rect.y - this.bounds.y;
     return ret;
   }
 

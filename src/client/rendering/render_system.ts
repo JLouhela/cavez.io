@@ -30,21 +30,18 @@ export class RenderSystem extends System {
     // @ts-ignore
     super(world, attributes);
 
-    // On small screens (e.g. phones), we want to "zoom out" so players can still see at least
-    // 800 in-game units of width. TODO: camera needs to be scaled too
-    // const scaleRatio = Math.max(1, 800 / window.innerWidth);
-    // this.canvas.width = scaleRatio * window.innerWidth;
-    // this.canvas.height = scaleRatio * window.innerHeight;
-
     this.spriteCache = attributes.spriteCache;
     this.gameState = attributes.gameState;
     this.camera = attributes.camera;
     this.renderer = new PIXI.Renderer({ view: this.canvas });
-    // TODO why / 2? Screen area seems to be half of the render size :|
+
+    // TODO scale canvas on window resize
+    // CSS 100% doesn't seem to yield proper height results for some reason
     this.camera.setSize({
-      x: this.renderer.width / 2,
-      y: this.renderer.height / 2,
+      x: this.canvas.width,
+      y: this.canvas.height,
     });
+
     this.container = new PIXI.Container();
     this.parallaxBg = new ParallaxBg(
       this.spriteCache.getAssetManager(),

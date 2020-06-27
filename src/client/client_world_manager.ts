@@ -44,10 +44,10 @@ export class ClientWorldManager {
     socketEmit: ISocketEmit,
     camera: Camera
   ) {
+    camera.setLevelSize(Constants.WORLD_BOUNDS);
     this.worldManager
       .getWorld()
       .registerSystem(InputReadSystem, { inputReader, socketEmit })
-      .registerSystem(RenderSystem, { spriteCache, gameState, camera })
       .registerSystem(EntityInitSystem, {
         gameState,
         entityFactory: this.entityFactory,
@@ -60,7 +60,8 @@ export class ClientWorldManager {
       .registerSystem(ClientCorrectionSystem, { gameState })
       .registerSystem(InterpolateSystem, { gameState })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
-      .registerSystem(CameraSystem, { camera });
+      .registerSystem(CameraSystem, { camera })
+      .registerSystem(RenderSystem, { spriteCache, gameState, camera });
   }
 
   public start() {

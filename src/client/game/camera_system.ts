@@ -20,7 +20,7 @@ export class CameraSystem extends System {
       const pos = entity.getComponent(CPosition);
       if (
         Math.abs(this.camera.getCenter().x - pos.x) > this.cameraSnapDistance ||
-        Math.abs(pos.y - this.camera.getCenter().y) > this.cameraSnapDistance
+        Math.abs(this.camera.getCenter().y - pos.y) > this.cameraSnapDistance
       ) {
         this.camera.snap(pos);
       }

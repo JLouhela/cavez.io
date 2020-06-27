@@ -58,8 +58,8 @@ export class ClientCorrectionSystem extends System {
     clientPhys: CPhysics
   ) {
     // Use velocity to adapt pos threshold
-    const posThresholdX = Math.max(10, clientPhys.velocity.x / 5);
-    const posThresholdY = Math.max(10, clientPhys.velocity.y / 5);
+    const posThresholdX = Math.max(10, clientPhys.velocity.x / 3);
+    const posThresholdY = Math.max(10, clientPhys.velocity.y / 3);
 
     if (Math.abs(clientPos.x - serverPos.x) < posThresholdX) {
       clientPos.x -= (clientPos.x - serverPos.x) / 10;
