@@ -4,9 +4,14 @@ import { SpriteCache } from './assets/sprite_cache';
 import { ClientWorldManager } from './client_world_manager';
 import { InputReader } from './input/input_reader';
 import { Camera } from './game/camera';
+import * as PIXI from 'pixi.js';
 
 import './css/styles.css';
 import { GameState } from './game/game_state';
+
+// TEST
+import { LevelParser } from './game/level_parser';
+import { AssetName } from './assets/asset_names';
 
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById(
@@ -29,6 +34,14 @@ let socketHandler: GeckosSocketHandler = null;
 let spriteCache: SpriteCache = null;
 let worldManager: ClientWorldManager = null;
 
+const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
+const renderer = new PIXI.Renderer({ view: canvas });
+
+camera.setSize({
+  x: canvas.width,
+  y: canvas.height,
+});
+
 Promise.all([assetManager.loadAssets()]).then(() => {
   Promise.all([
     (gameState = new GameState()),
@@ -39,7 +52,8 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       gameState,
       inputReader,
       socketHandler,
-      camera
+      camera,
+      renderer
     )),
     socketHandler.connect(worldManager),
   ]).then(() => {
@@ -53,6 +67,13 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       socketHandler.joinGame(playerName, roomNumber);
       gameState.setPlayerName(playerName);
       playMenu.classList.add('hidden');
+      // TODO hook to joinGame -> receive current level -> init client side level
+
+      /// PARSER TEST
+      const testParser = new LevelParser(renderer);
+      const lvlid = spriteCache.createSprite(AssetName.LEVEL_1);
+      testParser.readPng(spriteCache.getSprite(lvlid));
+      ////
       worldManager.start();
     };
   });

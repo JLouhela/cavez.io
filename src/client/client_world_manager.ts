@@ -14,6 +14,7 @@ import { PhysicsSystem } from '../shared/game/system/physics_system';
 import * as Constants from '../shared/constants';
 import { Camera } from './game/camera';
 import { CameraSystem } from './game/camera_system';
+import * as PIXI from 'pixi.js';
 
 export class ClientWorldManager {
   private worldManager: WorldManager = null;
@@ -24,7 +25,8 @@ export class ClientWorldManager {
     gameState: GameState,
     inputReader: IInputReader,
     socketEmit: ISocketEmit,
-    camera: Camera
+    camera: Camera,
+    renderer: PIXI.Renderer
   ) {
     this.worldManager = new WorldManager();
     this.entityFactory = new EntityFactory(this.worldManager.getWorld());
@@ -33,7 +35,8 @@ export class ClientWorldManager {
       gameState,
       inputReader,
       socketEmit,
-      camera
+      camera,
+      renderer
     );
   }
 
@@ -42,7 +45,8 @@ export class ClientWorldManager {
     gameState: GameState,
     inputReader: IInputReader,
     socketEmit: ISocketEmit,
-    camera: Camera
+    camera: Camera,
+    renderer: PIXI.Renderer
   ) {
     camera.setLevelSize(Constants.WORLD_BOUNDS);
     this.worldManager
@@ -61,7 +65,12 @@ export class ClientWorldManager {
       .registerSystem(InterpolateSystem, { gameState })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
       .registerSystem(CameraSystem, { camera })
-      .registerSystem(RenderSystem, { spriteCache, gameState, camera });
+      .registerSystem(RenderSystem, {
+        spriteCache,
+        gameState,
+        camera,
+        renderer,
+      });
   }
 
   public start() {

@@ -13,7 +13,6 @@ import { ParallaxBg } from './parallax_bg';
 import { Camera } from '../game/camera';
 
 export class RenderSystem extends System {
-  private canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
   private spriteCache: SpriteCache = null;
   private gameState: GameState = null;
   private renderer: PIXI.Renderer = null;
@@ -33,20 +32,13 @@ export class RenderSystem extends System {
     this.spriteCache = attributes.spriteCache;
     this.gameState = attributes.gameState;
     this.camera = attributes.camera;
-    this.renderer = new PIXI.Renderer({ view: this.canvas });
-
-    // TODO scale canvas on window resize
-    // CSS 100% doesn't seem to yield proper height results for some reason
-    this.camera.setSize({
-      x: this.canvas.width,
-      y: this.canvas.height,
-    });
+    this.renderer = attributes.renderer;
 
     this.container = new PIXI.Container();
     this.parallaxBg = new ParallaxBg(
       this.spriteCache.getAssetManager(),
-      this.canvas.width,
-      this.canvas.height
+      this.camera.getBounds().w,
+      this.camera.getBounds().h
     );
   }
 

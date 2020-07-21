@@ -4,6 +4,7 @@ import ship_basic_white from '../../../public/assets/ship_basic_white.png';
 import Parallax60 from '../../../public/assets/Parallax60.png';
 import Parallax80 from '../../../public/assets/Parallax80.png';
 import Parallax100 from '../../../public/assets/Parallax100.png';
+import Level1 from '../../../public/assets/level_1.png';
 
 export class AssetManager {
   private ASSET_URIS: { [assetName: string]: string } = {};
@@ -17,6 +18,7 @@ export class AssetManager {
     this.ASSET_URIS[AssetName.PARALLAX_1] = Parallax100;
     this.ASSET_URIS[AssetName.PARALLAX_2] = Parallax80;
     this.ASSET_URIS[AssetName.PARALLAX_3] = Parallax60;
+    this.ASSET_URIS[AssetName.LEVEL_1] = Level1;
   }
 
   loadAssets() {
