@@ -3,6 +3,7 @@ import * as Constants from '../../shared/constants';
 import { GameState } from '../game/game_state';
 import geckos from '@geckos.io/client';
 import { ClientWorldManager } from '../client_world_manager';
+import { ClientLevelManager } from '../client_level_manager';
 
 export interface ISocketEmit {
   sendInputState(keyMask: number): void;
@@ -12,9 +13,12 @@ export class GeckosSocketHandler implements ISocketEmit {
   private channel: any = null;
   private roomIndex: number = -1;
   private gameState: GameState = null;
+  private worldManager: ClientWorldManager = null;
+  private levelManager: ClientLevelManager = null;
 
-  constructor(gameState: GameState) {
+  constructor(gameState: GameState, levelManager: ClientLevelManager) {
     this.gameState = gameState;
+    this.levelManager = levelManager;
   }
 
   connectedPromise = new Promise((resolve) => {
@@ -30,14 +34,15 @@ export class GeckosSocketHandler implements ISocketEmit {
     });
   });
 
-  public connect(world: ClientWorldManager) {
+  public connect(worldManager: ClientWorldManager) {
+    this.worldManager = worldManager;
     this.connectedPromise.then(() => {
       // Register callbacks:
 
       // Disconnect
       this.channel.onDisconnect(() => {
         console.log('Disconnected from server');
-        world.stop();
+        this.worldManager.stop();
         this.channel = null;
       });
 
@@ -45,7 +50,7 @@ export class GeckosSocketHandler implements ISocketEmit {
       this.channel.on(
         Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE,
         (response: Protocol.IJoinGameEventResponse) => {
-          console.log('Join ' + response.ok);
+          console.log('Game join ' + response.ok ? 'ok' : 'not ok');
           if (!response.ok) {
             console.log('Join game responded with NOK');
             return;
@@ -60,6 +65,11 @@ export class GeckosSocketHandler implements ISocketEmit {
             this.roomIndex = -1;
             return;
           }
+          console.log('Loading level ' + response.level);
+          this.levelManager.loadLevel(response.level);
+          console.log('Starting world');
+          this.worldManager.start();
+          console.log('Requesting spawn point');
           this.requestSpawn();
         }
       );

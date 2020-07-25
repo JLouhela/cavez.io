@@ -1,3 +1,5 @@
+import './css/styles.css';
+
 import { GeckosSocketHandler } from './network/geckos_socket_handler';
 import { AssetManager } from './assets/asset_manager';
 import { SpriteCache } from './assets/sprite_cache';
@@ -5,14 +7,8 @@ import { ClientWorldManager } from './client_world_manager';
 import { InputReader } from './input/input_reader';
 import { Camera } from './game/camera';
 import * as PIXI from 'pixi.js';
-
-import './css/styles.css';
 import { GameState } from './game/game_state';
-
-// TEST
-import { LevelParser } from './game/level_parser';
-import { Level } from '../shared/game/level';
-import { AssetName } from './assets/asset_names';
+import { ClientLevelManager } from './client_level_manager';
 
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById(
@@ -34,6 +30,7 @@ let gameState: GameState = null;
 let socketHandler: GeckosSocketHandler = null;
 let spriteCache: SpriteCache = null;
 let worldManager: ClientWorldManager = null;
+let levelManager: ClientLevelManager = null;
 
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 const renderer = new PIXI.Renderer({ view: canvas });
@@ -46,8 +43,9 @@ camera.setSize({
 Promise.all([assetManager.loadAssets()]).then(() => {
   Promise.all([
     (gameState = new GameState()),
-    (socketHandler = new GeckosSocketHandler(gameState)),
     (spriteCache = new SpriteCache(assetManager)),
+    (levelManager = new ClientLevelManager(renderer, spriteCache)),
+    (socketHandler = new GeckosSocketHandler(gameState, levelManager)),
     (worldManager = new ClientWorldManager(
       spriteCache,
       gameState,
@@ -56,6 +54,11 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       camera,
       renderer
     )),
+    // Cyclic dependency: SocketHandler takes responsibility of worldmanager:
+    // - Startup before spawn request
+    // - Teardown on disconnect
+    // SocketHandler also provides emiter interface for worldManager
+    //  => TODO refactor before painful
     socketHandler.connect(worldManager),
   ]).then(() => {
     playMenu.classList.remove('hidden');
@@ -68,18 +71,6 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       socketHandler.joinGame(playerName, roomNumber);
       gameState.setPlayerName(playerName);
       playMenu.classList.add('hidden');
-
-      // TODO hook to joinGame -> receive current level -> init client side level
-      // => remove test code and init level
-      // => chunk updates later commit
-
-      /// PARSER TEST
-      const testParser = new LevelParser(renderer);
-      const lvlid = spriteCache.createSprite(AssetName.LEVEL_1);
-      const testSource = testParser.readPng(spriteCache.getSprite(lvlid));
-      const testLevel = new Level(testSource);
-      ////
-      worldManager.start();
     };
   });
 });

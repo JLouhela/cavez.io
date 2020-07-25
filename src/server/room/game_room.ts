@@ -1,7 +1,7 @@
 import { IPlayer } from '../player/player_interface';
 import { ServerWorldManager } from '../game/server_world_manager';
 import { ISocketEmit } from '../socket/socket_emit_interface';
-import { LevelManager } from '../game/level_manager';
+import { ServerLevelManager } from '../game/server_level_manager';
 import * as Protocol from '../../shared/protocol';
 import { InputManager } from '../game/input_manager';
 
@@ -16,14 +16,14 @@ export class GameRoom implements IGameRoom {
   private players: IPlayer[] = [];
   private socketEmit: ISocketEmit = null;
   private worldManager: ServerWorldManager = null;
-  private levelManager: LevelManager = null;
+  private levelManager: ServerLevelManager = null;
   private inputManager: InputManager = null;
   private initialized: boolean = false;
 
   constructor(index: number, title: string, socketEmit: ISocketEmit) {
     this.index = index;
     this.title = title;
-    this.levelManager = new LevelManager();
+    this.levelManager = new ServerLevelManager();
 
     this.levelManager.loadLevel().then(() => {
       // TODO check if load was ok?

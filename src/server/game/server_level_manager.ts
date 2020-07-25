@@ -4,7 +4,7 @@ import { LevelSource } from '../../shared/game/level_source';
 import { Levels } from '../../shared/levels';
 import * as LevelParser from '../utils/level_parser';
 
-export class LevelManager {
+export class ServerLevelManager {
   private currentLevel: Level;
   private currentLevelName: string;
   private levelNameMapping: { [levelName: string]: string } = {};
