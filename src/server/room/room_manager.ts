@@ -7,6 +7,7 @@ export interface IRoomManager {
   removeFromRoom(socket: any): void;
   getRoom(index: number): GameRoom;
   getPlayer(socketId: string, roomIndex: number): IPlayer;
+  getLevel(roomIndex: number): string;
 }
 
 export class RoomManager implements IRoomManager {
@@ -51,7 +52,11 @@ export class RoomManager implements IRoomManager {
     return this.rooms[roomIndex].getPlayer(socketId);
   }
 
-  public getRoom(roomIndex: number) {
+  public getRoom(roomIndex: number): GameRoom {
     return this.rooms[roomIndex];
+  }
+
+  public getLevel(roomIndex: number): string {
+    return this.rooms[roomIndex].getLevel();
   }
 }

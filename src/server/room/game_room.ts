@@ -38,8 +38,6 @@ export class GameRoom implements IGameRoom {
         'Game room ' + index + ' with title ' + title + ' started successfully'
       );
       console.log('Current level: ' + this.levelManager.levelName);
-      // TODO: emit msg to client stating current level => ensure client + server has same level loaded
-      // -> later on transmit delta of level data (== destroyed terrain)
     });
   }
 
@@ -103,5 +101,9 @@ export class GameRoom implements IGameRoom {
 
   addInputUpdate(socketId: string, event: Protocol.IInputUpdateEvent) {
     this.inputManager.addInputUpdate(socketId, event);
+  }
+
+  getLevel(): string {
+    return this.levelManager.levelName;
   }
 }

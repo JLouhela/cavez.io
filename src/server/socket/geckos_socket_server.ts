@@ -44,6 +44,7 @@ export class GeckosSocketServer {
             const response: Protocol.IJoinGameEventResponse = {
               ok,
               room: event.room,
+              level: this.roomManager.getLevel(event.room),
             };
             channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE, response);
           }

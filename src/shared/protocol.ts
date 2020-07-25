@@ -37,4 +37,5 @@ export interface IJoinGameEvent {
 export interface IJoinGameEventResponse {
   ok: boolean;
   room: number;
+  level: string;
 }
