@@ -11,6 +11,7 @@ import { GameState } from './game/game_state';
 
 // TEST
 import { LevelParser } from './game/level_parser';
+import { Level } from '../shared/game/level';
 import { AssetName } from './assets/asset_names';
 
 const playButton = document.getElementById('play-button');
@@ -67,12 +68,16 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       socketHandler.joinGame(playerName, roomNumber);
       gameState.setPlayerName(playerName);
       playMenu.classList.add('hidden');
+
       // TODO hook to joinGame -> receive current level -> init client side level
+      // => remove test code and init level
+      // => chunk updates later commit
 
       /// PARSER TEST
       const testParser = new LevelParser(renderer);
       const lvlid = spriteCache.createSprite(AssetName.LEVEL_1);
-      testParser.readPng(spriteCache.getSprite(lvlid));
+      const testSource = testParser.readPng(spriteCache.getSprite(lvlid));
+      const testLevel = new Level(testSource);
       ////
       worldManager.start();
     };

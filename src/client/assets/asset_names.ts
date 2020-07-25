@@ -3,5 +3,5 @@ export enum AssetName {
   PARALLAX_1 = 'Parallax_1',
   PARALLAX_2 = 'Parallax_2',
   PARALLAX_3 = 'Parallax_3',
-  LEVEL_1 = 'Level_1',
+  LEVEL_1 = 'level_1',
 }

@@ -3,10 +3,8 @@ import * as fs from 'fs';
 import { LevelSource } from '../../shared/game/level_source';
 import { Pixel } from '../../shared/game/level_source';
 
-// client side: let paska =  await readPng(filename)
-
-export function readPng(pngFile: string) {
-  const parsedPromise = new Promise((resolve) => {
+export function readPng(pngFile: string): Promise<LevelSource> {
+  const parsedPromise = new Promise<LevelSource>((resolve) => {
     fs.createReadStream(pngFile)
       .pipe(new PNG({ filterType: 4 }))
       .on('parsed', function () {
@@ -27,7 +25,7 @@ export function readPng(pngFile: string) {
             );
           }
         }
-        console.log('PARSED LEVEL IMG DATA');
+        console.log('Level image data parsed from ' + pngFile);
         resolve(source);
       });
   });

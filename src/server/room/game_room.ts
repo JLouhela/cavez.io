@@ -7,6 +7,7 @@ import { InputManager } from '../game/input_manager';
 
 export interface IGameRoom {
   getPlayers(): IPlayer[];
+  isReady(): boolean;
 }
 
 export class GameRoom implements IGameRoom {
@@ -17,24 +18,40 @@ export class GameRoom implements IGameRoom {
   private worldManager: ServerWorldManager = null;
   private levelManager: LevelManager = null;
   private inputManager: InputManager = null;
+  private initialized: boolean = false;
 
   constructor(index: number, title: string, socketEmit: ISocketEmit) {
     this.index = index;
     this.title = title;
     this.levelManager = new LevelManager();
-    this.inputManager = new InputManager();
-    this.worldManager = new ServerWorldManager(
-      socketEmit,
-      this,
-      this.inputManager
-    );
+
+    this.levelManager.loadLevel().then(() => {
+      // TODO check if load was ok?
+      this.inputManager = new InputManager();
+      this.worldManager = new ServerWorldManager(
+        socketEmit,
+        this,
+        this.inputManager
+      );
+      this.initialized = true;
+      console.log(
+        'Game room ' + index + ' with title ' + title + ' started successfully'
+      );
+      console.log('Current level: ' + this.levelManager.levelName);
+      // TODO: emit msg to client stating current level => ensure client + server has same level loaded
+      // -> later on transmit delta of level data (== destroyed terrain)
+    });
   }
 
-  getPlayers() {
+  public getPlayers() {
     return this.players;
   }
 
-  addPlayer(player: IPlayer) {
+  public isReady(): boolean {
+    return this.initialized;
+  }
+
+  public addPlayer(player: IPlayer) {
     if (this.players.find((p) => p.socket.id === player.socket.id)) {
       console.log('Player ' + player.name + ' already in room ' + this.index);
       return;

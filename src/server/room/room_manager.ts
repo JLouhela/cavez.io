@@ -29,6 +29,10 @@ export class RoomManager implements IRoomManager {
       console.log('Room ' + roomIndex + ' does not exist');
       return false;
     }
+    if (!this.rooms[roomIndex].isReady()) {
+      console.log('Room ' + roomIndex + ' not ready yet');
+      return false;
+    }
     if (this.rooms[roomIndex].playerCount() >= this.playersPerRoom) {
       console.log('Room ' + roomIndex + ' is full');
       return false;
