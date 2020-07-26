@@ -1,7 +1,12 @@
 # cavez.io
 Multiplayer browser cave flying game
 
-Simply boilerplate so far.
+Currently contains very immature framework of
+- Server side + client side physics (no proper corrective actions + latency handling)
+- Basic rendering of ship + background, no levels yet
+- Geckos.io sockets (WebRTC) with default configuration, only works on chrome?
+- Support for multiple connections (no proper interpolation)
+
 
 # Install instructions
 make install
