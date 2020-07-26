@@ -1,37 +1,19 @@
-import { CPosition } from './cposition';
-import { Component } from 'ecsy';
-import { CPlayer } from './cplayer';
-import { CPhysics } from './cphysics';
+import { CPositionType, CPosition } from './cposition';
+import { CPlayerType, CPlayer } from './cplayer';
+import { CPhysicsType, CPhysics } from './cphysics';
 
-export class CNetworkSync extends Component {
-  public pos: CPosition;
-  public player: CPlayer;
-  public physics: CPhysics;
-  public entityId: number;
+import { Component, Types } from 'ecsy';
 
-  constructor() {
-    super();
-    this.reset();
-  }
-
-  clear() {
-    this.pos = null;
-    this.player = null;
-    this.physics = null;
-    this.entityId = -1;
-  }
-
-  copy(src: CNetworkSync) {
-    this.pos = src.pos;
-    this.player = src.player;
-    this.entityId = src.entityId;
-    this.physics = src.physics;
-  }
-
-  reset() {
-    this.pos = null;
-    this.player = null;
-    this.physics = null;
-    this.entityId = -1;
-  }
+export class CNetworkSync extends Component<CNetworkSync> {
+  pos: CPosition;
+  player: CPlayer;
+  physics: CPhysics;
+  entityId: number;
 }
+
+CNetworkSync.schema = {
+  pos: { type: CPositionType, default: null },
+  player: { type: CPlayerType, default: null },
+  physics: { type: CPhysicsType, default: null },
+  entityId: { type: Types.Number, default: -1 },
+};

@@ -23,7 +23,7 @@ export class GeckosSocketServer {
   }
 
   public registerEvents(): void {
-    this.io.onConnection((channel) => {
+    this.io.onConnection((channel: any) => {
       channel.onDisconnect(() => {
         this.roomManager.removeFromRoom(channel);
         console.log(`${channel.id} disconnected`);

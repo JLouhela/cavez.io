@@ -1,4 +1,3 @@
-import { WorldManager } from '../shared/game/world_manager';
 import { RenderSystem } from './rendering/render_system';
 import { SpriteCache } from './assets/sprite_cache';
 import { EntityInitSystem } from './network/entity_init_system';
@@ -12,13 +11,25 @@ import { InputReadSystem } from './input/input_read_system';
 import { ISocketEmit } from './network/geckos_socket_handler';
 import { PhysicsSystem } from '../shared/game/system/physics_system';
 import * as Constants from '../shared/constants';
-import { Camera } from './game/camera';
-import { CameraSystem } from './game/camera_system';
+import { Camera } from './game/camera/camera';
+import { CameraSystem } from './game/camera/camera_system';
 import * as PIXI from 'pixi.js';
+import { World } from 'ecsy';
+import { CPhysics } from '../shared/game/component/cphysics';
+import { CThrottle } from '../shared/game/component/cthrottle';
+import { CSync } from '../shared/game/component/ctags';
+import { CPlayer } from '../shared/game/component/cplayer';
+import { CNetworkSync } from '../shared/game/component/cnetwork_sync';
+import { CNetworkEntity } from '../shared/game/component/cnetwork_entity';
+import { CPosition } from '../shared/game/component/cposition';
+import { CCameraFollow } from './game/camera/ccamera_follow';
+import { CSprite } from './rendering/csprite';
+import { CInput } from '../shared/game/component/cinput';
 
 export class ClientWorldManager {
-  private worldManager: WorldManager = null;
   private entityFactory: EntityFactory = null;
+  private running: boolean = false;
+  private world: World = null;
 
   constructor(
     spriteCache: SpriteCache,
@@ -28,9 +39,10 @@ export class ClientWorldManager {
     camera: Camera,
     renderer: PIXI.Renderer
   ) {
-    this.worldManager = new WorldManager();
-    this.entityFactory = new EntityFactory(this.worldManager.getWorld());
-    this.initClientExtras(
+    this.world = new World();
+    this.entityFactory = new EntityFactory(this.world);
+    this.registerComponents();
+    this.initSystems(
       spriteCache,
       gameState,
       inputReader,
@@ -39,8 +51,20 @@ export class ClientWorldManager {
       renderer
     );
   }
+  private registerComponents() {
+    this.world.registerComponent(CThrottle);
+    this.world.registerComponent(CPhysics);
+    this.world.registerComponent(CPlayer);
+    this.world.registerComponent(CSync);
+    this.world.registerComponent(CNetworkSync);
+    this.world.registerComponent(CNetworkEntity);
+    this.world.registerComponent(CPosition);
+    this.world.registerComponent(CCameraFollow);
+    this.world.registerComponent(CSprite);
+    this.world.registerComponent(CInput);
+  }
 
-  public initClientExtras(
+  private initSystems(
     spriteCache: SpriteCache,
     gameState: GameState,
     inputReader: IInputReader,
@@ -49,8 +73,7 @@ export class ClientWorldManager {
     renderer: PIXI.Renderer
   ) {
     camera.setLevelSize(Constants.WORLD_BOUNDS);
-    this.worldManager
-      .getWorld()
+    this.world
       .registerSystem(InputReadSystem, { inputReader, socketEmit })
       .registerSystem(EntityInitSystem, {
         gameState,
@@ -73,11 +96,26 @@ export class ClientWorldManager {
       });
   }
 
-  public start() {
-    this.worldManager.client_start();
+  public stop() {
+    this.world.stop();
+    this.running = false;
   }
 
-  public stop() {
-    this.worldManager.getWorld().stop();
+  public start(): void {
+    this.running = true;
+    function client_step() {
+      const time = performance.now();
+      const delta = (time - lastTime) / 1000.0;
+
+      // Run all the systems
+      world.execute(delta, time);
+      lastTime = time;
+      requestAnimationFrame(client_step);
+    }
+    let lastTime = performance.now();
+    const world = this.world;
+    if (this.running) {
+      client_step();
+    }
   }
 }

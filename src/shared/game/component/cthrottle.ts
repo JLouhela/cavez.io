@@ -1,26 +1,11 @@
-import { Component } from 'ecsy';
+import { Component, Types } from 'ecsy';
 
-export class CThrottle extends Component {
-  public throttlePower: number;
-  public throttleOn: boolean;
-
-  constructor() {
-    super();
-    this.reset();
-  }
-
-  clear() {
-    this.throttlePower = 0.0;
-    this.throttleOn = false;
-  }
-
-  copy(src: CThrottle) {
-    this.throttlePower = src.throttlePower;
-    this.throttleOn = src.throttleOn;
-  }
-
-  reset() {
-    this.throttlePower = 0.0;
-    this.throttleOn = false;
-  }
+export class CThrottle extends Component<CThrottle> {
+  throttlePower: number;
+  throttleOn: boolean;
 }
+
+CThrottle.schema = {
+  throttlePower: { type: Types.Number, default: 0.0 },
+  throttleOn: { type: Types.Boolean, default: false },
+};

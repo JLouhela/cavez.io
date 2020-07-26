@@ -1,25 +1,24 @@
-import { Component } from 'ecsy';
+import {
+  Component,
+  Types,
+  createType,
+  copyCopyable,
+  cloneClonable,
+} from 'ecsy';
 
-export class CPlayer extends Component {
-  public color: string;
-  public name: string;
-  constructor() {
-    super();
-    this.reset();
-  }
-
-  clear() {
-    this.color = '';
-    this.name = '';
-  }
-
-  copy(src: CPlayer) {
-    this.color = src.color;
-    this.name = src.name;
-  }
-
-  reset() {
-    this.color = '#000000';
-    this.name = '';
-  }
+export class CPlayer extends Component<CPlayer> {
+  color: string;
+  name: string;
 }
+
+CPlayer.schema = {
+  color: { type: Types.String, default: '#000000' },
+  name: { type: Types.String, default: 'unnamed' },
+};
+
+export const CPlayerType = createType({
+  name: 'CPlayer',
+  default: new Component<CPlayer>(),
+  copy: copyCopyable,
+  clone: cloneClonable,
+});

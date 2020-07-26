@@ -5,7 +5,7 @@ import { AssetManager } from './assets/asset_manager';
 import { SpriteCache } from './assets/sprite_cache';
 import { ClientWorldManager } from './client_world_manager';
 import { InputReader } from './input/input_reader';
-import { Camera } from './game/camera';
+import { Camera } from './game/camera/camera';
 import * as PIXI from 'pixi.js';
 import { GameState } from './game/game_state';
 import { ClientLevelManager } from './client_level_manager';

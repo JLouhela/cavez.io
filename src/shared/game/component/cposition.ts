@@ -1,25 +1,24 @@
-import { Component } from 'ecsy';
+import {
+  Component,
+  Types,
+  createType,
+  copyCopyable,
+  cloneClonable,
+} from 'ecsy';
 
-export class CPosition extends Component {
-  public x: number;
-  public y: number;
-
-  constructor() {
-    super();
-    this.reset();
-  }
-
-  clear() {
-    this.reset();
-  }
-
-  copy(src: CPosition) {
-    this.x = src.x;
-    this.y = src.y;
-  }
-
-  reset() {
-    this.x = 0;
-    this.y = 0;
-  }
+export class CPosition extends Component<CPosition> {
+  x: number;
+  y: number;
 }
+
+CPosition.schema = {
+  x: { type: Types.Number, default: 0 },
+  y: { type: Types.Number, default: 0 },
+};
+
+export const CPositionType = createType({
+  name: 'CPosition',
+  default: new Component<CPosition>(),
+  copy: copyCopyable,
+  clone: cloneClonable,
+});

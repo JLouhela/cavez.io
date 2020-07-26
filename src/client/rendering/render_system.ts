@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { System } from 'ecsy';
 import { SpriteCache } from '../assets/sprite_cache';
 import { GameState } from '../game/game_state';
-import { CSprite } from '../../shared/game/component/csprite';
+import { CSprite } from './csprite';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
@@ -10,7 +10,7 @@ import { IVec2 } from '../../shared/math/vector';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPhysics } from '../../shared/game/component/cphysics';
 import { ParallaxBg } from './parallax_bg';
-import { Camera } from '../game/camera';
+import { Camera } from '../game/camera/camera';
 
 export class RenderSystem extends System {
   private spriteCache: SpriteCache = null;

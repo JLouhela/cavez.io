@@ -1,26 +1,11 @@
-import { Component } from 'ecsy';
+import { Component, Types } from 'ecsy';
 
-export class CNetworkEntity extends Component {
-  public serverId: number;
-  public clientId: number;
-
-  constructor() {
-    super();
-    this.reset();
-  }
-
-  clear() {
-    this.serverId = -1;
-    this.clientId = -1;
-  }
-
-  copy(src: CNetworkEntity) {
-    this.serverId = src.serverId;
-    this.clientId = src.clientId;
-  }
-
-  reset() {
-    this.serverId = -1;
-    this.clientId = -1;
-  }
+export class CNetworkEntity extends Component<CNetworkEntity> {
+  serverId: number;
+  clientId: number;
 }
+
+CNetworkEntity.schema = {
+  serverId: { type: Types.Number, default: -1 },
+  clientId: { type: Types.Number, default: -1 },
+};

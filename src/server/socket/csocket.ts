@@ -1,22 +1,9 @@
-import { Component } from 'ecsy';
+import { Component, Types } from 'ecsy';
 
-export class CSocket extends Component {
-  public socketId: string;
-
-  constructor() {
-    super();
-    this.reset();
-  }
-
-  clear() {
-    this.socketId = '';
-  }
-
-  copy(src: CSocket) {
-    this.socketId = src.socketId;
-  }
-
-  reset() {
-    this.socketId = '';
-  }
+export class CSocket extends Component<CSocket> {
+  socketId: string;
 }
+
+CSocket.schema = {
+  socketId: { type: Types.String, default: '' },
+};

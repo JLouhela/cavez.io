@@ -25,7 +25,7 @@
     "@geckos.io/client": "^1.6.1",
     "@geckos.io/server": "^1.6.1",
     "@types/pngjs": "^3.4.2",
-    "ecsy": "https://github.com/JLouhela/ecsy/tarball/master",
+    "ecsy": "^0.3.2",
     "express": "^4.17.1",
     "keycode-js": "^2.0.3",
     "pixi.js": "^5.3.1",

@@ -1,7 +1,7 @@
 import { System } from 'ecsy';
-import { CCameraFollow } from '../../shared/game/component/ccamera_follow';
+import { CCameraFollow } from './ccamera_follow';
 import { Camera } from './camera';
-import { CPosition } from '../../shared/game/component/cposition';
+import { CPosition } from '../../../shared/game/component/cposition';
 import { TilingSprite } from 'pixi.js';
 
 export class CameraSystem extends System {

@@ -1,7 +1,7 @@
 import { Entity } from 'ecsy';
-import { IVec2 } from '../../shared/math/vector';
-import { IRect } from '../../shared/math/rect';
-import { Rect } from '../../shared/math/rect';
+import { IVec2 } from '../../../shared/math/vector';
+import { IRect } from '../../../shared/math/rect';
+import { Rect } from '../../../shared/math/rect';
 
 export interface IScreenPos {
   readonly x: number;
