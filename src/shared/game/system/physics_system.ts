@@ -7,6 +7,8 @@ import { Vec2, IVec2 } from '../../math/vector';
 
 export class PhysicsSystem extends System {
   private worldBounds: IVec2 = null;
+  private updateAccumulator: number = 0.0;
+  private timeStep: number = 1 / 60; // Update ratio: 60fps
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
@@ -15,7 +17,15 @@ export class PhysicsSystem extends System {
     this.worldBounds = attributes.worldBounds;
   }
 
-  execute(delta: number, time: number) {
+  private fixedUpdate(delta: number) {
+    this.updateAccumulator += delta;
+    while (this.updateAccumulator >= this.timeStep) {
+      this.performUpdate(this.timeStep);
+      this.updateAccumulator -= this.timeStep;
+    }
+  }
+
+  private performUpdate(delta: number) {
     this.queries.all.results.forEach((entity) => {
       const physComp = entity.getMutableComponent(CPhysics);
 
@@ -73,6 +83,10 @@ export class PhysicsSystem extends System {
         }
       }
     });
+  }
+
+  execute(delta: number, time: number) {
+    this.fixedUpdate(delta);
   }
 }
 
