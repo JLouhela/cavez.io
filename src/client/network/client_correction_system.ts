@@ -47,9 +47,15 @@ export class ClientCorrectionSystem extends System {
     const serverPhys = syncData.physics;
     const clientPhys = player.getMutableComponent(CPhysics);
 
-    // TODO: Only correct after receiving ack for input?
-    this.correctPos(clientPos, serverPos, clientPhys);
-    this.correctAngle(clientPhys, serverPhys);
+    // TODO: corrections should be done based on past
+    // - handshake timestamps with server
+    // - interpolate to matching timestamps in the past
+    // - compare delta between match -> adapt current pos according to delta in history
+    // Since in current state the corrections make no sense -> disabled
+    // Code stored as a reference how lerp + snap can be done
+
+    // this.correctPos(clientPos, serverPos, clientPhys);
+    // this.correctAngle(clientPhys, serverPhys);
   }
 
   private correctPos(
@@ -57,9 +63,8 @@ export class ClientCorrectionSystem extends System {
     serverPos: CPosition,
     clientPhys: CPhysics
   ) {
-    // Use velocity to adapt pos threshold
-    const posThresholdX = Math.max(10, clientPhys.velocity.x / 3);
-    const posThresholdY = Math.max(10, clientPhys.velocity.y / 3);
+    const posThresholdX = Math.max(10, clientPhys.velocity.x / 2);
+    const posThresholdY = Math.max(10, clientPhys.velocity.y / 2);
 
     if (Math.abs(clientPos.x - serverPos.x) < posThresholdX) {
       clientPos.x -= (clientPos.x - serverPos.x) / 10;

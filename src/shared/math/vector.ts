@@ -44,9 +44,6 @@ export class Vec2 {
   }
 
   public copy(src: Vec2) {
-    console.log('copy vector: this = ' + this._x + ', ' + this._y);
-    console.log('copy vector: src = ' + src._x + ', ' + src._y);
-
     this._x = src._x;
     this._y = src._y;
     this.calculateNormal();
