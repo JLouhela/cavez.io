@@ -5,10 +5,6 @@ import { AssetName } from '../assets/asset_names';
 
 export class ParallaxBg {
   private container = new PIXI.Container();
-  private screenWidth: number = 0;
-  private screenHeight: number = 0;
-  private screenWidthHalf: number = 0;
-  private screenHeightHalf: number = 0;
 
   // Not sure if it's needed to keep the reference alive
   // For an odd reason modifications of sprites inside container
@@ -17,20 +13,15 @@ export class ParallaxBg {
   private parallaxMid: PIXI.TilingSprite = null;
   private parallaxNear: PIXI.TilingSprite = null;
 
-  private farSpeed: number = -0.2;
-  private midSpeed: number = -0.4;
-  private nearSpeed: number = -0.7;
+  private farSpeed: number = -0.1;
+  private midSpeed: number = -0.2;
+  private nearSpeed: number = -0.3;
 
   constructor(
     assetManager: AssetManager,
     screenWidth: number,
     screenHeight: number
   ) {
-    this.screenWidth = screenWidth;
-    this.screenHeight = screenHeight;
-    this.screenWidthHalf = screenWidth / 2;
-    this.screenHeightHalf = screenHeight / 2;
-
     this.parallaxFar = new PIXI.TilingSprite(
       assetManager.getTexture(AssetName.PARALLAX_1),
       screenWidth,

@@ -9,5 +9,5 @@ export const AIR_DENSITY = 1.0;
 export const SHIP_THROTTLE_PER_MASS = 500000.0;
 export const SHIP_ROTATION_PER_MASS_INVERSE = 100.0;
 
-// Propably will be dynamic later, for now just use something to test wrapping
-export const WORLD_BOUNDS = { x: 1000, y: 1000 };
+// May be dynamic later, but for now all levels are fixed as 2048 x 2048
+export const WORLD_BOUNDS = { x: 2048, y: 2048 };

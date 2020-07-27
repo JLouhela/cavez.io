@@ -11,6 +11,8 @@ import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPhysics } from '../../shared/game/component/cphysics';
 import { ParallaxBg } from './parallax_bg';
 import { Camera } from '../game/camera/camera';
+import { EnvironmentTexture } from './environment_texture';
+import { AssetName } from '../assets/asset_names';
 
 export class RenderSystem extends System {
   private spriteCache: SpriteCache = null;
@@ -18,12 +20,14 @@ export class RenderSystem extends System {
   private renderer: PIXI.Renderer = null;
   private container: PIXI.Container = null;
   private parallaxBg: ParallaxBg = null;
+  private environment: EnvironmentTexture = null;
   private camera: Camera;
 
   // Options for rendering client server positions as received
   private ghostSpriteId: number = -1;
   private renderGhost: boolean = true; // TODO generate somehow from webpack cfg?
 
+  // TODO pass in level manager for current level
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore
@@ -35,6 +39,14 @@ export class RenderSystem extends System {
     this.renderer = attributes.renderer;
 
     this.container = new PIXI.Container();
+    const TODO_PASS_AS_ARG_LEVEL = AssetName.LEVEL_1;
+    // TODO: start pos of env is wrong -> clients not in sync
+    this.environment = new EnvironmentTexture(
+      this.spriteCache.getAssetManager(),
+      this.renderer,
+      TODO_PASS_AS_ARG_LEVEL
+    );
+
     this.parallaxBg = new ParallaxBg(
       this.spriteCache.getAssetManager(),
       this.camera.getBounds().w,
@@ -47,8 +59,14 @@ export class RenderSystem extends System {
     // Could use access by name
     this.container.removeChildren();
 
-    const cameraPos: IVec2 = this.camera.getMovementDelta();
-    this.container.addChild(this.parallaxBg.render(cameraPos));
+    const cameraDelta: IVec2 = this.camera.getMovementDelta();
+    this.container.addChild(this.parallaxBg.render(cameraDelta));
+    this.container.addChild(
+      this.environment.render(
+        this.camera.getBounds().x,
+        this.camera.getBounds().y
+      )
+    );
 
     this.queries.renderable.results.forEach((entity) => {
       const spriteComp = entity.getComponent(CSprite);
