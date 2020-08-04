@@ -71,8 +71,9 @@ export class GameRoom implements IGameRoom {
     const found = this.players.find((p) => p.socket.id === socketId);
     if (found) {
       console.log('Erased player ' + found.name + ' from room ' + this.index);
-      this.worldManager.removePlayer(found.name);
       found.socket.leave();
+      found.socket.close();
+      this.worldManager.removePlayer(found.name);
       this.players.splice(this.players.indexOf(found), 1);
     }
   }

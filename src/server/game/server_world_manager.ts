@@ -16,7 +16,6 @@ import { CPhysics } from '../../shared/game/component/cphysics';
 import { CThrottle } from '../../shared/game/component/cthrottle';
 import { CSync } from '../../shared/game/component/ctags';
 import { CPlayer } from '../../shared/game/component/cplayer';
-import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { CPosition } from '../../shared/game/component/cposition';
 
 export class ServerWorldManager {
@@ -42,7 +41,6 @@ export class ServerWorldManager {
     this.world.registerComponent(CPhysics);
     this.world.registerComponent(CPlayer);
     this.world.registerComponent(CSync);
-    this.world.registerComponent(CNetworkSync);
     this.world.registerComponent(CPosition);
   }
 
@@ -52,11 +50,11 @@ export class ServerWorldManager {
     inputManager: InputManager
   ) {
     this.world
-      .registerSystem(InputHandleSystem, { inputManager })
-      .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
       .registerSystem(EntityDeleteSystem, {
         eraseByPlayerName: this.eraseByPlayerName,
       })
+      .registerSystem(InputHandleSystem, { inputManager })
+      .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS });
   }
 

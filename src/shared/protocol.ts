@@ -1,4 +1,6 @@
-import { CNetworkSync } from './game/component/cnetwork_sync';
+import { CPosition } from './game/component/cposition';
+import { CPlayer } from './game/component/cplayer';
+import { CPhysics } from './game/component/cphysics';
 
 export enum SOCKET_EVENT {
   CONNECT = 'connect',
@@ -16,7 +18,14 @@ export enum INPUT_MASK {
   ROT_CCW = 0x04,
 }
 
-export type IEntityUpdate = { [id: number]: CNetworkSync };
+export interface IEntitySyncPacket {
+  pos: CPosition;
+  player: CPlayer;
+  physics: CPhysics;
+  entityId: number; // Redundant, consider removing this
+}
+
+export type IEntityUpdate = { [id: number]: IEntitySyncPacket };
 
 export interface IEntityUpdateEvent {
   timestamp: number;

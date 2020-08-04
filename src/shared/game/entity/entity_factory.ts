@@ -2,7 +2,6 @@ import { World, Entity } from 'ecsy';
 import { CPosition } from './../component/cposition';
 import { CPlayer } from './../component/cplayer';
 import { IVec2 } from './../../math/vector';
-import { CNetworkSync } from '../component/cnetwork_sync';
 import { CNetworkEntity } from '../component/cnetwork_entity';
 import { CCameraFollow } from '../../../client/game/camera/ccamera_follow';
 import { CSprite } from '../../../client/rendering/csprite';
@@ -11,6 +10,7 @@ import { CPhysics } from '../component/cphysics';
 import { CThrottle } from '../component/cthrottle';
 import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
+import { IEntitySyncPacket } from '../../../shared/protocol';
 
 // TODO: Clear server / client separation
 
@@ -54,24 +54,24 @@ export class EntityFactory {
     return e;
   }
 
-  public copyPlayerEntity(syncComp: CNetworkSync): Entity {
+  public copyPlayerEntity(sync: IEntitySyncPacket): Entity {
     const player = this.createPlayerEntity(
-      syncComp.player.name,
-      syncComp.player.color,
-      syncComp.pos
+      sync.player.name,
+      sync.player.color,
+      sync.pos
     );
-    player.getMutableComponent(CPhysics).copy(syncComp.physics);
+    player.getMutableComponent(CPhysics).copy(sync.physics);
     return player;
   }
 
-  public copyEntity(syncComp: CNetworkSync) {
-    if (syncComp.player) {
-      return this.copyPlayerEntity(syncComp);
+  public copyEntity(sync: IEntitySyncPacket) {
+    if (sync.player) {
+      return this.copyPlayerEntity(sync);
     }
   }
 
-  public copyNetworkEntity(syncComp: CNetworkSync, serverId: number): Entity {
-    const entity = this.copyEntity(syncComp);
+  public copyNetworkEntity(sync: IEntitySyncPacket, serverId: number): Entity {
+    const entity = this.copyEntity(sync);
     if (!entity) {
       return null;
     }

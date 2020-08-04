@@ -2,16 +2,16 @@ import { System, Entity } from 'ecsy';
 import { GameState } from '../game_state';
 import { CPosition } from '../../../shared/game/component/cposition';
 import { CPlayer } from '../../../shared/game/component/cplayer';
-import { CNetworkSync } from '../../../shared/game/component/cnetwork_sync';
 import { ISocketEmit } from '../../socket/socket_emit_interface';
 import { IGameRoom } from '../../room/game_room';
 import * as Constants from '../../../shared/constants';
 import { CPhysics } from '../../../shared/game/component/cphysics';
 import { CSync } from '../../../shared/game/component/ctags';
+import { IEntitySyncPacket } from '../../../shared/protocol';
 
 export class ServerSyncSystem extends System {
   private gameState: GameState;
-  private syncComponents: { [entityId: number]: CNetworkSync } = {};
+  private syncComponents: { [entityId: number]: IEntitySyncPacket } = {};
   private cumulativeTime: number = 0;
   private socketEmit: ISocketEmit;
   private gameRoom: IGameRoom;
@@ -39,7 +39,12 @@ export class ServerSyncSystem extends System {
       const entityDelta = this.gameState.getDelta(entity.id);
 
       if (!this.syncComponents[entity.id]) {
-        this.syncComponents[entity.id] = new CNetworkSync();
+        this.syncComponents[entity.id] = {
+          pos: null,
+          player: null,
+          physics: null,
+          entityId: entity.id,
+        };
       }
       this.updateSyncComponent(this.syncComponents[entity.id], entityDelta);
     });
@@ -56,6 +61,7 @@ export class ServerSyncSystem extends System {
 
     // Finally delete removed entities
     componentsToDelete.forEach((id) => {
+      console.log('Deleted sync component for entity ' + id);
       delete this.syncComponents[+id];
     });
 
@@ -66,18 +72,18 @@ export class ServerSyncSystem extends System {
     );
   }
 
-  private updateSyncComponent(csync: CNetworkSync, entity: Entity) {
+  private updateSyncComponent(sync: IEntitySyncPacket, entity: Entity) {
     if (entity.hasComponent(CPosition)) {
-      csync.pos = entity.getComponent(CPosition);
+      sync.pos = entity.getComponent(CPosition).clone();
     }
     if (entity.hasComponent(CPlayer)) {
-      csync.player = entity.getComponent(CPlayer);
+      sync.player = entity.getComponent(CPlayer).clone();
     }
     if (entity.hasComponent(CPhysics)) {
-      csync.physics = entity.getComponent(CPhysics);
+      sync.physics = entity.getComponent(CPhysics).clone();
     }
     // TODO unnecessary, id is the key
-    csync.entityId = entity.id;
+    sync.entityId = entity.id;
   }
 }
 

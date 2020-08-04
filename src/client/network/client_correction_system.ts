@@ -2,7 +2,6 @@ import { System } from 'ecsy';
 import { GameState } from '../game/game_state';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPlayer } from '../../shared/game/component/cplayer';
-import { CNetworkSync } from '../../shared/game/component/cnetwork_sync';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CPhysics } from '../../shared/game/component/cphysics';
 
