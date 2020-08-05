@@ -24,6 +24,9 @@ import { CPosition } from '../shared/game/component/cposition';
 import { CCameraFollow } from './game/camera/ccamera_follow';
 import { CSprite } from './rendering/csprite';
 import { CInput } from '../shared/game/component/cinput';
+import { CCollider } from '../shared/game/component/ccollider';
+import { CollisionDetectionSystem } from '../shared/game/system/collision_detection_system';
+import { ClientLevelManager } from './client_level_manager';
 
 export class ClientWorldManager {
   private entityFactory: EntityFactory = null;
@@ -36,7 +39,8 @@ export class ClientWorldManager {
     inputReader: IInputReader,
     socketEmit: ISocketEmit,
     camera: Camera,
-    renderer: PIXI.Renderer
+    renderer: PIXI.Renderer,
+    levelManager: ClientLevelManager
   ) {
     this.world = new World();
     this.entityFactory = new EntityFactory(this.world);
@@ -47,7 +51,8 @@ export class ClientWorldManager {
       inputReader,
       socketEmit,
       camera,
-      renderer
+      renderer,
+      levelManager
     );
   }
   private registerComponents() {
@@ -60,6 +65,7 @@ export class ClientWorldManager {
     this.world.registerComponent(CCameraFollow);
     this.world.registerComponent(CSprite);
     this.world.registerComponent(CInput);
+    this.world.registerComponent(CCollider);
   }
 
   private initSystems(
@@ -68,7 +74,8 @@ export class ClientWorldManager {
     inputReader: IInputReader,
     socketEmit: ISocketEmit,
     camera: Camera,
-    renderer: PIXI.Renderer
+    renderer: PIXI.Renderer,
+    levelManager: ClientLevelManager
   ) {
     camera.setLevelSize(Constants.WORLD_BOUNDS);
     this.world
@@ -85,6 +92,7 @@ export class ClientWorldManager {
       .registerSystem(ClientCorrectionSystem, { gameState })
       .registerSystem(InterpolateSystem, { gameState })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
+      .registerSystem(CollisionDetectionSystem, { levelProvider: levelManager })
       .registerSystem(CameraSystem, { camera })
       .registerSystem(RenderSystem, {
         spriteCache,

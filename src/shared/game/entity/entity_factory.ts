@@ -11,6 +11,7 @@ import { CThrottle } from '../component/cthrottle';
 import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
 import { IEntitySyncPacket } from '../../../shared/protocol';
+import { CCollider } from '../component/ccollider';
 
 // TODO: Clear server / client separation
 
@@ -36,6 +37,7 @@ export class EntityFactory {
       CPhysics,
       CThrottle,
       CSync,
+      CCollider,
     ]);
     const playerComp = e.getMutableComponent(CPlayer);
     playerComp.color = color;

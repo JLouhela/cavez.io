@@ -17,6 +17,9 @@ import { CThrottle } from '../../shared/game/component/cthrottle';
 import { CSync } from '../../shared/game/component/ctags';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
+import { CollisionDetectionSystem } from '../../shared/game/system/collision_detection_system';
+import { CCollider } from '../../shared/game/component/ccollider';
+import { ILevelProvider } from '../../shared/game/level_provider_interface';
 
 export class ServerWorldManager {
   private entityFactory: EntityFactory = null;
@@ -26,12 +29,13 @@ export class ServerWorldManager {
   constructor(
     socketEmit: ISocketEmit,
     gameRoom: IGameRoom,
-    inputManager: InputManager
+    inputManager: InputManager,
+    levelProvider: ILevelProvider
   ) {
     this.world = new World();
     this.entityFactory = new EntityFactory(this.world);
     this.registerComponents();
-    this.initSystems(socketEmit, gameRoom, inputManager);
+    this.initSystems(socketEmit, gameRoom, inputManager, levelProvider);
     this.start();
   }
 
@@ -42,12 +46,14 @@ export class ServerWorldManager {
     this.world.registerComponent(CPlayer);
     this.world.registerComponent(CSync);
     this.world.registerComponent(CPosition);
+    this.world.registerComponent(CCollider);
   }
 
   private initSystems(
     socketEmit: ISocketEmit,
     gameRoom: IGameRoom,
-    inputManager: InputManager
+    inputManager: InputManager,
+    levelProvider: ILevelProvider
   ) {
     this.world
       .registerSystem(EntityDeleteSystem, {
@@ -55,7 +61,10 @@ export class ServerWorldManager {
       })
       .registerSystem(InputHandleSystem, { inputManager })
       .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
-      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS });
+      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
+      .registerSystem(CollisionDetectionSystem, {
+        levelProvider,
+      });
   }
 
   public spawnPlayer(player: IPlayer, pos: IVec2) {

@@ -3,8 +3,9 @@ import { Level } from '../../shared/game/level';
 import { LevelSource } from '../../shared/game/level_source';
 import { Levels } from '../../shared/levels';
 import * as LevelParser from '../utils/level_parser';
+import { ILevelProvider } from '../../shared/game/level_provider_interface';
 
-export class ServerLevelManager {
+export class ServerLevelManager implements ILevelProvider {
   private currentLevel: Level;
   private currentLevelName: string;
   private levelNameMapping: { [levelName: string]: string } = {};
@@ -47,7 +48,7 @@ export class ServerLevelManager {
     return this.currentLevelName;
   }
 
-  get level(): Level {
+  getLevel(): Level {
     return this.currentLevel;
   }
 }

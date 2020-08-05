@@ -52,7 +52,8 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       inputReader,
       socketHandler,
       camera,
-      renderer
+      renderer,
+      levelManager
     )),
     // Cyclic dependency: SocketHandler takes responsibility of worldmanager:
     // - Startup before spawn request

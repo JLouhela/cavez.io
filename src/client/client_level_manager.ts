@@ -3,8 +3,9 @@ import { Level } from '../shared/game/level';
 import { AssetName } from './assets/asset_names';
 import { SpriteCache } from './assets/sprite_cache';
 import { Levels } from '../shared/levels';
+import { ILevelProvider } from '../shared/game/level_provider_interface';
 
-export class ClientLevelManager {
+export class ClientLevelManager implements ILevelProvider {
   private currentLevel: Level;
   private currentLevelName: string;
   private levelParser: LevelParser = null;
@@ -36,7 +37,7 @@ export class ClientLevelManager {
     return this.currentLevelName;
   }
 
-  get level(): Level {
+  getLevel(): Level {
     return this.currentLevel;
   }
 }
