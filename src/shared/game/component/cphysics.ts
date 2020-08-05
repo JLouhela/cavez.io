@@ -24,10 +24,3 @@ CPhysics.schema = {
   angle: { type: Types.Number, default: 0 }, // Current direction in radians
   drag: { type: Types.Number, default: 0.1 },
 };
-
-export const CPhysicsType = createType({
-  name: 'CPhysics',
-  default: new Component<CPhysics>(),
-  copy: copyCopyable,
-  clone: cloneClonable,
-});
