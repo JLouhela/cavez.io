@@ -19,7 +19,7 @@ import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CollisionDetectionSystem } from '../../shared/game/system/collision_detection_system';
 import { CCollider } from '../../shared/game/component/ccollider';
-import { ILevelProvider } from '../../shared/game/level_provider_interface';
+import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
 
 export class ServerWorldManager {
   private entityFactory: EntityFactory = null;

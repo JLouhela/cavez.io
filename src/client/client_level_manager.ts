@@ -1,9 +1,9 @@
 import { LevelParser } from './game/level_parser';
-import { Level } from '../shared/game/level';
+import { Level } from '../shared/game/level/level';
 import { AssetName } from './assets/asset_names';
 import { SpriteCache } from './assets/sprite_cache';
 import { Levels } from '../shared/levels';
-import { ILevelProvider } from '../shared/game/level_provider_interface';
+import { ILevelProvider } from '../shared/game/level/level_provider_interface';
 
 export class ClientLevelManager implements ILevelProvider {
   private currentLevel: Level;

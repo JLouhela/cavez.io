@@ -1,6 +1,6 @@
 import { LevelSource, Pixel } from './level_source';
 import * as Terrain from './terrain_utils';
-import { IVec2 } from '../math/vector';
+import { IVec2 } from '../../math/vector';
 
 export class Level {
   private width: number;

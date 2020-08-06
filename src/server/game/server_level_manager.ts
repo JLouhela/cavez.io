@@ -1,9 +1,9 @@
 import { IVec2 } from '../../shared/math/vector';
-import { Level } from '../../shared/game/level';
-import { LevelSource } from '../../shared/game/level_source';
+import { Level } from '../../shared/game/level/level';
+import { LevelSource } from '../../shared/game/level/level_source';
 import { Levels } from '../../shared/levels';
 import * as LevelParser from '../utils/level_parser';
-import { ILevelProvider } from '../../shared/game/level_provider_interface';
+import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
 
 export class ServerLevelManager implements ILevelProvider {
   private currentLevel: Level;

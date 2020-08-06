@@ -1,7 +1,7 @@
 import { System } from 'ecsy';
 import { CPhysics } from '../component/cphysics';
 import { CCollider } from '../component/ccollider';
-import { ILevelProvider } from '../level_provider_interface';
+import { ILevelProvider } from '../level/level_provider_interface';
 
 export class CollisionDetectionSystem extends System {
   private updateAccumulator: number = 0.0;

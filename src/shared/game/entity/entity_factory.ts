@@ -50,7 +50,7 @@ export class EntityFactory {
     const physComp = e.getMutableComponent(CPhysics);
     physComp.mass = Constants.SHIP_MASS;
 
-    const angleNorth = Math.PI + Math.PI / 2;
+    const angleNorth = 1.5 * Math.PI;
     physComp.angle = angleNorth;
 
     return e;
