@@ -12,6 +12,7 @@ import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
 import { IEntitySyncPacket } from '../../../shared/protocol';
 import { CCollider } from '../component/ccollider';
+import { CollisionType } from '../collision/collision_type';
 
 // TODO: Clear server / client separation
 
@@ -52,6 +53,9 @@ export class EntityFactory {
 
     const angleNorth = 1.5 * Math.PI;
     physComp.angle = angleNorth;
+
+    let collidercomp = e.getMutableComponent(CCollider);
+    collidercomp.collisionMask = CollisionType.Terrain + CollisionType.Bullet;
 
     return e;
   }
