@@ -11,8 +11,8 @@ import { CThrottle } from '../component/cthrottle';
 import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
 import { IEntitySyncPacket } from '../../../shared/protocol';
-import { CCollider } from '../component/ccollider';
-import { CollisionType } from '../collision/collision_type';
+import { CTerrainCollider } from '../component/cterraincollider';
+import { Vec2 } from '../../math/vector';
 
 // TODO: Clear server / client separation
 
@@ -38,7 +38,7 @@ export class EntityFactory {
       CPhysics,
       CThrottle,
       CSync,
-      CCollider,
+      CTerrainCollider,
     ]);
     const playerComp = e.getMutableComponent(CPlayer);
     playerComp.color = color;
@@ -54,8 +54,16 @@ export class EntityFactory {
     const angleNorth = 1.5 * Math.PI;
     physComp.angle = angleNorth;
 
-    let collidercomp = e.getMutableComponent(CCollider);
-    collidercomp.collisionMask = CollisionType.Terrain + CollisionType.Bullet;
+    const collidercomp = e.getMutableComponent(CTerrainCollider);
+    const collisionPoints: Vec2[] = [];
+
+    // TODO: Adapt if ship type can be changed, hard coded for the v-wing for now
+    collisionPoints.push(new Vec2(8, 0));
+    collisionPoints.push(new Vec2(0, 4));
+    collisionPoints.push(new Vec2(0, -4));
+    collisionPoints.push(new Vec2(-8, 8));
+    collisionPoints.push(new Vec2(-8, -8));
+    collidercomp.collisionPoints = collisionPoints;
 
     return e;
   }

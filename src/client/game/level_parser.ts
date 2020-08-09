@@ -27,6 +27,7 @@ export class LevelParser {
         );
       }
     }
+    // TODO is this really parsed when game starts..?
     console.log('PARSED LEVEL IMG DATA');
     return source;
   }

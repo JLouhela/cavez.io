@@ -71,16 +71,31 @@ export class Level {
     hash: number,
     type: Terrain.TerrainType
   ) {
+    if (type == Terrain.TerrainType.None) {
+      return;
+    }
     const numIdx = Math.floor(idx / 32);
-    const bitIndex = idx % 32;
+    const bitIndex = Math.floor(idx % 32);
     this.collisionData[hash][numIdx] |= 1 << bitIndex;
   }
 
   public isSolid(c: IVec2) {
-    const idx = c.x + c.y * this.width;
+    let x = Math.floor(c.x);
+    let y = Math.floor(c.y);
+    if (x < 0) {
+      x += this.width;
+    } else if (x >= this.width) {
+      x -= this.width;
+    }
+    if (y < 0) {
+      y += this.height;
+    } else if (y >= this.height) {
+      y -= this.height;
+    }
+    const idx = x + y * this.width;
     const numIdx = Math.floor(idx / 32);
-    const bitIndex = idx % 32;
-    const hash = this.getHash(c.x, c.y);
+    const bitIndex = Math.floor(idx % 32);
+    const hash = this.getHash(x, y);
     return (this.collisionData[hash][numIdx] & (1 << bitIndex)) > 0;
   }
 }

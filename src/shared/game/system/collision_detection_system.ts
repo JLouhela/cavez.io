@@ -1,7 +1,10 @@
 import { System } from 'ecsy';
 import { CPhysics } from '../component/cphysics';
-import { CCollider } from '../component/ccollider';
 import { ILevelProvider } from '../level/level_provider_interface';
+import * as CollisionUtils from '../../../shared/game/collision/collision_utils';
+import { CTerrainCollider } from '../component/cterraincollider';
+import { Level } from '../level/level';
+import { CPosition } from '../component/cposition';
 
 export class CollisionDetectionSystem extends System {
   private updateAccumulator: number = 0.0;
@@ -24,12 +27,27 @@ export class CollisionDetectionSystem extends System {
   }
 
   private performUpdate(delta: number) {
-    this.queries.all.results.forEach((entity) => {
-      const collider = entity.getComponent(CCollider);
+    this.queries.terrainColliders.results.forEach((entity) => {
+      const collider = entity.getComponent(CTerrainCollider);
+      const posComp = entity.getComponent(CPosition);
       const level = this.levelProvider.getLevel();
-      // TODO setup CCollider masks
-      // Check if collides with level
-      // operate
+      this.terrainCollisionCheck(posComp, collider, level);
+    });
+  }
+
+  private pask = 0;
+  private terrainCollisionCheck(
+    pos: CPosition,
+    terrainCollider: CTerrainCollider,
+    level: Level
+  ) {
+    let collision: boolean = false;
+    terrainCollider.collisionPoints.forEach((point) => {
+      if (level.isSolid({ x: point.x + pos.x, y: point.y + pos.y })) {
+        collision = true;
+        console.log('COLLISION ' + this.pask++);
+        return;
+      }
     });
   }
 
@@ -39,7 +57,7 @@ export class CollisionDetectionSystem extends System {
 }
 
 CollisionDetectionSystem.queries = {
-  all: {
-    components: [CCollider, CPhysics],
+  terrainColliders: {
+    components: [CTerrainCollider, CPhysics],
   },
 };

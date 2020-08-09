@@ -18,7 +18,7 @@ import { CSync } from '../../shared/game/component/ctags';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CollisionDetectionSystem } from '../../shared/game/system/collision_detection_system';
-import { CCollider } from '../../shared/game/component/ccollider';
+import { CTerrainCollider } from '../../shared/game/component/cterraincollider';
 import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
 
 export class ServerWorldManager {
@@ -46,7 +46,7 @@ export class ServerWorldManager {
     this.world.registerComponent(CPlayer);
     this.world.registerComponent(CSync);
     this.world.registerComponent(CPosition);
-    this.world.registerComponent(CCollider);
+    this.world.registerComponent(CTerrainCollider);
   }
 
   private initSystems(
