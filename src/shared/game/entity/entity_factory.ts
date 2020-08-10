@@ -11,7 +11,7 @@ import { CThrottle } from '../component/cthrottle';
 import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
 import { IEntitySyncPacket } from '../../../shared/protocol';
-import { CTerrainCollider } from '../component/cterraincollider';
+import { CTerrainCollider } from '../component/cterrain_collider';
 import { Vec2 } from '../../math/vector';
 
 // TODO: Clear server / client separation

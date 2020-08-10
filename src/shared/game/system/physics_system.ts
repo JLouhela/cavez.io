@@ -62,6 +62,7 @@ export class PhysicsSystem extends System {
         (throttleForce.y + gravitationForce + dragVec.y) / physComp.mass
       );
 
+      // TODO alloc bad bad bad bad bad
       physComp.velocity = new Vec2(
         physComp.velocity.x + physComp.acceleration.x * delta,
         physComp.velocity.y + physComp.acceleration.y * delta

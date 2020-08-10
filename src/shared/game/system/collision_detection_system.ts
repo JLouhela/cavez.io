@@ -2,9 +2,11 @@ import { System } from 'ecsy';
 import { CPhysics } from '../component/cphysics';
 import { ILevelProvider } from '../level/level_provider_interface';
 import * as CollisionUtils from '../../../shared/game/collision/collision_utils';
-import { CTerrainCollider } from '../component/cterraincollider';
+import { CTerrainCollider } from '../component/cterrain_collider';
 import { Level } from '../level/level';
 import { CPosition } from '../component/cposition';
+import { Entity } from 'ecsy';
+import { IVec2 } from '../../../shared/math/vector';
 
 export class CollisionDetectionSystem extends System {
   private updateAccumulator: number = 0.0;
@@ -28,28 +30,43 @@ export class CollisionDetectionSystem extends System {
 
   private performUpdate(delta: number) {
     this.queries.terrainColliders.results.forEach((entity) => {
-      const collider = entity.getComponent(CTerrainCollider);
-      const posComp = entity.getComponent(CPosition);
       const level = this.levelProvider.getLevel();
-      this.terrainCollisionCheck(posComp, collider, level);
+      this.terrainCollisionCheck(entity, level);
     });
   }
 
-  private terrainCollisionCheck(
-    pos: CPosition,
-    terrainCollider: CTerrainCollider,
-    level: Level
-  ) {
+  private terrainCollisionCheck(entity: Entity, level: Level) {
+    const collider = entity.getComponent(CTerrainCollider);
+    const pos = entity.getComponent(CPosition);
+
+    // FIX ALLOCS BEFORE PROCEEDING! new Vec2() is a problem everywhere
+    // --> provide set function and calculate normal on demand, break interface for the sake of performance
+    let localCollisionPoint: IVec2 = null;
+    let terrainCollisoinPoint: IVec2 = null;
     let collision: boolean = false;
-    terrainCollider.collisionPoints.forEach((point) => {
-      if (level.isSolid({ x: point.x + pos.x, y: point.y + pos.y })) {
+    collider.collisionPoints.forEach((point) => {
+      let terrainPoint = { x: point.x + pos.x, y: point.y + pos.y };
+      if (level.isSolid(terrainPoint)) {
         collision = true;
-        console.log('COLLISION');
+        localCollisionPoint = point;
+        terrainCollisoinPoint = terrainPoint;
         return;
       }
     });
-    return collision;
+    if (collision) {
+      this.addTerrainCollisionComponent(
+        entity,
+        localCollisionPoint,
+        terrainCollisoinPoint
+      );
+    }
   }
+
+  private addTerrainCollisionComponent(
+    entity: Entity,
+    localCollisionPoint: IVec2,
+    terrainCollisionPoint: IVec2
+  ) {}
 
   execute(delta: number, time: number) {
     this.fixedUpdate(delta);

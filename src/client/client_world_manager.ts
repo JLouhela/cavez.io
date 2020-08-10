@@ -24,7 +24,8 @@ import { CPosition } from '../shared/game/component/cposition';
 import { CCameraFollow } from './game/camera/ccamera_follow';
 import { CSprite } from './rendering/csprite';
 import { CInput } from '../shared/game/component/cinput';
-import { CTerrainCollider } from '../shared/game/component/cterraincollider';
+import { CTerrainCollider } from '../shared/game/component/cterrain_collider';
+import { CTerrainCollision } from '../shared/game/component/cterrain_collision';
 import { CollisionDetectionSystem } from '../shared/game/system/collision_detection_system';
 import { ClientLevelManager } from './client_level_manager';
 
@@ -66,6 +67,7 @@ export class ClientWorldManager {
     this.world.registerComponent(CSprite);
     this.world.registerComponent(CInput);
     this.world.registerComponent(CTerrainCollider);
+    this.world.registerComponent(CTerrainCollision);
   }
 
   private initSystems(
