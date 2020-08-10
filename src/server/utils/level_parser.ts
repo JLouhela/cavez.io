@@ -15,6 +15,7 @@ export function readPng(pngFile: string): Promise<LevelSource> {
         for (let y = 0; y < this.height; y++) {
           for (let x = 0; x < this.width; x++) {
             const idx = (this.width * y + x) << 2;
+
             source.pixelData.push(
               new Pixel(
                 this.data[idx],

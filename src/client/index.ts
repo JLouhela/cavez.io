@@ -44,7 +44,7 @@ Promise.all([assetManager.loadAssets()]).then(() => {
   Promise.all([
     (gameState = new GameState()),
     (spriteCache = new SpriteCache(assetManager)),
-    (levelManager = new ClientLevelManager(renderer, spriteCache)),
+    (levelManager = new ClientLevelManager(renderer, assetManager)),
     (socketHandler = new GeckosSocketHandler(gameState, levelManager)),
     (worldManager = new ClientWorldManager(
       spriteCache,

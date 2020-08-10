@@ -71,7 +71,7 @@ export class Level {
     hash: number,
     type: Terrain.TerrainType
   ) {
-    if (type == Terrain.TerrainType.None) {
+    if (type === Terrain.TerrainType.None) {
       return;
     }
     const numIdx = Math.floor(idx / 32);
@@ -80,6 +80,7 @@ export class Level {
   }
 
   public isSolid(c: IVec2) {
+    // TODO extract to utils::Math::wrap(int, max)
     let x = Math.floor(c.x);
     let y = Math.floor(c.y);
     if (x < 0) {

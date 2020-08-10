@@ -13,7 +13,6 @@ export class LevelParser {
     const source: LevelSource = { width: 0, height: 0, pixelData: [] };
     source.width = sprite.width;
     source.height = sprite.height;
-
     for (let y = 0; y < sprite.height; y++) {
       for (let x = 0; x < sprite.width; x++) {
         const idx = (sprite.width * y + x) << 2;
@@ -27,8 +26,7 @@ export class LevelParser {
         );
       }
     }
-    // TODO is this really parsed when game starts..?
-    console.log('PARSED LEVEL IMG DATA');
+    console.log('PARSED LEVEL IMG DATA ');
     return source;
   }
 }
