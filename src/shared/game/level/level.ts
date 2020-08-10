@@ -1,6 +1,7 @@
 import { LevelSource, Pixel } from './level_source';
 import * as Terrain from './terrain_utils';
 import { IVec2 } from '../../math/vector';
+import * as MathUtils from '../../math/math_utils';
 
 export class Level {
   private width: number;
@@ -80,19 +81,8 @@ export class Level {
   }
 
   public isSolid(c: IVec2) {
-    // TODO extract to utils::Math::wrap(int, max)
-    let x = Math.floor(c.x);
-    let y = Math.floor(c.y);
-    if (x < 0) {
-      x += this.width;
-    } else if (x >= this.width) {
-      x -= this.width;
-    }
-    if (y < 0) {
-      y += this.height;
-    } else if (y >= this.height) {
-      y -= this.height;
-    }
+    const x = MathUtils.wrap(c.x, this.width);
+    const y = MathUtils.wrap(c.y, this.height);
     const idx = x + y * this.width;
     const numIdx = Math.floor(idx / 32);
     const bitIndex = Math.floor(idx % 32);

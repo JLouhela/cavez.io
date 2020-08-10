@@ -35,7 +35,6 @@ export class CollisionDetectionSystem extends System {
     });
   }
 
-  private pask = 0;
   private terrainCollisionCheck(
     pos: CPosition,
     terrainCollider: CTerrainCollider,
@@ -45,10 +44,11 @@ export class CollisionDetectionSystem extends System {
     terrainCollider.collisionPoints.forEach((point) => {
       if (level.isSolid({ x: point.x + pos.x, y: point.y + pos.y })) {
         collision = true;
-        console.log('COLLISION ' + this.pask++);
+        console.log('COLLISION');
         return;
       }
     });
+    return collision;
   }
 
   execute(delta: number, time: number) {
