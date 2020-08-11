@@ -21,6 +21,7 @@ import { CollisionDetectionSystem } from '../../shared/game/system/collision_det
 import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
 import { CTerrainCollision } from '../../shared/game/component/cterrain_collision';
 import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
+import { CollisionResolveSystem } from '../../shared/game/system/collision_resolve_system';
 
 export class ServerWorldManager {
   private entityFactory: EntityFactory = null;
@@ -66,7 +67,8 @@ export class ServerWorldManager {
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
       .registerSystem(CollisionDetectionSystem, {
         levelProvider,
-      });
+      })
+      .registerSystem(CollisionResolveSystem);
   }
 
   public spawnPlayer(player: IPlayer, pos: IVec2) {

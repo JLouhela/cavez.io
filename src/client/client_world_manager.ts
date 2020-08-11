@@ -28,6 +28,7 @@ import { CTerrainCollider } from '../shared/game/component/cterrain_collider';
 import { CTerrainCollision } from '../shared/game/component/cterrain_collision';
 import { CollisionDetectionSystem } from '../shared/game/system/collision_detection_system';
 import { ClientLevelManager } from './client_level_manager';
+import { CollisionResolveSystem } from '../shared/game/system/collision_resolve_system';
 
 export class ClientWorldManager {
   private entityFactory: EntityFactory = null;
@@ -95,6 +96,7 @@ export class ClientWorldManager {
       .registerSystem(InterpolateSystem, { gameState })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
       .registerSystem(CollisionDetectionSystem, { levelProvider: levelManager })
+      .registerSystem(CollisionResolveSystem)
       .registerSystem(CameraSystem, { camera })
       .registerSystem(RenderSystem, {
         spriteCache,

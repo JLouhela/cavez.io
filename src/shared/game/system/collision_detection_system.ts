@@ -7,6 +7,7 @@ import { Level } from '../level/level';
 import { CPosition } from '../component/cposition';
 import { Entity } from 'ecsy';
 import { IVec2 } from '../../../shared/math/vector';
+import { CTerrainCollision } from '../component/cterrain_collision';
 
 export class CollisionDetectionSystem extends System {
   private updateAccumulator: number = 0.0;
@@ -39,17 +40,15 @@ export class CollisionDetectionSystem extends System {
     const collider = entity.getComponent(CTerrainCollider);
     const pos = entity.getComponent(CPosition);
 
-    // FIX ALLOCS BEFORE PROCEEDING! new Vec2() is a problem everywhere
-    // --> provide set function and calculate normal on demand, break interface for the sake of performance
     let localCollisionPoint: IVec2 = null;
-    let terrainCollisoinPoint: IVec2 = null;
+    let terrainCollisionPoint: IVec2 = null;
     let collision: boolean = false;
     collider.collisionPoints.forEach((point) => {
       const terrainPoint = { x: point.x + pos.x, y: point.y + pos.y };
       if (level.isSolid(terrainPoint)) {
         collision = true;
         localCollisionPoint = point;
-        terrainCollisoinPoint = terrainPoint;
+        terrainCollisionPoint = terrainPoint;
         return;
       }
     });
@@ -57,7 +56,7 @@ export class CollisionDetectionSystem extends System {
       this.addTerrainCollisionComponent(
         entity,
         localCollisionPoint,
-        terrainCollisoinPoint
+        terrainCollisionPoint
       );
     }
   }
@@ -66,7 +65,24 @@ export class CollisionDetectionSystem extends System {
     entity: Entity,
     localCollisionPoint: IVec2,
     terrainCollisionPoint: IVec2
-  ) {}
+  ) {
+    // If unresolved collision exists: adapt it
+    // TODO: think if this does not make sense
+    if (entity.hasComponent(CTerrainCollision)) {
+      let comp = entity.getMutableComponent(CTerrainCollision);
+      comp.localPointX = localCollisionPoint.x;
+      comp.localPointY = localCollisionPoint.y;
+      comp.terrainPointX = terrainCollisionPoint.x;
+      comp.terrainPointY = terrainCollisionPoint.y;
+      return;
+    }
+    entity.addComponent(CTerrainCollision, {
+      localPointX: localCollisionPoint.x,
+      localPointY: localCollisionPoint.y,
+      terrainPointX: terrainCollisionPoint.x,
+      terrainPointY: terrainCollisionPoint.y,
+    });
+  }
 
   execute(delta: number, time: number) {
     this.fixedUpdate(delta);
@@ -75,6 +91,6 @@ export class CollisionDetectionSystem extends System {
 
 CollisionDetectionSystem.queries = {
   terrainColliders: {
-    components: [CTerrainCollider, CPhysics],
+    components: [CTerrainCollider, CPosition],
   },
 };
