@@ -55,14 +55,14 @@ export class EntityFactory {
     physComp.angle = angleNorth;
 
     const collidercomp = e.getMutableComponent(CTerrainCollider);
-    const collisionPoints: Vec2[] = [];
+    const collisionPoints: IVec2[] = [];
 
     // TODO: Adapt if ship type can be changed, hard coded for the v-wing for now
-    collisionPoints.push(new Vec2(8, 0));
-    collisionPoints.push(new Vec2(0, 4));
-    collisionPoints.push(new Vec2(0, -4));
-    collisionPoints.push(new Vec2(-8, 8));
-    collisionPoints.push(new Vec2(-8, -8));
+    collisionPoints.push({ x: 8, y: 0 });
+    collisionPoints.push({ x: 0, y: 4 });
+    collisionPoints.push({ x: 0, y: -4 });
+    collisionPoints.push({ x: -8, y: 8 });
+    collisionPoints.push({ x: -8, y: -8 });
     collidercomp.collisionPoints = collisionPoints;
 
     return e;

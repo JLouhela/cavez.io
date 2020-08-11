@@ -11,9 +11,7 @@ export class Vec2 {
   private _normal: IVec2 = { x: 0, y: 0 };
 
   constructor(x: number, y: number) {
-    this._x = x;
-    this._y = y;
-    this.calculateNormal();
+    this.set(x, y);
   }
 
   private calculateNormal() {
@@ -44,9 +42,7 @@ export class Vec2 {
   }
 
   public copy(src: Vec2) {
-    this._x = src._x;
-    this._y = src._y;
-    this.calculateNormal();
+    this.set(src._x, src._y);
     return this;
   }
 }

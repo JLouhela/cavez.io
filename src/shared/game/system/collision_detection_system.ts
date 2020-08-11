@@ -45,7 +45,7 @@ export class CollisionDetectionSystem extends System {
     let terrainCollisoinPoint: IVec2 = null;
     let collision: boolean = false;
     collider.collisionPoints.forEach((point) => {
-      let terrainPoint = { x: point.x + pos.x, y: point.y + pos.y };
+      const terrainPoint = { x: point.x + pos.x, y: point.y + pos.y };
       if (level.isSolid(terrainPoint)) {
         collision = true;
         localCollisionPoint = point;

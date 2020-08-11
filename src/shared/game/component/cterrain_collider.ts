@@ -1,8 +1,8 @@
 import { Component, Types } from 'ecsy';
-import { Vec2 } from '../../math/vector';
+import { IVec2 } from '../../math/vector';
 
 export class CTerrainCollider extends Component<CTerrainCollider> {
-  collisionPoints: Vec2[]; // Relative to obj center
+  collisionPoints: IVec2[]; // Relative to obj center
 }
 
 CTerrainCollider.schema = {

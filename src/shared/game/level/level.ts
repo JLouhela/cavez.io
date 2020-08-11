@@ -81,11 +81,11 @@ export class Level {
   }
 
   public isSolid(c: IVec2) {
-    const x = MathUtils.wrap(c.x, this.width);
-    const y = MathUtils.wrap(c.y, this.height);
+    const x = MathUtils.wrap(Math.floor(c.x), this.width);
+    const y = MathUtils.wrap(Math.floor(c.y), this.height);
     const idx = x + y * this.width;
     const numIdx = Math.floor(idx / 32);
-    const bitIndex = Math.floor(idx % 32);
+    const bitIndex = idx % 32;
     const hash = this.getHash(x, y);
     return (this.collisionData[hash][numIdx] & (1 << bitIndex)) > 0;
   }

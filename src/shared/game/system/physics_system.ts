@@ -4,6 +4,7 @@ import { CPosition } from '../component/cposition';
 import { CPhysics } from '../component/cphysics';
 import * as Constants from '../../constants';
 import { Vec2, IVec2 } from '../../math/vector';
+import * as MathUtils from '../../math/math_utils';
 
 export class PhysicsSystem extends System {
   private worldBounds: IVec2 = null;
@@ -57,32 +58,26 @@ export class PhysicsSystem extends System {
         };
       }
 
-      physComp.acceleration = new Vec2(
+      physComp.acceleration.set(
         (throttleForce.x + dragVec.x) / physComp.mass,
         (throttleForce.y + gravitationForce + dragVec.y) / physComp.mass
       );
 
       // TODO alloc bad bad bad bad bad
-      physComp.velocity = new Vec2(
+      physComp.velocity.set(
         physComp.velocity.x + physComp.acceleration.x * delta,
         physComp.velocity.y + physComp.acceleration.y * delta
       );
 
       const posComp = entity.getMutableComponent(CPosition);
-      posComp.x += physComp.velocity.x * delta;
-      posComp.y += physComp.velocity.y * delta;
-
-      // TODO: wrap screen properly
-      if (this.worldBounds) {
-        posComp.x %= this.worldBounds.x;
-        posComp.y %= this.worldBounds.y;
-        if (posComp.y < 0) {
-          posComp.y += this.worldBounds.y;
-        }
-        if (posComp.x < 0) {
-          posComp.x += this.worldBounds.x;
-        }
-      }
+      posComp.x = MathUtils.wrap(
+        posComp.x + physComp.velocity.x * delta,
+        this.worldBounds.x
+      );
+      posComp.y = MathUtils.wrap(
+        posComp.y + physComp.velocity.y * delta,
+        this.worldBounds.y
+      );
     });
   }
 
