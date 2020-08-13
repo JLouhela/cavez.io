@@ -6,7 +6,7 @@ import { CTerrainCollider } from '../component/cterrain_collider';
 import { Level } from '../level/level';
 import { CPosition } from '../component/cposition';
 import { Entity } from 'ecsy';
-import { IVec2 } from '../../../shared/math/vector';
+import { IVec2, Vec2 } from '../../../shared/math/vector';
 import { CTerrainCollision } from '../component/cterrain_collision';
 
 export class CollisionDetectionSystem extends System {
@@ -69,18 +69,14 @@ export class CollisionDetectionSystem extends System {
     // If unresolved collision exists: adapt it
     // TODO: think if this does not make sense
     if (entity.hasComponent(CTerrainCollision)) {
-      let comp = entity.getMutableComponent(CTerrainCollision);
-      comp.localPointX = localCollisionPoint.x;
-      comp.localPointY = localCollisionPoint.y;
-      comp.terrainPointX = terrainCollisionPoint.x;
-      comp.terrainPointY = terrainCollisionPoint.y;
+      const comp = entity.getMutableComponent(CTerrainCollision);
+      comp.localPoint.set(localCollisionPoint.x, localCollisionPoint.y);
+      comp.terrainPoint.set(terrainCollisionPoint.x, terrainCollisionPoint.y);
       return;
     }
     entity.addComponent(CTerrainCollision, {
-      localPointX: localCollisionPoint.x,
-      localPointY: localCollisionPoint.y,
-      terrainPointX: terrainCollisionPoint.x,
-      terrainPointY: terrainCollisionPoint.y,
+      localPoint: new Vec2(localCollisionPoint.x, localCollisionPoint.y),
+      terrainPoint: new Vec2(terrainCollisionPoint.x, terrainCollisionPoint.y),
     });
   }
 

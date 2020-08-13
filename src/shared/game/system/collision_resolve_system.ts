@@ -36,13 +36,13 @@ export class CollisionResolveSystem extends System {
     const pos = entity.getMutableComponent(CPosition);
     const phys = entity.getMutableComponent(CPhysics);
     console.log(
-      'Collision: local' + collision.localPointX + ',' + collision.localPointY
+      'Collision: local' + collision.localPoint.x + ',' + collision.localPoint.y
     );
     console.log(
       'Collision: terrain ' +
-        collision.terrainPointX +
+        collision.terrainPoint.x +
         ', ' +
-        collision.terrainPointY
+        collision.terrainPoint.y
     );
     entity.removeComponent(CTerrainCollision);
   }
