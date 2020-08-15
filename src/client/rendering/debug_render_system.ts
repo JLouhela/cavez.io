@@ -9,6 +9,8 @@ import { IVec2 } from '../../shared/math/vector';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { Camera } from '../game/camera/camera';
 import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
+import { CPhysics } from '../../shared/game/component/cphysics';
+import * as MathUtils from '../../shared/math/math_utils';
 
 export class DebugRenderSystem extends System {
   private spriteCache: SpriteCache = null;
@@ -96,15 +98,16 @@ export class DebugRenderSystem extends System {
     this.queries.terrainColliders.results.forEach((entity) => {
       const terrainCollider = entity.getComponent(CTerrainCollider);
       const posComp = entity.getComponent(CPosition);
+      const physComp = entity.getComponent(CPhysics);
       const graphics = new PIXI.Graphics();
       graphics.beginFill(0xffff00);
       graphics.lineStyle(5, 0xff0000);
       const radius = 0.5;
-
       terrainCollider.collisionPoints.forEach((point) => {
+        const rotatedPoint = MathUtils.rotatePoint(point, physComp.angle);
         const screenPos = this.camera.getScreenPos({
-          x: posComp.x + point.x,
-          y: posComp.y + point.y,
+          x: posComp.x + rotatedPoint.x,
+          y: posComp.y + rotatedPoint.y,
           w: radius,
           h: radius,
         });
