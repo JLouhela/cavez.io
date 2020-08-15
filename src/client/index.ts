@@ -33,7 +33,7 @@ let worldManager: ClientWorldManager = null;
 let levelManager: ClientLevelManager = null;
 
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
-const renderer = new PIXI.Renderer({ view: canvas });
+const renderer = new PIXI.Renderer({ view: canvas, clearBeforeRender: false });
 
 camera.setSize({
   x: canvas.width,

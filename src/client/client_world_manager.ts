@@ -1,4 +1,5 @@
 import { RenderSystem } from './rendering/render_system';
+import { DebugRenderSystem } from './rendering/debug_render_system';
 import { SpriteCache } from './assets/sprite_cache';
 import { EntityInitSystem } from './network/entity_init_system';
 import { GameState } from './game/game_state';
@@ -99,6 +100,11 @@ export class ClientWorldManager {
       .registerSystem(CollisionResolveSystem)
       .registerSystem(CameraSystem, { camera })
       .registerSystem(RenderSystem, {
+        spriteCache,
+        camera,
+        renderer,
+      })
+      .registerSystem(DebugRenderSystem, {
         spriteCache,
         gameState,
         camera,
