@@ -10,8 +10,6 @@ import { IVec2, Vec2 } from '../../../shared/math/vector';
 import { CTerrainCollision } from '../component/cterrain_collision';
 
 export class CollisionDetectionSystem extends System {
-  private updateAccumulator: number = 0.0;
-  private timeStep: number = 1 / 60; // Update ratio: 60fps
   private levelProvider: ILevelProvider = null;
 
   constructor(world: any, attributes: any) {
@@ -21,15 +19,8 @@ export class CollisionDetectionSystem extends System {
     this.levelProvider = attributes.levelProvider;
   }
 
-  private fixedUpdate(delta: number) {
-    this.updateAccumulator += delta;
-    while (this.updateAccumulator >= this.timeStep) {
-      this.performUpdate(this.timeStep);
-      this.updateAccumulator -= this.timeStep;
-    }
-  }
-
-  private performUpdate(delta: number) {
+  // TODO think: fixed framerate or always?
+  execute(delta: number, time: number) {
     this.queries.terrainColliders.results.forEach((entity) => {
       const level = this.levelProvider.getLevel();
       this.terrainCollisionCheck(entity, level);
@@ -66,22 +57,16 @@ export class CollisionDetectionSystem extends System {
     localCollisionPoint: IVec2,
     terrainCollisionPoint: IVec2
   ) {
-    // If unresolved collision exists: adapt it
-    // TODO: think if this does not make sense
     if (entity.hasComponent(CTerrainCollision)) {
-      const comp = entity.getMutableComponent(CTerrainCollision);
-      comp.localPoint.set(localCollisionPoint.x, localCollisionPoint.y);
-      comp.terrainPoint.set(terrainCollisionPoint.x, terrainCollisionPoint.y);
+      console.log(
+        'Entity ' + entity.id + ' has already unresolved terrain collision!'
+      );
       return;
     }
     entity.addComponent(CTerrainCollision, {
       localPoint: new Vec2(localCollisionPoint.x, localCollisionPoint.y),
       terrainPoint: new Vec2(terrainCollisionPoint.x, terrainCollisionPoint.y),
     });
-  }
-
-  execute(delta: number, time: number) {
-    this.fixedUpdate(delta);
   }
 }
 

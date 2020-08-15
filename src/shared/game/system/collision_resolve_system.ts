@@ -8,24 +8,13 @@ import { IVec2 } from '../../math/vector';
 import { CTerrainCollision } from '../component/cterrain_collision';
 
 export class CollisionResolveSystem extends System {
-  private updateAccumulator: number = 0.0;
-  private timeStep: number = 1 / 60; // Update ratio: 60fps
-
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore
     super(world, attributes);
   }
 
-  private fixedUpdate(delta: number) {
-    this.updateAccumulator += delta;
-    while (this.updateAccumulator >= this.timeStep) {
-      this.performUpdate(this.timeStep);
-      this.updateAccumulator -= this.timeStep;
-    }
-  }
-
-  private performUpdate(delta: number) {
+  execute(delta: number, time: number) {
     this.queries.terrainCollisions.results.forEach((entity) => {
       this.resolveTerrainCollision(entity);
     });
@@ -45,10 +34,6 @@ export class CollisionResolveSystem extends System {
         collision.terrainPoint.y
     );
     entity.removeComponent(CTerrainCollision);
-  }
-
-  execute(delta: number, time: number) {
-    this.fixedUpdate(delta);
   }
 }
 
