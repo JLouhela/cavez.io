@@ -8,6 +8,7 @@ import { CPosition } from '../../shared/game/component/cposition';
 import { IVec2 } from '../../shared/math/vector';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { Camera } from '../game/camera/camera';
+import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
 
 export class DebugRenderSystem extends System {
   private spriteCache: SpriteCache = null;
@@ -18,7 +19,9 @@ export class DebugRenderSystem extends System {
 
   // Options for rendering client server positions as received
   private ghostSpriteId: number = -1;
-  private renderGhost: boolean = true; // TODO generate somehow from webpack cfg?
+  // TODO generate somehow from webpack cfg?
+  private renderGhost: boolean = true;
+  private renderTerrainCollider: boolean = true;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
@@ -34,8 +37,10 @@ export class DebugRenderSystem extends System {
   }
 
   execute(delta: number, time: number) {
+    this.container.removeChildren();
     // Render unmodified server positions for client player
     this.handleGhostRender();
+    this.handleTerrainColliderRender();
     // Render all
     this.renderer.render(this.container);
   }
@@ -83,10 +88,40 @@ export class DebugRenderSystem extends System {
     const ghostSprite = this.spriteCache.getSprite(this.ghostSpriteId);
     ghostSprite.alpha = 0.2;
   }
+
+  private handleTerrainColliderRender(): void {
+    if (!this.renderTerrainCollider) {
+      return;
+    }
+    this.queries.terrainColliders.results.forEach((entity) => {
+      const terrainCollider = entity.getComponent(CTerrainCollider);
+      const posComp = entity.getComponent(CPosition);
+      const graphics = new PIXI.Graphics();
+      graphics.beginFill(0xffff00);
+      graphics.lineStyle(5, 0xff0000);
+      const radius = 0.5;
+
+      terrainCollider.collisionPoints.forEach((point) => {
+        const screenPos = this.camera.getScreenPos({
+          x: posComp.x + point.x,
+          y: posComp.y + point.y,
+          w: radius,
+          h: radius,
+        });
+        if (screenPos.visible) {
+          graphics.drawCircle(screenPos.x, screenPos.y, radius);
+        }
+      });
+      this.container.addChild(graphics);
+    });
+  }
 }
 
 DebugRenderSystem.queries = {
   ghost: {
     components: [CPlayer, CSprite],
+  },
+  terrainColliders: {
+    components: [CPlayer, CTerrainCollider, CPosition],
   },
 };
