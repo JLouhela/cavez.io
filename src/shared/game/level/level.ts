@@ -1,6 +1,7 @@
 import { LevelSource, Pixel } from './level_source';
 import * as Terrain from './terrain_utils';
-import { IVec2 } from '../math/vector';
+import { IVec2 } from '../../math/vector';
+import * as MathUtils from '../../math/math_utils';
 
 export class Level {
   private width: number;
@@ -71,16 +72,21 @@ export class Level {
     hash: number,
     type: Terrain.TerrainType
   ) {
+    if (type === Terrain.TerrainType.None) {
+      return;
+    }
     const numIdx = Math.floor(idx / 32);
-    const bitIndex = idx % 32;
+    const bitIndex = Math.floor(idx % 32);
     this.collisionData[hash][numIdx] |= 1 << bitIndex;
   }
 
   public isSolid(c: IVec2) {
-    const idx = c.x + c.y * this.width;
+    const x = MathUtils.wrap(Math.floor(c.x), this.width);
+    const y = MathUtils.wrap(Math.floor(c.y), this.height);
+    const idx = x + y * this.width;
     const numIdx = Math.floor(idx / 32);
     const bitIndex = idx % 32;
-    const hash = this.getHash(c.x, c.y);
+    const hash = this.getHash(x, y);
     return (this.collisionData[hash][numIdx] & (1 << bitIndex)) > 0;
   }
 }

@@ -1,5 +1,6 @@
 import { createType, copyCopyable, cloneClonable } from 'ecsy';
 
+// TODO replace with Point class
 export interface IVec2 {
   readonly x: number;
   readonly y: number;
@@ -8,12 +9,10 @@ export interface IVec2 {
 export class Vec2 {
   private _x: number = 0;
   private _y: number = 0;
-  private _normal: IVec2 = { x: 0, y: 0 };
+  private _normal: IVec2 = null;
 
   constructor(x: number, y: number) {
-    this._x = x;
-    this._y = y;
-    this.calculateNormal();
+    this.set(x, y);
   }
 
   private calculateNormal() {
@@ -23,6 +22,9 @@ export class Vec2 {
   }
 
   get normal(): IVec2 {
+    if (!this._normal) {
+      this.calculateNormal();
+    }
     return this._normal;
   }
 
@@ -36,7 +38,7 @@ export class Vec2 {
   public set(x: number, y: number) {
     this._x = x;
     this._y = y;
-    this.calculateNormal();
+    this._normal = null;
   }
 
   public clone() {
@@ -46,7 +48,7 @@ export class Vec2 {
   public copy(src: Vec2) {
     this._x = src._x;
     this._y = src._y;
-    this.calculateNormal();
+    this._normal = src._normal;
     return this;
   }
 }

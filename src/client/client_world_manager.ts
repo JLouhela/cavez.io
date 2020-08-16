@@ -1,4 +1,5 @@
 import { RenderSystem } from './rendering/render_system';
+import { DebugRenderSystem } from './rendering/debug_render_system';
 import { SpriteCache } from './assets/sprite_cache';
 import { EntityInitSystem } from './network/entity_init_system';
 import { GameState } from './game/game_state';
@@ -24,6 +25,11 @@ import { CPosition } from '../shared/game/component/cposition';
 import { CCameraFollow } from './game/camera/ccamera_follow';
 import { CSprite } from './rendering/csprite';
 import { CInput } from '../shared/game/component/cinput';
+import { CTerrainCollider } from '../shared/game/component/cterrain_collider';
+import { CTerrainCollision } from '../shared/game/component/cterrain_collision';
+import { CollisionDetectionSystem } from '../shared/game/system/collision_detection_system';
+import { ClientLevelManager } from './client_level_manager';
+import { CollisionResolveSystem } from '../shared/game/system/collision_resolve_system';
 
 export class ClientWorldManager {
   private entityFactory: EntityFactory = null;
@@ -36,7 +42,8 @@ export class ClientWorldManager {
     inputReader: IInputReader,
     socketEmit: ISocketEmit,
     camera: Camera,
-    renderer: PIXI.Renderer
+    renderer: PIXI.Renderer,
+    levelManager: ClientLevelManager
   ) {
     this.world = new World();
     this.entityFactory = new EntityFactory(this.world);
@@ -47,7 +54,8 @@ export class ClientWorldManager {
       inputReader,
       socketEmit,
       camera,
-      renderer
+      renderer,
+      levelManager
     );
   }
   private registerComponents() {
@@ -60,6 +68,8 @@ export class ClientWorldManager {
     this.world.registerComponent(CCameraFollow);
     this.world.registerComponent(CSprite);
     this.world.registerComponent(CInput);
+    this.world.registerComponent(CTerrainCollider);
+    this.world.registerComponent(CTerrainCollision);
   }
 
   private initSystems(
@@ -68,7 +78,8 @@ export class ClientWorldManager {
     inputReader: IInputReader,
     socketEmit: ISocketEmit,
     camera: Camera,
-    renderer: PIXI.Renderer
+    renderer: PIXI.Renderer,
+    levelManager: ClientLevelManager
   ) {
     camera.setLevelSize(Constants.WORLD_BOUNDS);
     this.world
@@ -85,8 +96,15 @@ export class ClientWorldManager {
       .registerSystem(ClientCorrectionSystem, { gameState })
       .registerSystem(InterpolateSystem, { gameState })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
+      .registerSystem(CollisionDetectionSystem, { levelProvider: levelManager })
+      .registerSystem(CollisionResolveSystem)
       .registerSystem(CameraSystem, { camera })
       .registerSystem(RenderSystem, {
+        spriteCache,
+        camera,
+        renderer,
+      })
+      .registerSystem(DebugRenderSystem, {
         spriteCache,
         gameState,
         camera,

@@ -17,6 +17,11 @@ import { CThrottle } from '../../shared/game/component/cthrottle';
 import { CSync } from '../../shared/game/component/ctags';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
+import { CollisionDetectionSystem } from '../../shared/game/system/collision_detection_system';
+import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
+import { CTerrainCollision } from '../../shared/game/component/cterrain_collision';
+import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
+import { CollisionResolveSystem } from '../../shared/game/system/collision_resolve_system';
 
 export class ServerWorldManager {
   private entityFactory: EntityFactory = null;
@@ -26,12 +31,13 @@ export class ServerWorldManager {
   constructor(
     socketEmit: ISocketEmit,
     gameRoom: IGameRoom,
-    inputManager: InputManager
+    inputManager: InputManager,
+    levelProvider: ILevelProvider
   ) {
     this.world = new World();
     this.entityFactory = new EntityFactory(this.world);
     this.registerComponents();
-    this.initSystems(socketEmit, gameRoom, inputManager);
+    this.initSystems(socketEmit, gameRoom, inputManager, levelProvider);
     this.start();
   }
 
@@ -42,12 +48,15 @@ export class ServerWorldManager {
     this.world.registerComponent(CPlayer);
     this.world.registerComponent(CSync);
     this.world.registerComponent(CPosition);
+    this.world.registerComponent(CTerrainCollider);
+    this.world.registerComponent(CTerrainCollision);
   }
 
   private initSystems(
     socketEmit: ISocketEmit,
     gameRoom: IGameRoom,
-    inputManager: InputManager
+    inputManager: InputManager,
+    levelProvider: ILevelProvider
   ) {
     this.world
       .registerSystem(EntityDeleteSystem, {
@@ -55,7 +64,11 @@ export class ServerWorldManager {
       })
       .registerSystem(InputHandleSystem, { inputManager })
       .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
-      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS });
+      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
+      .registerSystem(CollisionDetectionSystem, {
+        levelProvider,
+      })
+      .registerSystem(CollisionResolveSystem);
   }
 
   public spawnPlayer(player: IPlayer, pos: IVec2) {

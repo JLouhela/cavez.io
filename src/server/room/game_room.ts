@@ -31,7 +31,8 @@ export class GameRoom implements IGameRoom {
       this.worldManager = new ServerWorldManager(
         socketEmit,
         this,
-        this.inputManager
+        this.inputManager,
+        this.levelManager
       );
       this.initialized = true;
       console.log(

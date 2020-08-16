@@ -1,19 +1,21 @@
 import { LevelParser } from './game/level_parser';
-import { Level } from '../shared/game/level';
+import { Level } from '../shared/game/level/level';
 import { AssetName } from './assets/asset_names';
-import { SpriteCache } from './assets/sprite_cache';
+import { AssetManager } from './assets/asset_manager';
 import { Levels } from '../shared/levels';
+import { ILevelProvider } from '../shared/game/level/level_provider_interface';
+import * as PIXI from 'pixi.js';
 
-export class ClientLevelManager {
+export class ClientLevelManager implements ILevelProvider {
   private currentLevel: Level;
   private currentLevelName: string;
   private levelParser: LevelParser = null;
-  private spriteCache: SpriteCache = null;
+  private assetManager: AssetManager = null;
   private levelNameMapping: { [levelName: string]: AssetName } = {};
 
-  constructor(renderer: PIXI.Renderer, spriteCache: SpriteCache) {
+  constructor(renderer: PIXI.Renderer, assetManager: AssetManager) {
     this.levelParser = new LevelParser(renderer);
-    this.spriteCache = spriteCache;
+    this.assetManager = assetManager;
     this.initMapping();
   }
 
@@ -22,11 +24,8 @@ export class ClientLevelManager {
   }
 
   public loadLevel(lvlName: string) {
-    const lvlSpriteId = this.spriteCache.createSprite(
-      this.levelNameMapping[lvlName]
-    );
     const lvlSource = this.levelParser.readPng(
-      this.spriteCache.getSprite(lvlSpriteId)
+      new PIXI.Sprite(this.assetManager.getTexture(lvlName))
     );
     this.currentLevel = new Level(lvlSource);
     console.log('Level ' + lvlName + ' loaded successfully');
@@ -36,7 +35,7 @@ export class ClientLevelManager {
     return this.currentLevelName;
   }
 
-  get level(): Level {
+  getLevel(): Level {
     return this.currentLevel;
   }
 }

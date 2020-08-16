@@ -11,6 +11,8 @@ import { CThrottle } from '../component/cthrottle';
 import { CSync } from '../component/ctags';
 import * as Constants from '../../constants';
 import { IEntitySyncPacket } from '../../../shared/protocol';
+import { CTerrainCollider } from '../component/cterrain_collider';
+import { Vec2 } from '../../math/vector';
 
 // TODO: Clear server / client separation
 
@@ -36,6 +38,7 @@ export class EntityFactory {
       CPhysics,
       CThrottle,
       CSync,
+      CTerrainCollider,
     ]);
     const playerComp = e.getMutableComponent(CPlayer);
     playerComp.color = color;
@@ -48,8 +51,22 @@ export class EntityFactory {
     const physComp = e.getMutableComponent(CPhysics);
     physComp.mass = Constants.SHIP_MASS;
 
-    const angleNorth = Math.PI + Math.PI / 2;
+    const angleNorth = 1.5 * Math.PI;
     physComp.angle = angleNorth;
+
+    const collidercomp = e.getMutableComponent(CTerrainCollider);
+    const collisionPoints: IVec2[] = [];
+
+    // TODO: Adapt if ship type can be changed, hard coded for the v-wing for now
+    collisionPoints.push({ x: 0, y: 0 });
+    // TODO enable more collision points when it's time to enhance collision handling
+    // Below v-shape points for a ship, 0,0 can be erased.
+    // collisionPoints.push({ x: 8, y: 0 });
+    // collisionPoints.push({ x: 0, y: 4 });
+    // collisionPoints.push({ x: 0, y: -4 });
+    // collisionPoints.push({ x: -8, y: 8 });
+    // collisionPoints.push({ x: -8, y: -8 });
+    collidercomp.collisionPoints = collisionPoints;
 
     return e;
   }

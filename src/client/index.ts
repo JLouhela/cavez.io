@@ -33,7 +33,7 @@ let worldManager: ClientWorldManager = null;
 let levelManager: ClientLevelManager = null;
 
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
-const renderer = new PIXI.Renderer({ view: canvas });
+const renderer = new PIXI.Renderer({ view: canvas, clearBeforeRender: false });
 
 camera.setSize({
   x: canvas.width,
@@ -44,7 +44,7 @@ Promise.all([assetManager.loadAssets()]).then(() => {
   Promise.all([
     (gameState = new GameState()),
     (spriteCache = new SpriteCache(assetManager)),
-    (levelManager = new ClientLevelManager(renderer, spriteCache)),
+    (levelManager = new ClientLevelManager(renderer, assetManager)),
     (socketHandler = new GeckosSocketHandler(gameState, levelManager)),
     (worldManager = new ClientWorldManager(
       spriteCache,
@@ -52,7 +52,8 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       inputReader,
       socketHandler,
       camera,
-      renderer
+      renderer,
+      levelManager
     )),
     // Cyclic dependency: SocketHandler takes responsibility of worldmanager:
     // - Startup before spawn request

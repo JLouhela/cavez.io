@@ -1,7 +1,7 @@
 import { PNG } from 'pngjs';
 import * as fs from 'fs';
-import { LevelSource } from '../../shared/game/level_source';
-import { Pixel } from '../../shared/game/level_source';
+import { LevelSource } from '../../shared/game/level/level_source';
+import { Pixel } from '../../shared/game/level/level_source';
 
 export function readPng(pngFile: string): Promise<LevelSource> {
   const parsedPromise = new Promise<LevelSource>((resolve) => {
@@ -15,6 +15,7 @@ export function readPng(pngFile: string): Promise<LevelSource> {
         for (let y = 0; y < this.height; y++) {
           for (let x = 0; x < this.width; x++) {
             const idx = (this.width * y + x) << 2;
+
             source.pixelData.push(
               new Pixel(
                 this.data[idx],
