@@ -58,11 +58,14 @@ export class EntityFactory {
     const collisionPoints: IVec2[] = [];
 
     // TODO: Adapt if ship type can be changed, hard coded for the v-wing for now
-    collisionPoints.push({ x: 8, y: 0 });
-    collisionPoints.push({ x: 0, y: 4 });
-    collisionPoints.push({ x: 0, y: -4 });
-    collisionPoints.push({ x: -8, y: 8 });
-    collisionPoints.push({ x: -8, y: -8 });
+    collisionPoints.push({ x: 0, y: 0 });
+    // TODO enable more collision points when it's time to enhance collision handling
+    // Below v-shape points for a ship, 0,0 can be erased.
+    // collisionPoints.push({ x: 8, y: 0 });
+    // collisionPoints.push({ x: 0, y: 4 });
+    // collisionPoints.push({ x: 0, y: -4 });
+    // collisionPoints.push({ x: -8, y: 8 });
+    // collisionPoints.push({ x: -8, y: -8 });
     collidercomp.collisionPoints = collisionPoints;
 
     return e;

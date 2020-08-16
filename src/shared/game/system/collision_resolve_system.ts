@@ -1,10 +1,7 @@
 import { System } from 'ecsy';
 import { CPhysics } from '../component/cphysics';
-import * as CollisionUtils from '../collision/collision_utils';
-import { Level } from '../level/level';
 import { CPosition } from '../component/cposition';
 import { Entity } from 'ecsy';
-import { IVec2 } from '../../math/vector';
 import { CTerrainCollision } from '../component/cterrain_collision';
 
 export class CollisionResolveSystem extends System {
@@ -16,23 +13,21 @@ export class CollisionResolveSystem extends System {
 
   execute(delta: number, time: number) {
     this.queries.terrainCollisions.results.forEach((entity) => {
-      this.resolveTerrainCollision(entity);
+      this.resolveTerrainCollision(entity, delta);
     });
   }
 
-  private resolveTerrainCollision(entity: Entity) {
-    const collision = entity.getComponent(CTerrainCollision);
+  private resolveTerrainCollision(entity: Entity, delta: number) {
     const pos = entity.getMutableComponent(CPosition);
     const phys = entity.getMutableComponent(CPhysics);
-    console.log(
-      'Collision: local' + collision.localPoint.x + ',' + collision.localPoint.y
-    );
-    console.log(
-      'Collision: terrain ' +
-        collision.terrainPoint.x +
-        ', ' +
-        collision.terrainPoint.y
-    );
+
+    // TODO Handle collisions properly
+    // -> Angular velocity not handled
+    // -> Impact point not taken into account
+    // -> Pretty much works only with a single point collision, otherwise you can get stuck by rotating
+    pos.x -= phys.velocity.x * 1.5 * delta;
+    pos.y -= phys.velocity.y * 1.5 * delta;
+    phys.velocity.set(0, 0);
     entity.removeComponent(CTerrainCollision);
   }
 }
