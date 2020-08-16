@@ -3,7 +3,7 @@ import { ILevelProvider } from '../level/level_provider_interface';
 import { CTerrainCollider } from '../component/cterrain_collider';
 import { Level } from '../level/level';
 import { CPosition } from '../component/cposition';
-import { CPhysics, CPhysicsType } from '../component/cphysics';
+import { CPhysics } from '../component/cphysics';
 import { Entity } from 'ecsy';
 import { IVec2, Vec2 } from '../../../shared/math/vector';
 import { CTerrainCollision } from '../component/cterrain_collision';
