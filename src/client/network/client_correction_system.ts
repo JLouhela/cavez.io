@@ -47,53 +47,20 @@ export class ClientCorrectionSystem extends System {
     const clientPhys = player.getMutableComponent(CPhysics);
 
     // TODO: corrections should be done based on past
-    // - handshake timestamps with server
-    // - interpolate to matching timestamps in the past
-    // - compare delta between match -> adapt current pos according to delta in history
-    // Since in current state the corrections make no sense -> disabled
-    // Code stored as a reference how lerp + snap can be done
-
-    // this.correctPos(clientPos, serverPos, clientPhys);
-    // this.correctAngle(clientPhys, serverPhys);
-  }
-
-  private correctPos(
-    clientPos: CPosition,
-    serverPos: CPosition,
-    clientPhys: CPhysics
-  ) {
-    const posThresholdX = Math.max(10, clientPhys.velocity.x / 2);
-    const posThresholdY = Math.max(10, clientPhys.velocity.y / 2);
-
-    if (Math.abs(clientPos.x - serverPos.x) < posThresholdX) {
-      clientPos.x -= (clientPos.x - serverPos.x) / 10;
-    } else {
-      clientPos.x = serverPos.x;
-    }
-    if (Math.abs(clientPos.y - serverPos.y) < posThresholdY) {
-      clientPos.y -= (clientPos.y - serverPos.y) / 10;
-    } else {
-      clientPos.y = serverPos.y;
-    }
-  }
-
-  private correctAngle(clientPhys: CPhysics, serverPhys: CPhysics) {
-    const angleThreshold = 0.2;
-    const normalizedClientAngle =
-      clientPhys.angle < Math.PI
-        ? clientPhys.angle + Math.PI
-        : clientPhys.angle;
-    const normalizedServerAngle =
-      clientPhys.angle < Math.PI
-        ? serverPhys.angle + Math.PI
-        : serverPhys.angle;
-    const dir = normalizedClientAngle > normalizedServerAngle ? -1 : 1;
-    const absDelta = Math.abs(normalizedClientAngle - normalizedServerAngle);
-    if (absDelta < angleThreshold) {
-      clientPhys.angle += (dir * absDelta) / 10;
-    } else {
-      clientPhys.angle = serverPhys.angle;
-    }
+    // 1. timesync: receive server time on join and store offset (needed for state reset on input ACK)
+    // 2. timestamp inputs (CLIENT TIME), local only?
+    // 3. add ID to inputs
+    // 4. add confirmation message to input received @server
+    // 5. store confirmation to game_state
+    // 6. store inputs in inputreadsystem, remove inputs in correction system
+    // 7. add timestamp (SERVER TIME) to IEntitySyncPacket
+    // 8. extract physics step from physics system
+    // -> reset physics components to server pos
+    //  -> find pos before input was sent
+    //   -> rewind inputs based reseted pos timestamp
+    // 9. erase unneeded data: inputs processed by server (id < received ACK), gamedata behind timestamp of received ACK
+    // handle dropped input?
+    // document to network_model.md
   }
 }
 
