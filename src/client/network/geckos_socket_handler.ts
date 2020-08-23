@@ -74,6 +74,23 @@ export class GeckosSocketHandler implements ISocketEmit {
         }
       );
 
+      // Ping pong: get server time offset
+      this.channel.on(
+        Protocol.SOCKET_EVENT.PING_RESPONSE,
+        (event: Protocol.IPingEvent) => {
+          const roundTripTime = performance.now() - event.clientTime;
+          this.gameState.setServerTimeOffset(
+            event.serverTime - event.clientTime - roundTripTime / 2
+          );
+          console.log(
+            'Ping: ' +
+              roundTripTime +
+              ', timeOffset = ' +
+              this.gameState.getServerTimeOffset()
+          );
+        }
+      );
+
       // Game update
       this.channel.on(
         Protocol.SOCKET_EVENT.ENTITY_UPDATE,
@@ -90,12 +107,18 @@ export class GeckosSocketHandler implements ISocketEmit {
     const color: string =
       '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
     this.roomIndex = roomIndex;
-    const event: Protocol.IJoinGameEvent = {
+    const joinGameEvent: Protocol.IJoinGameEvent = {
       name: userName,
       color,
       room: roomIndex,
     };
-    this.channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME, event, {
+
+    const pingEvent: Protocol.IPingEvent = {
+      clientTime: performance.now(),
+      serverTime: 0,
+    };
+    this.channel.emit(Protocol.SOCKET_EVENT.PING, pingEvent);
+    this.channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME, joinGameEvent, {
       reliable: true,
     });
   }

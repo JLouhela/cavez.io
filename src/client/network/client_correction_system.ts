@@ -47,7 +47,6 @@ export class ClientCorrectionSystem extends System {
     const clientPhys = player.getMutableComponent(CPhysics);
 
     // TODO: corrections should be done based on past
-    // 1. timesync: receive server time on join and store offset (needed for state reset on input ACK)
     // 2. timestamp inputs (CLIENT TIME), local only?
     // 3. add ID to inputs
     // 4. add confirmation message to input received @server

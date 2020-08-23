@@ -2,6 +2,7 @@ import { IRoomManager } from '../room/room_manager';
 import geckos, { GeckosServer, iceServers } from '@geckos.io/server';
 import { Server } from 'http';
 import * as Protocol from '../../shared/protocol';
+import { performance } from 'perf_hooks';
 
 export class GeckosSocketServer {
   private io: GeckosServer;
@@ -63,6 +64,10 @@ export class GeckosSocketServer {
           room.addInputUpdate(channel.id, event);
         }
       );
+      channel.on(Protocol.SOCKET_EVENT.PING, (event: Protocol.IPingEvent) => {
+        event.serverTime = performance.now();
+        channel.emit(Protocol.SOCKET_EVENT.PING_RESPONSE, event);
+      });
     });
   }
 }

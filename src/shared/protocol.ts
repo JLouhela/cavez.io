@@ -10,6 +10,8 @@ export enum SOCKET_EVENT {
   SPAWN_PLAYER = 'spawn',
   ENTITY_UPDATE = 'entity_update',
   INPUT_UPDATE = 'input_update',
+  PING = 'ping',
+  PING_RESPONSE = 'ping_response',
 }
 
 export enum INPUT_MASK {
@@ -47,4 +49,9 @@ export interface IJoinGameEventResponse {
   ok: boolean;
   room: number;
   level: string;
+}
+
+export interface IPingEvent {
+  clientTime: number;
+  serverTime: number;
 }

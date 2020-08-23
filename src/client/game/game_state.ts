@@ -1,9 +1,11 @@
 import * as Protocol from '../../shared/protocol';
+import { TilingSprite } from 'pixi.js';
 
 export class GameState {
   private syncEvents: Protocol.IEntityUpdateEvent[] = [];
   private playerEntityId: number = -1;
   private playerName: string = '';
+  private serverTimeOffset: number = 0;
 
   public addSyncEvent(event: Protocol.IEntityUpdateEvent) {
     this.syncEvents.push(event);
@@ -37,5 +39,12 @@ export class GameState {
 
   public getPlayerName(): string {
     return this.playerName;
+  }
+
+  public getServerTimeOffset(): number {
+    return this.serverTimeOffset;
+  }
+  public setServerTimeOffset(offset: number) {
+    this.serverTimeOffset = offset;
   }
 }
