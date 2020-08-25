@@ -1,6 +1,7 @@
 export interface InputState {
   timeStamp: number;
   inputMask: number;
+  id: number;
 }
 
 export class InputHistory {
@@ -8,14 +9,15 @@ export class InputHistory {
 
   constructor() {}
 
-  public storeInput(inputMask: number) {
-    this.inputs.push({ timeStamp: performance.now(), inputMask });
+  public storeInput(inputMask: number, id: number) {
+    this.inputs.push({ timeStamp: performance.now(), inputMask, id });
   }
 
-  public removeUntil(timeStamp: number) {
+  public removeUntil(id: number) {
     let removeCount = 0;
-    for (let i = 0; i < this.inputs.length; ++i, ++removeCount) {
-      if (this.inputs[i].timeStamp >= timeStamp) {
+    for (let i = 0; i < this.inputs.length; ++i) {
+      if (this.inputs[i].id == id) {
+        removeCount = i;
         break;
       }
     }

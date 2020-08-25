@@ -6,7 +6,7 @@ import { ClientWorldManager } from '../client_world_manager';
 import { ClientLevelManager } from '../client_level_manager';
 
 export interface ISocketEmit {
-  sendInputState(keyMask: number): void;
+  sendInputState(keyMask: number, id: number): void;
 }
 
 export class GeckosSocketHandler implements ISocketEmit {
@@ -133,9 +133,10 @@ export class GeckosSocketHandler implements ISocketEmit {
     );
   }
 
-  public sendInputState(keyMask: number) {
+  public sendInputState(keyMask: number, id: number) {
     const event: Protocol.IInputUpdateEvent = {
       timestamp: performance.now(),
+      id,
       keyMask,
     };
 

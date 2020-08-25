@@ -36,6 +36,7 @@ export interface IEntityUpdateEvent {
 
 export interface IInputUpdateEvent {
   timestamp: number;
+  id: number;
   keyMask: number;
 }
 

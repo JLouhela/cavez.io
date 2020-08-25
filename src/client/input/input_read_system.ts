@@ -13,6 +13,7 @@ export class InputReadSystem extends System {
   private socketEmit: ISocketEmit = null;
   private inputHistory: InputHistory = null;
   private prevInputState: number = 0x00;
+  private sequenceNumber: number = 0;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
@@ -44,10 +45,11 @@ export class InputReadSystem extends System {
       );
 
       if (inputState !== this.prevInputState) {
-        this.inputHistory.storeInput(inputState);
-        this.socketEmit.sendInputState(inputState);
+        this.inputHistory.storeInput(inputState, this.sequenceNumber);
+        this.socketEmit.sendInputState(inputState, this.sequenceNumber);
       }
       this.prevInputState = inputState;
+      this.sequenceNumber++;
     });
   }
 

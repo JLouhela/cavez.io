@@ -50,7 +50,6 @@ export class ClientCorrectionSystem extends System {
     const clientPhys = player.getMutableComponent(CPhysics);
 
     // TODO: corrections should be done based on past
-    // 3. add ID to inputs
     // 4. add confirmation message to input received @server
     // 5. store confirmation to game_state
     // 6. store inputs in inputreadsystem, remove inputs in correction system
