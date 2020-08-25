@@ -6,10 +6,12 @@ import { ISocketEmit } from '../network/geckos_socket_handler';
 import * as Protocol from '../../shared/protocol';
 import * as Constants from '../../shared/constants';
 import { CPhysics } from '../../shared/game/component/cphysics';
+import { InputHistory } from './input_history';
 
 export class InputReadSystem extends System {
   private inputReader: IInputReader = null;
   private socketEmit: ISocketEmit = null;
+  private inputHistory: InputHistory = null;
   private prevInputState: number = 0x00;
 
   constructor(world: any, attributes: any) {
@@ -18,6 +20,7 @@ export class InputReadSystem extends System {
     super(world, attributes);
     this.inputReader = attributes.inputReader;
     this.socketEmit = attributes.socketEmit;
+    this.inputHistory = attributes.inputHistory;
   }
 
   execute(delta: number, time: number) {
@@ -41,6 +44,7 @@ export class InputReadSystem extends System {
       );
 
       if (inputState !== this.prevInputState) {
+        this.inputHistory.storeInput(inputState);
         this.socketEmit.sendInputState(inputState);
       }
       this.prevInputState = inputState;

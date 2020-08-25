@@ -4,15 +4,18 @@ import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
 import { CPlayer } from '../../shared/game/component/cplayer';
 import { CPosition } from '../../shared/game/component/cposition';
 import { CPhysics } from '../../shared/game/component/cphysics';
+import { InputHistory } from '../input/input_history';
 
 export class ClientCorrectionSystem extends System {
   private gameState: GameState;
+  private inputHistory: InputHistory = null;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore
     super(world, attributes);
     this.gameState = attributes.gameState;
+    this.inputHistory = attributes.inputHistory;
   }
 
   execute(delta: number, time: number) {
@@ -47,7 +50,6 @@ export class ClientCorrectionSystem extends System {
     const clientPhys = player.getMutableComponent(CPhysics);
 
     // TODO: corrections should be done based on past
-    // 2. timestamp inputs (CLIENT TIME), local only?
     // 3. add ID to inputs
     // 4. add confirmation message to input received @server
     // 5. store confirmation to game_state

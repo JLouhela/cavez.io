@@ -9,6 +9,7 @@ import { Camera } from './game/camera/camera';
 import * as PIXI from 'pixi.js';
 import { GameState } from './game/game_state';
 import { ClientLevelManager } from './client_level_manager';
+import { InputHistory } from './input/input_history';
 
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById(
@@ -18,6 +19,7 @@ const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
 const inputReader = new InputReader();
 const camera = new Camera();
+const inputHistory: InputHistory = new InputHistory();
 
 document.addEventListener('keydown', (event) =>
   inputReader.keyDownEventListener(event)
@@ -53,7 +55,8 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       socketHandler,
       camera,
       renderer,
-      levelManager
+      levelManager,
+      inputHistory
     )),
     // Cyclic dependency: SocketHandler takes responsibility of worldmanager:
     // - Startup before spawn request

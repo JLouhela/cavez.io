@@ -30,6 +30,7 @@ import { CTerrainCollision } from '../shared/game/component/cterrain_collision';
 import { CollisionDetectionSystem } from '../shared/game/system/collision_detection_system';
 import { ClientLevelManager } from './client_level_manager';
 import { CollisionResolveSystem } from '../shared/game/system/collision_resolve_system';
+import { InputHistory } from './input/input_history';
 
 export class ClientWorldManager {
   private entityFactory: EntityFactory = null;
@@ -43,7 +44,8 @@ export class ClientWorldManager {
     socketEmit: ISocketEmit,
     camera: Camera,
     renderer: PIXI.Renderer,
-    levelManager: ClientLevelManager
+    levelManager: ClientLevelManager,
+    inputHistory: InputHistory
   ) {
     this.world = new World();
     this.entityFactory = new EntityFactory(this.world);
@@ -55,7 +57,8 @@ export class ClientWorldManager {
       socketEmit,
       camera,
       renderer,
-      levelManager
+      levelManager,
+      inputHistory
     );
   }
   private registerComponents() {
@@ -79,11 +82,16 @@ export class ClientWorldManager {
     socketEmit: ISocketEmit,
     camera: Camera,
     renderer: PIXI.Renderer,
-    levelManager: ClientLevelManager
+    levelManager: ClientLevelManager,
+    inputHistory: InputHistory
   ) {
     camera.setLevelSize(Constants.WORLD_BOUNDS);
     this.world
-      .registerSystem(InputReadSystem, { inputReader, socketEmit })
+      .registerSystem(InputReadSystem, {
+        inputReader,
+        socketEmit,
+        inputHistory,
+      })
       .registerSystem(EntityInitSystem, {
         gameState,
         entityFactory: this.entityFactory,
@@ -93,7 +101,7 @@ export class ClientWorldManager {
         gameState,
         spriteCache,
       })
-      .registerSystem(ClientCorrectionSystem, { gameState })
+      .registerSystem(ClientCorrectionSystem, { gameState, inputHistory })
       .registerSystem(InterpolateSystem, { gameState })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
       .registerSystem(CollisionDetectionSystem, { levelProvider: levelManager })
