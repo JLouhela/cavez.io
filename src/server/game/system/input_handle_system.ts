@@ -5,15 +5,22 @@ import { InputManager } from '../input_manager';
 import { CSocket } from '../../socket/csocket';
 import * as Protocol from '../../../shared/protocol';
 import * as Constants from '../../../shared/constants';
+import { ISocketEmit } from '../../socket/socket_emit_interface';
+import { IGameRoom } from '../../room/game_room';
 
 export class InputHandleSystem extends System {
   private inputManager: InputManager = null;
+  private socketEmit: ISocketEmit;
+  // Bit of a code smell: game room contains systems which refer to game room
+  private gameRoom: IGameRoom;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore
     super(world, attributes);
     this.inputManager = attributes.inputManager;
+    this.socketEmit = attributes.socketEmit;
+    this.gameRoom = attributes.gameRoom;
   }
 
   execute(delta: number, time: number) {
@@ -29,6 +36,13 @@ export class InputHandleSystem extends System {
         // Throttle: calculate time throttle was on ->_ set on and adjust force
         this.handleThrottle(throttle, physics, inputBuffer);
         this.handleRotation(physics, inputBuffer);
+        // TODO: find socket instead of socketid
+        this.socketEmit.emitInputProcessed(
+          this.gameRoom.getPlayer(socketId).socket,
+          {
+            id: inputBuffer[inputBuffer.length - 1].id,
+          }
+        );
       }
 
       this.inputManager.eraseInputs(socketId);

@@ -1,5 +1,5 @@
 import { IPlayer } from '../player/player_interface';
-import { IEntitySyncPacket } from '../../shared/protocol';
+import { IEntitySyncPacket, IInputProcessedEvent } from '../../shared/protocol';
 
 export interface ISocketEmit {
   emitSyncPackets(
@@ -7,4 +7,6 @@ export interface ISocketEmit {
     packets: { [entityId: number]: IEntitySyncPacket },
     timestamp: number
   ): void;
+
+  emitInputProcessed(socket: any, event: IInputProcessedEvent): void;
 }

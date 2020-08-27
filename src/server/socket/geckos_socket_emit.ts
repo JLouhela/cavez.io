@@ -20,4 +20,11 @@ export class GeckosSocketEmit implements ISocketEmit {
       listener.socket.emit(Protocol.SOCKET_EVENT.ENTITY_UPDATE, event);
     }
   }
+
+  public emitInputProcessed(
+    socket: any,
+    event: Protocol.IInputProcessedEvent
+  ): void {
+    socket.emit(Protocol.SOCKET_EVENT.INPUT_PROCESSED, event);
+  }
 }

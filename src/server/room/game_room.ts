@@ -7,6 +7,7 @@ import { InputManager } from '../game/input_manager';
 
 export interface IGameRoom {
   getPlayers(): IPlayer[];
+  getPlayer(socketId: string): IPlayer;
   isReady(): boolean;
 }
 

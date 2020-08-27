@@ -62,7 +62,7 @@ export class ServerWorldManager {
       .registerSystem(EntityDeleteSystem, {
         eraseByPlayerName: this.eraseByPlayerName,
       })
-      .registerSystem(InputHandleSystem, { inputManager })
+      .registerSystem(InputHandleSystem, { socketEmit, gameRoom, inputManager })
       .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
       .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
       .registerSystem(CollisionDetectionSystem, {
