@@ -48,11 +48,12 @@ export class ClientCorrectionSystem extends System {
     const clientPos = player.getMutableComponent(CPosition);
     const serverPhys = syncData.physics;
     const clientPhys = player.getMutableComponent(CPhysics);
-
+    const lastProcessedInput = this.gameState.getLastProcessedInput();
+    if (lastProcessedInput) {
+      console.log('Processed input ' + lastProcessedInput.id);
+      this.gameState.setLastProcessedInput(null);
+    }
     // TODO: corrections should be done based on past
-    // 4. add confirmation message to input received @server
-    // 5. store confirmation to game_state
-    // 6. store inputs in inputreadsystem, remove inputs in correction system
     // 7. add timestamp (SERVER TIME) to IEntitySyncPacket
     // 8. extract physics step from physics system
     // -> reset physics components to server pos

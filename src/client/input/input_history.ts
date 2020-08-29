@@ -16,7 +16,7 @@ export class InputHistory {
   public removeUntil(id: number) {
     let removeCount = 0;
     for (let i = 0; i < this.inputs.length; ++i) {
-      if (this.inputs[i].id == id) {
+      if (this.inputs[i].id === id) {
         removeCount = i;
         break;
       }

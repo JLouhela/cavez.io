@@ -12,6 +12,7 @@ export enum SOCKET_EVENT {
   INPUT_UPDATE = 'input_update',
   PING = 'ping',
   PING_RESPONSE = 'ping_response',
+  INPUT_PROCESSED = 'input_processed',
 }
 
 export enum INPUT_MASK {
@@ -38,6 +39,10 @@ export interface IInputUpdateEvent {
   timestamp: number;
   id: number;
   keyMask: number;
+}
+
+export interface IInputProcessedEvent {
+  id: number;
 }
 
 export interface IJoinGameEvent {

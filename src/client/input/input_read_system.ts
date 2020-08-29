@@ -47,9 +47,9 @@ export class InputReadSystem extends System {
       if (inputState !== this.prevInputState) {
         this.inputHistory.storeInput(inputState, this.sequenceNumber);
         this.socketEmit.sendInputState(inputState, this.sequenceNumber);
+        this.sequenceNumber++;
       }
       this.prevInputState = inputState;
-      this.sequenceNumber++;
     });
   }
 

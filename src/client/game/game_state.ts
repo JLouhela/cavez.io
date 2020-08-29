@@ -3,6 +3,7 @@ import { TilingSprite } from 'pixi.js';
 
 export class GameState {
   private syncEvents: Protocol.IEntityUpdateEvent[] = [];
+  private serverProcessedInput: Protocol.IInputProcessedEvent = null;
   private playerEntityId: number = -1;
   private playerName: string = '';
   private serverTimeOffset: number = 0;
@@ -16,6 +17,14 @@ export class GameState {
       return null;
     }
     return this.syncEvents[this.syncEvents.length - 1];
+  }
+
+  public setLastProcessedInput(input: Protocol.IInputProcessedEvent) {
+    this.serverProcessedInput = input;
+  }
+
+  public getLastProcessedInput(): Protocol.IInputProcessedEvent {
+    return this.serverProcessedInput;
   }
 
   // Call from a system

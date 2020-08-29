@@ -98,6 +98,14 @@ export class GeckosSocketHandler implements ISocketEmit {
           this.gameState.addSyncEvent(event);
         }
       );
+
+      // Input processed serverside
+      this.channel.on(
+        Protocol.SOCKET_EVENT.INPUT_PROCESSED,
+        (event: Protocol.IInputProcessedEvent) => {
+          this.gameState.setLastProcessedInput(event);
+        }
+      );
     });
     return this.connectedPromise;
   }
