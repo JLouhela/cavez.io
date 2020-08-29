@@ -1,10 +1,8 @@
-import { System, Entity } from 'ecsy';
-import { CThrottle } from '../component/cthrottle';
+import { System } from 'ecsy';
 import { CPosition } from '../component/cposition';
 import { CPhysics } from '../component/cphysics';
-import * as Constants from '../../constants';
-import { Vec2, IVec2 } from '../../math/vector';
-import * as MathUtils from '../../math/math_utils';
+import { IVec2 } from '../../math/vector';
+import * as PhysicsFunc from '../physics/physics_functions';
 
 export class PhysicsSystem extends System {
   private worldBounds: IVec2 = null;
@@ -15,70 +13,16 @@ export class PhysicsSystem extends System {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore
     super(world, attributes);
-    this.worldBounds = attributes.worldBounds;
   }
 
   private fixedUpdate(delta: number) {
     this.updateAccumulator += delta;
     while (this.updateAccumulator >= this.timeStep) {
-      this.performUpdate(this.timeStep);
+      this.queries.all.results.forEach((entity) => {
+        PhysicsFunc.physicsStep(entity, this.timeStep);
+      });
       this.updateAccumulator -= this.timeStep;
     }
-  }
-
-  private performUpdate(delta: number) {
-    this.queries.all.results.forEach((entity) => {
-      const physComp = entity.getMutableComponent(CPhysics);
-
-      physComp.angle += physComp.rotation * delta;
-      physComp.angle %= 2 * Math.PI;
-
-      const gravitationForce = Constants.GRAVITY * physComp.mass;
-      const velocityNormal = physComp.velocity.normal;
-      const dragForce = 0.5 * Constants.AIR_DENSITY * physComp.drag;
-      const dragVec = {
-        x:
-          -velocityNormal.x *
-          physComp.velocity.x *
-          physComp.velocity.x *
-          dragForce,
-        y:
-          -velocityNormal.y *
-          physComp.velocity.y *
-          physComp.velocity.y *
-          dragForce,
-      };
-
-      let throttleForce: IVec2 = { x: 0, y: 0 };
-      const throttleComp = entity.getComponent(CThrottle);
-      if (throttleComp && throttleComp.throttleOn) {
-        throttleForce = {
-          x: throttleComp.throttlePower * Math.cos(physComp.angle),
-          y: throttleComp.throttlePower * Math.sin(physComp.angle),
-        };
-      }
-
-      physComp.acceleration.set(
-        (throttleForce.x + dragVec.x) / physComp.mass,
-        (throttleForce.y + gravitationForce + dragVec.y) / physComp.mass
-      );
-
-      // TODO alloc bad bad bad bad bad
-      physComp.velocity.set(
-        physComp.velocity.x + physComp.acceleration.x * delta,
-        physComp.velocity.y + physComp.acceleration.y * delta
-      );
-
-      const posComp = entity.getMutableComponent(CPosition);
-      posComp.x = MathUtils.wrap(
-        posComp.x + physComp.velocity.x * delta,
-        this.worldBounds.x
-      );
-      posComp.y = MathUtils.wrap(
-        posComp.y + physComp.velocity.y * delta,
-        this.worldBounds.y
-      );
-    });
   }
 
   execute(delta: number, time: number) {

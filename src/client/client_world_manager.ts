@@ -103,7 +103,7 @@ export class ClientWorldManager {
       })
       .registerSystem(ClientCorrectionSystem, { gameState, inputHistory })
       .registerSystem(InterpolateSystem, { gameState })
-      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
+      .registerSystem(PhysicsSystem)
       .registerSystem(CollisionDetectionSystem, { levelProvider: levelManager })
       .registerSystem(CollisionResolveSystem)
       .registerSystem(CameraSystem, { camera })

@@ -64,7 +64,7 @@ export class ServerWorldManager {
       })
       .registerSystem(InputHandleSystem, { socketEmit, gameRoom, inputManager })
       .registerSystem(ServerSyncSystem, { socketEmit, gameRoom })
-      .registerSystem(PhysicsSystem, { worldBounds: Constants.WORLD_BOUNDS })
+      .registerSystem(PhysicsSystem)
       .registerSystem(CollisionDetectionSystem, {
         levelProvider,
       })
