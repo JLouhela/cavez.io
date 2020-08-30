@@ -54,7 +54,6 @@ export class ClientCorrectionSystem extends System {
       this.gameState.setLastProcessedInput(null);
     }
     // TODO: corrections should be done based on past
-    // 7. add timestamp (SERVER TIME) to IEntitySyncPacket
     // 8. extract physics step from physics system
     // -> reset physics components to server pos
     //  -> find pos before input was sent

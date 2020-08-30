@@ -8,6 +8,7 @@ import * as Constants from '../../../shared/constants';
 import { CPhysics } from '../../../shared/game/component/cphysics';
 import { CSync } from '../../../shared/game/component/ctags';
 import { IEntitySyncPacket } from '../../../shared/protocol';
+import { performance } from 'perf_hooks';
 
 export class ServerSyncSystem extends System {
   private gameState: GameState;
@@ -43,7 +44,7 @@ export class ServerSyncSystem extends System {
           pos: null,
           player: null,
           physics: null,
-          entityId: entity.id,
+          timeStamp: 0,
         };
       }
       this.updateSyncComponent(this.syncComponents[entity.id], entityDelta);
@@ -73,6 +74,7 @@ export class ServerSyncSystem extends System {
   }
 
   private updateSyncComponent(sync: IEntitySyncPacket, entity: Entity) {
+    sync.timeStamp = performance.now();
     if (entity.hasComponent(CPosition)) {
       sync.pos = entity.getComponent(CPosition).clone();
     }
@@ -82,8 +84,6 @@ export class ServerSyncSystem extends System {
     if (entity.hasComponent(CPhysics)) {
       sync.physics = entity.getComponent(CPhysics).clone();
     }
-    // TODO unnecessary, id is the key
-    sync.entityId = entity.id;
   }
 }
 
