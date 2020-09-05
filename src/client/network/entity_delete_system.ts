@@ -18,7 +18,7 @@ export class EntityDeleteSystem extends System {
   }
 
   execute(delta: number, time: number) {
-    const latestUpdate = this.gameState.getLatest();
+    const latestUpdate = this.gameState.getLatestSyncEvent();
     if (latestUpdate == null) {
       return;
     }

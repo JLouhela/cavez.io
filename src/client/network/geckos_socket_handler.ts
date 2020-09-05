@@ -79,14 +79,11 @@ export class GeckosSocketHandler implements ISocketEmit {
         Protocol.SOCKET_EVENT.PING_RESPONSE,
         (event: Protocol.IPingEvent) => {
           const roundTripTime = performance.now() - event.clientTime;
-          this.gameState.setServerTimeOffset(
-            event.serverTime - event.clientTime - roundTripTime / 2
-          );
+          const timeOffset =
+            event.serverTime - performance.now() - roundTripTime / 2;
+          this.gameState.setServerTimeOffset(timeOffset);
           console.log(
-            'Ping: ' +
-              roundTripTime +
-              ', timeOffset = ' +
-              this.gameState.getServerTimeOffset()
+            'Ping: ' + roundTripTime + ', timeOffset = ' + timeOffset
           );
         }
       );

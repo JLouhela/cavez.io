@@ -25,7 +25,7 @@ export class InterpolateSystem extends System {
         return;
       }
 
-      const latestUpdate = this.gameState.getLatest();
+      const latestUpdate = this.gameState.getLatestSyncEvent();
       if (!latestUpdate) {
         console.log('No gamestate updates yet');
         return;

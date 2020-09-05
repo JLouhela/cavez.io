@@ -61,8 +61,9 @@ export class DebugRenderSystem extends System {
       }
       const serverId = clientPlayerEntity.getComponent(CNetworkEntity).serverId;
       this.renderPlayerGhost(
-        this.gameState.getLatest().entityUpdates[serverId].pos,
-        this.gameState.getLatest().entityUpdates[serverId].physics.angle
+        this.gameState.getLatestSyncEvent().entityUpdates[serverId].pos,
+        this.gameState.getLatestSyncEvent().entityUpdates[serverId].physics
+          .angle
       );
     }
   }

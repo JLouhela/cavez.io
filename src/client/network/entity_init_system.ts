@@ -22,7 +22,7 @@ export class EntityInitSystem extends System {
 
   execute(delta: number, time: number) {
     // TODO may not be the latest actually to be used
-    const latestUpdate = this.gameState.getLatest();
+    const latestUpdate = this.gameState.getLatestSyncEvent();
     if (latestUpdate == null) {
       return;
     }
@@ -49,7 +49,6 @@ export class EntityInitSystem extends System {
         this.initializePlayer(newEntity);
       }
     }
-    this.gameState.clean();
   }
 
   // Proper place..?

@@ -44,7 +44,7 @@ export class ServerSyncSystem extends System {
           pos: null,
           player: null,
           physics: null,
-          timeStamp: 0,
+          timestamp: 0,
         };
       }
       this.updateSyncComponent(this.syncComponents[entity.id], entityDelta);
@@ -74,7 +74,7 @@ export class ServerSyncSystem extends System {
   }
 
   private updateSyncComponent(sync: IEntitySyncPacket, entity: Entity) {
-    sync.timeStamp = performance.now();
+    sync.timestamp = performance.now();
     if (entity.hasComponent(CPosition)) {
       sync.pos = entity.getComponent(CPosition).clone();
     }

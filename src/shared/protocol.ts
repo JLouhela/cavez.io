@@ -25,7 +25,7 @@ export interface IEntitySyncPacket {
   pos: CPosition;
   player: CPlayer;
   physics: CPhysics;
-  timeStamp: number;
+  timestamp: number;
 }
 
 export type IEntityUpdate = { [id: number]: IEntitySyncPacket };

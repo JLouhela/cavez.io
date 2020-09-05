@@ -1,5 +1,5 @@
 export interface InputState {
-  timeStamp: number;
+  timestamp: number;
   inputMask: number;
   id: number;
 }
@@ -10,7 +10,7 @@ export class InputHistory {
   constructor() {}
 
   public storeInput(inputMask: number, id: number) {
-    this.inputs.push({ timeStamp: performance.now(), inputMask, id });
+    this.inputs.push({ timestamp: performance.now(), inputMask, id });
   }
 
   public removeUntil(id: number) {
@@ -21,19 +21,24 @@ export class InputHistory {
         break;
       }
     }
+    // TODO reuse and avoid garbage collection
     this.inputs.splice(0, removeCount);
   }
 
-  public readInput(timeStamp: number) {
+  public readInput(timestamp: number) {
     for (let i = 1; i < this.inputs.length; ++i) {
-      if (this.inputs[i].timeStamp > timeStamp) {
-        if (this.inputs[i - 1].timeStamp <= timeStamp) {
+      if (this.inputs[i].timestamp > timestamp) {
+        if (this.inputs[i - 1].timestamp <= timestamp) {
           return this.inputs[i - 1].inputMask;
         }
         break;
       }
     }
-    console.log('Active input on timestamp ' + timeStamp + ' not found');
+    console.log('Active input on timestamp ' + timestamp + ' not found');
     return 0x00;
+  }
+
+  public getInputById(id: number) {
+    return this.inputs.find((i) => i.id === id);
   }
 }

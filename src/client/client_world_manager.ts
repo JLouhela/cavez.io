@@ -101,7 +101,11 @@ export class ClientWorldManager {
         gameState,
         spriteCache,
       })
-      .registerSystem(ClientCorrectionSystem, { gameState, inputHistory })
+      .registerSystem(ClientCorrectionSystem, {
+        gameState,
+        inputHistory,
+        levelProvider: levelManager,
+      })
       .registerSystem(InterpolateSystem, { gameState })
       .registerSystem(PhysicsSystem)
       .registerSystem(CollisionDetectionSystem, { levelProvider: levelManager })
