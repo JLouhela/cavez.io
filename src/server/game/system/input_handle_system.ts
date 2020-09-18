@@ -7,13 +7,13 @@ import * as Protocol from '../../../shared/protocol';
 import * as Constants from '../../../shared/constants';
 import { ISocketEmit } from '../../socket/socket_emit_interface';
 import { IGameRoom } from '../../room/game_room';
+import * as InputFunc from '../../../shared/game/input/input_functions';
 
 export class InputHandleSystem extends System {
   private inputManager: InputManager = null;
   private socketEmit: ISocketEmit;
   // Bit of a code smell: game room contains systems which refer to game room
   private gameRoom: IGameRoom;
-
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore
@@ -31,11 +31,12 @@ export class InputHandleSystem extends System {
 
       const inputBuffer = this.inputManager.getInputEvents(socketId);
       if (inputBuffer && inputBuffer.length > 0) {
-        // Process all buffered inputs:
-        // Rot CW and Rot CCW cancel each other out -> calculate delta based on timestamps
-        // Throttle: calculate time throttle was on ->_ set on and adjust force
-        this.handleThrottle(throttle, physics, inputBuffer);
-        this.handleRotation(physics, inputBuffer);
+        // TODO: use free functions
+        // TODO: What if there are multiple inputs buffered? now just drops earlier input
+        InputFunc.executeInput(
+          entity,
+          inputBuffer[inputBuffer.length - 1].keyMask
+        );
         // TODO: find socket instead of socketid
         this.socketEmit.emitInputProcessed(
           this.gameRoom.getPlayer(socketId).socket,
@@ -47,62 +48,6 @@ export class InputHandleSystem extends System {
 
       this.inputManager.eraseInputs(socketId);
     });
-  }
-
-  private handleThrottle(
-    throttleComp: CThrottle,
-    physicsComp: CPhysics,
-    inputBuffer: Protocol.IInputUpdateEvent[]
-  ) {
-    // Empty checked before calling
-    // Length 1: toggle on / off
-    if (inputBuffer.length === 1) {
-      throttleComp.throttleOn =
-        (inputBuffer[0].keyMask & Protocol.INPUT_MASK.THROTTLE) > 0;
-      throttleComp.throttlePower =
-        Constants.SHIP_THROTTLE_PER_MASS / physicsComp.mass;
-      return;
-    }
-    // Multiple inputs: calculate how long button has been pressed
-    // This is very likely bullshit
-    let throttleOn =
-      (inputBuffer[0].keyMask & Protocol.INPUT_MASK.THROTTLE) > 0;
-    let throttleTime = 0;
-    let ts = inputBuffer[0].timestamp;
-    for (let i = 1; i < inputBuffer.length; ++i) {
-      if (throttleOn) {
-        throttleTime += inputBuffer[i].timestamp - inputBuffer[i - 1].timestamp;
-      }
-      ts = inputBuffer[i].timestamp;
-      throttleOn = (inputBuffer[i].keyMask & Protocol.INPUT_MASK.THROTTLE) > 0;
-    }
-    if (throttleTime > 0) {
-      // Just test something
-      throttleComp.throttleOn = throttleOn;
-      throttleComp.throttlePower =
-        (Constants.SHIP_THROTTLE_PER_MASS / physicsComp.mass) *
-        Constants.SERVER_WORLD_STEP_RATE;
-    }
-  }
-
-  private handleRotation(
-    physicsComp: CPhysics,
-    inputBuffer: Protocol.IInputUpdateEvent[]
-  ) {
-    let dir = 0;
-    // for (let i = 0; i < inputBuffer.length; ++i) {
-
-    for (const input of inputBuffer) {
-      if ((input.keyMask & Protocol.INPUT_MASK.ROT_CW) > 0) {
-        dir = dir < 1 ? dir + 1 : dir;
-      }
-      if ((input.keyMask & Protocol.INPUT_MASK.ROT_CCW) > 0) {
-        dir = dir > -1 ? dir - 1 : dir;
-      }
-      physicsComp.rotation =
-        ((dir * physicsComp.mass) / Constants.SHIP_ROTATION_PER_MASS_INVERSE) *
-        Math.PI;
-    }
   }
 }
 

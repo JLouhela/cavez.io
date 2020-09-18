@@ -7,6 +7,7 @@ import * as Protocol from '../../shared/protocol';
 import * as Constants from '../../shared/constants';
 import { CPhysics } from '../../shared/game/component/cphysics';
 import { InputHistory } from './input_history';
+import * as InputFunc from '../../shared/game/input/input_functions';
 
 export class InputReadSystem extends System {
   private inputReader: IInputReader = null;
@@ -44,6 +45,8 @@ export class InputReadSystem extends System {
         inputComp.keyRotCCW
       );
 
+      InputFunc.executeInput(entity, inputState);
+
       if (inputState !== this.prevInputState) {
         this.inputHistory.storeInput(inputState, this.sequenceNumber);
         this.socketEmit.sendInputState(inputState, this.sequenceNumber);
@@ -61,11 +64,6 @@ export class InputReadSystem extends System {
   ): number {
     if (this.inputReader.isKeyDown(key)) {
       inputState = inputState | Protocol.INPUT_MASK.THROTTLE;
-      throttleComp.throttleOn = true;
-      throttleComp.throttlePower =
-        Constants.SHIP_THROTTLE_PER_MASS / physicsComp.mass;
-    } else {
-      throttleComp.throttleOn = false;
     }
     return inputState;
   }
@@ -78,17 +76,9 @@ export class InputReadSystem extends System {
   ): number {
     if (this.inputReader.isKeyDown(keyCW)) {
       inputState = inputState | Protocol.INPUT_MASK.ROT_CW;
-      physicsComp.rotation =
-        (physicsComp.mass / Constants.SHIP_ROTATION_PER_MASS_INVERSE) * Math.PI;
     } else if (this.inputReader.isKeyDown(keyCCW)) {
       inputState = inputState | Protocol.INPUT_MASK.ROT_CCW;
-      physicsComp.rotation =
-        (-physicsComp.mass / Constants.SHIP_ROTATION_PER_MASS_INVERSE) *
-        Math.PI;
-    } else {
-      physicsComp.rotation = 0;
     }
-
     return inputState;
   }
 }

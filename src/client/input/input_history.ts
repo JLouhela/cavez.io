@@ -22,10 +22,18 @@ export class InputHistory {
       }
     }
     // TODO reuse and avoid garbage collection
-    this.inputs.splice(0, removeCount);
+    this.inputs.splice(0, removeCount - 1);
   }
 
   public readInput(timestamp: number) {
+    if (this.inputs.length == 0) {
+      return 0x00;
+    }
+    if (this.inputs.length == 1) {
+      return this.inputs[0].timestamp < timestamp
+        ? this.inputs[0].inputMask
+        : 0x00;
+    }
     for (let i = 1; i < this.inputs.length; ++i) {
       if (this.inputs[i].timestamp > timestamp) {
         if (this.inputs[i - 1].timestamp <= timestamp) {
@@ -33,6 +41,9 @@ export class InputHistory {
         }
         break;
       }
+    }
+    if (this.inputs[this.inputs.length - 1].timestamp < timestamp) {
+      return this.inputs[this.inputs.length - 1].inputMask;
     }
     console.log('Active input on timestamp ' + timestamp + ' not found');
     return 0x00;

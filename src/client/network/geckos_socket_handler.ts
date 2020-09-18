@@ -144,7 +144,6 @@ export class GeckosSocketHandler implements ISocketEmit {
       id,
       keyMask,
     };
-
     this.channel.emit(Protocol.SOCKET_EVENT.INPUT_UPDATE, event, {
       reliable: true,
     });

@@ -7,6 +7,7 @@ import { CPhysics } from '../../shared/game/component/cphysics';
 import { InputHistory } from '../input/input_history';
 import * as PhysicsFunc from '../../shared/game/physics/physics_functions';
 import * as CollisionFunc from '../../shared/game/collision/collision_functions';
+import * as InputFunc from '../../shared/game/input/input_functions';
 import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
 
 export class ClientCorrectionSystem extends System {
@@ -15,6 +16,7 @@ export class ClientCorrectionSystem extends System {
   private lastCorrectionTime: number = null;
   private levelProvider: ILevelProvider = null;
   private forceCorrectionMS: number = 100;
+  private inputProcessed: number = -1;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
@@ -39,9 +41,11 @@ export class ClientCorrectionSystem extends System {
       return;
     }
 
-    // No input update, no need to do anything
-    // TODO force update still at certain intervals?
-    const lastProcessedInput = this.gameState.getLastProcessedInput();
+    let lastProcessedInput = this.gameState.getLastProcessedInput();
+    // Since inputs are sent as reliable packets, same data may be received twice(?)
+    if (lastProcessedInput && lastProcessedInput.id <= this.inputProcessed) {
+      lastProcessedInput = null;
+    }
     const forceUpdate =
       performance.now() - this.lastCorrectionTime > this.forceCorrectionMS;
     if (!lastProcessedInput && !forceUpdate) {
@@ -53,9 +57,12 @@ export class ClientCorrectionSystem extends System {
       const inputTimestamp = this.inputHistory.getInputById(
         lastProcessedInput.id
       ).timestamp;
+      this.inputProcessed = lastProcessedInput.id;
       const inputTimestampServer = this.gameState.getServerTime(inputTimestamp);
       syncPacket = this.gameState.getSyncEvent(inputTimestampServer);
-    } else {
+    }
+    if (!syncPacket) {
+      // Fallback to latest sync
       syncPacket = this.gameState.getLatestSyncEvent();
     }
 
@@ -79,8 +86,12 @@ export class ClientCorrectionSystem extends System {
     const fps = 1 / 60;
     let correctTime = this.gameState.getLocalTime(syncPacket.timestamp) + fps;
     const currentTime = performance.now();
-    // why getlocaltime = 0
+
     while (correctTime < currentTime) {
+      // TODO Get input in correctTime
+      // TODO Update rotation / throttle based on input before physics step
+      const correctInput = this.inputHistory.readInput(correctTime);
+      InputFunc.executeInput(player, correctInput);
       PhysicsFunc.physicsStep(player, fps);
       /*  CollisionFunc.terrainCollisionCheck(
         player,
@@ -90,11 +101,9 @@ export class ClientCorrectionSystem extends System {
       */ correctTime +=
         fps * 1000;
     }
-    // 9. erase unneeded data: inputs processed by server (id < received ACK), gamedata behind timestamp of received ACK
     // handle dropped input?
     // document to network_model.md
     // 10. reset other entities too?
-    this.gameState.setLastProcessedInput(null);
     this.gameState.removeSyncEvents(syncPacket.timestamp);
     // TODO erase input history, not only last processed input
     this.lastCorrectionTime = performance.now();
@@ -103,6 +112,6 @@ export class ClientCorrectionSystem extends System {
 
 ClientCorrectionSystem.queries = {
   all: {
-    components: [CPlayer, CNetworkEntity],
+    components: [CPlayer, CPosition, CPhysics, CNetworkEntity],
   },
 };
