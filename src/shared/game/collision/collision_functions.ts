@@ -8,6 +8,12 @@ import { IVec2, Vec2 } from '../../../shared/math/vector';
 import * as MathUtils from '../../../shared/math/math_utils';
 import { CTerrainCollision } from '../component/cterrain_collision';
 
+export interface ICollisionResult {
+  collision: boolean;
+  localCollisionPoint: IVec2;
+  otherCollisionPoint: IVec2;
+}
+
 export function collidesWith(
   mask: number,
   collisionType: CollisionMaskType
@@ -15,7 +21,7 @@ export function collidesWith(
   return (mask & collisionType) > 0;
 }
 
-function addTerrainCollisionComponent(
+export function addTerrainCollisionComponent(
   entity: Entity,
   localCollisionPoint: IVec2,
   terrainCollisionPoint: IVec2
@@ -33,7 +39,10 @@ function addTerrainCollisionComponent(
 }
 
 // Call only from systems!
-export function terrainCollisionCheck(entity: Entity, level: Level) {
+export function terrainCollisionCheck(
+  entity: Entity,
+  level: Level
+): ICollisionResult {
   const collider = entity.getComponent(CTerrainCollider);
   const pos = entity.getComponent(CPosition);
   const phys = entity.getComponent(CPhysics);
@@ -54,16 +63,19 @@ export function terrainCollisionCheck(entity: Entity, level: Level) {
       return;
     }
   });
-  if (collision) {
-    addTerrainCollisionComponent(
-      entity,
-      localCollisionPoint,
-      terrainCollisionPoint
-    );
-  }
+  return {
+    collision,
+    localCollisionPoint,
+    otherCollisionPoint: terrainCollisionPoint,
+  };
 }
 
-export function resolveTerrainCollision(entity: Entity, delta: number) {
+export function resolveTerrainCollision(
+  entity: Entity,
+  localCollisionPoint: IVec2,
+  terrainCollisionPoint: IVec2,
+  delta: number
+) {
   const pos = entity.getMutableComponent(CPosition);
   const phys = entity.getMutableComponent(CPhysics);
 
@@ -74,5 +86,4 @@ export function resolveTerrainCollision(entity: Entity, delta: number) {
   pos.x -= phys.velocity.x * 1.5 * delta;
   pos.y -= phys.velocity.y * 1.5 * delta;
   phys.velocity.set(0, 0);
-  entity.removeComponent(CTerrainCollision);
 }

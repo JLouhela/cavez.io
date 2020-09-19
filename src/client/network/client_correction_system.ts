@@ -87,25 +87,30 @@ export class ClientCorrectionSystem extends System {
     let correctTime = this.gameState.getLocalTime(syncPacket.timestamp) + fps;
     const currentTime = performance.now();
 
+    // TODO optimization: return masks with "validUntil" time
     while (correctTime < currentTime) {
-      // TODO Get input in correctTime
-      // TODO Update rotation / throttle based on input before physics step
       const correctInput = this.inputHistory.readInput(correctTime);
       InputFunc.executeInput(player, correctInput);
       PhysicsFunc.physicsStep(player, fps);
-      /*  CollisionFunc.terrainCollisionCheck(
+      const collisionResult = CollisionFunc.terrainCollisionCheck(
         player,
         this.levelProvider.getLevel()
       );
-      CollisionFunc.resolveTerrainCollision(player, fps);
-      */ correctTime +=
-        fps * 1000;
+      if (collisionResult.collision) {
+        CollisionFunc.resolveTerrainCollision(
+          player,
+          collisionResult.localCollisionPoint,
+          collisionResult.otherCollisionPoint,
+          fps
+        );
+      }
+      correctTime += fps * 1000;
     }
-    // handle dropped input?
-    // document to network_model.md
-    // 10. reset other entities too?
     this.gameState.removeSyncEvents(syncPacket.timestamp);
-    // TODO erase input history, not only last processed input
+    // If an input was processed, buffer can be safely erased
+    if (lastProcessedInput) {
+      this.inputHistory.removeUntil(lastProcessedInput.id);
+    }
     this.lastCorrectionTime = performance.now();
   }
 }

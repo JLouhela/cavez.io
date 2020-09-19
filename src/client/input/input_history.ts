@@ -7,8 +7,6 @@ export interface InputState {
 export class InputHistory {
   private inputs: InputState[] = [];
 
-  constructor() {}
-
   public storeInput(inputMask: number, id: number) {
     this.inputs.push({ timestamp: performance.now(), inputMask, id });
   }
@@ -26,10 +24,10 @@ export class InputHistory {
   }
 
   public readInput(timestamp: number) {
-    if (this.inputs.length == 0) {
+    if (this.inputs.length === 0) {
       return 0x00;
     }
-    if (this.inputs.length == 1) {
+    if (this.inputs.length === 1) {
       return this.inputs[0].timestamp < timestamp
         ? this.inputs[0].inputMask
         : 0x00;

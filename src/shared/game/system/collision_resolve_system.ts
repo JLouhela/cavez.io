@@ -13,7 +13,14 @@ export class CollisionResolveSystem extends System {
 
   execute(delta: number, time: number) {
     this.queries.terrainCollisions.results.forEach((entity) => {
-      CollisionFunc.resolveTerrainCollision(entity, delta);
+      const terrainCollision = entity.getComponent(CTerrainCollision);
+      CollisionFunc.resolveTerrainCollision(
+        entity,
+        terrainCollision.localPoint,
+        terrainCollision.terrainPoint,
+        delta
+      );
+      entity.removeComponent(CTerrainCollision);
     });
   }
 }

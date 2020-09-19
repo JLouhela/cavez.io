@@ -19,7 +19,14 @@ export class CollisionDetectionSystem extends System {
   execute(delta: number, time: number) {
     this.queries.terrainColliders.results.forEach((entity) => {
       const level = this.levelProvider.getLevel();
-      CollisionFunc.terrainCollisionCheck(entity, level);
+      const collisionResult = CollisionFunc.terrainCollisionCheck(entity, level);
+      if (collisionResult.collision) {
+        CollisionFunc.addTerrainCollisionComponent(
+          entity,
+          collisionResult.localCollisionPoint,
+          collisionResult.otherCollisionPoint
+        );
+      }
     });
   }
 }

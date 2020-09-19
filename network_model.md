@@ -9,6 +9,8 @@ First approach taken for syncing such behavior is as follows:
 
 - Server sends all entities and all necessary components to each player
 - Player entity name matches socket id thus it can identify it's own entity
+- Player receives confirmations from server when input has been processed
+- On input confirmation (and fixed intervals) player will reset client physics state to match server, and playback inputs up to current time. This scheme is known as reconciliation.
 
 Approach shall be designed to allow progress towards next steps, which are
 
