@@ -15,11 +15,13 @@ export class CollisionDetectionSystem extends System {
     this.levelProvider = attributes.levelProvider;
   }
 
-  // TODO think: fixed framerate or always?
   execute(delta: number, time: number) {
     this.queries.terrainColliders.results.forEach((entity) => {
       const level = this.levelProvider.getLevel();
-      const collisionResult = CollisionFunc.terrainCollisionCheck(entity, level);
+      const collisionResult = CollisionFunc.terrainCollisionCheck(
+        entity,
+        level
+      );
       if (collisionResult.collision) {
         CollisionFunc.addTerrainCollisionComponent(
           entity,

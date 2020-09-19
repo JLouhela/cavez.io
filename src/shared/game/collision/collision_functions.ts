@@ -83,7 +83,8 @@ export function resolveTerrainCollision(
   // -> Angular velocity not handled
   // -> Impact point not taken into account
   // -> Pretty much works only with a single point collision, otherwise you can get stuck by rotating
-  pos.x -= phys.velocity.x * 1.5 * delta;
-  pos.y -= phys.velocity.y * 1.5 * delta;
+  // -> Can go through the ground too if snap doesn't get you out of ground
+  pos.x -= phys.velocity.x * 2 * delta;
+  pos.y -= phys.velocity.y * 2 * delta;
   phys.velocity.set(0, 0);
 }

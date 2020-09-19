@@ -5,6 +5,7 @@ import { CPlayer } from '../../shared/game/component/cplayer';
 import { EntityFactory } from '../../shared/game/entity/entity_factory';
 import { SpriteCache } from '../assets/sprite_cache';
 import { AssetName } from '../assets/asset_names';
+import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
 
 export class EntityInitSystem extends System {
   private gameState: GameState;
@@ -59,6 +60,10 @@ export class EntityInitSystem extends System {
     if (player.getComponent(CPlayer).name === this.gameState.getPlayerName()) {
       this.entityFactory.addClientPlayerComponents(player);
       this.gameState.setPlayerId(player.id);
+    } else {
+      // Terrain collider not needed for other players
+      console.log('No terrain collider for entity ' + player.id);
+      player.removeComponent(CTerrainCollider);
     }
   }
 }
