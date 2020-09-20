@@ -16,3 +16,7 @@ export function rotatePoint(point: IVec2, angle: number): IVec2 {
     y: point.x * Math.sin(angle) + point.y * Math.cos(angle),
   };
 }
+
+export function negativeMod(num: number, mod: number) {
+  return ((num % mod) + mod) % mod;
+}

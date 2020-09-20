@@ -1,3 +1,5 @@
+import { negativeMod } from '../../shared/math/math_utils';
+
 export interface InputState {
   timestamp: number;
   inputMask: number;
@@ -6,7 +8,7 @@ export interface InputState {
 
 export class InputHistory {
   // Ring buffer similar to sync events
-  // No generic implementation to allow store by values without heap allocationg
+  // No generic implementation to allow store by values without heap allocation
   private inputs: InputState[] = null;
   private inputCount: number = 0;
   private firstIndex: number = 0;
@@ -18,12 +20,8 @@ export class InputHistory {
     }
   }
 
-  private negativeMod(num: number, mod: number) {
-    return ((num % mod) + mod) % mod;
-  }
-
   private getLastIndex(): number {
-    return this.negativeMod(
+    return negativeMod(
       this.inputCount + this.firstIndex - 1,
       this.inputs.length
     );
@@ -34,7 +32,13 @@ export class InputHistory {
     this.inputs[nextIndex].timestamp = performance.now();
     this.inputs[nextIndex].id = id;
     this.inputs[nextIndex].inputMask = inputMask;
-    this.inputCount = Math.min(this.inputs.length, this.inputCount + 1);
+    // If buffer overflow, move first index
+    if (this.inputCount === this.inputs.length) {
+      console.log('MOVE index');
+      this.firstIndex = (this.firstIndex + 1) % this.inputs.length;
+    } else {
+      this.inputCount++;
+    }
   }
 
   public removeUntil(id: number) {
@@ -71,7 +75,7 @@ export class InputHistory {
     // More than one input stored: find valid one
     for (let i = 1; i < this.inputCount; ++i) {
       const index = (this.firstIndex + i) % this.inputs.length;
-      const prevIndex = this.negativeMod(index - 1, this.inputs.length);
+      const prevIndex = negativeMod(index - 1, this.inputs.length);
       // Earlier checks ensure that first index has timestamp smaller than arg
       if (this.inputs[index].timestamp > timestamp) {
         return this.inputs[prevIndex].inputMask;

@@ -1,50 +1,33 @@
 import * as Protocol from '../../shared/protocol';
+import { SyncHistory } from './sync_history';
 
 export class GameState {
-  private syncEvents: Protocol.IEntityUpdateEvent[] = [];
+  private syncHistory: SyncHistory = null;
   private serverProcessedInput: Protocol.IInputProcessedEvent = null;
   private playerEntityId: number = -1;
   private playerName: string = '';
   private serverTimeOffset: number = 0;
 
+  constructor() {
+    this.syncHistory = new SyncHistory(30);
+  }
+
   public addSyncEvent(event: Protocol.IEntityUpdateEvent) {
-    this.syncEvents.push(event);
+    this.syncHistory.storeSyncEvents(event.timestamp, event.entityUpdates);
   }
 
   public getLatestSyncEvent() {
-    if (this.syncEvents.length === 0) {
-      return null;
-    }
-    return this.syncEvents[this.syncEvents.length - 1];
+    return this.syncHistory.getLatest();
   }
 
   public getSyncEvent(serverTime: number) {
-    for (let i = 1; i < this.syncEvents.length; ++i) {
-      if (this.syncEvents[i].timestamp > serverTime) {
-        if (this.syncEvents[i - 1].timestamp <= serverTime) {
-          return this.syncEvents[i - 1];
-        }
-        break;
-      }
-    }
-    return null;
+    return this.syncHistory.getSyncEvent(serverTime);
   }
 
   // TODO: save longer history for client?
   // Spares some bits
   public removeSyncEvents(serverTime: number) {
-    let removeCount = 0;
-    for (let i = 0; i < this.syncEvents.length; ++i, ++removeCount) {
-      if (this.syncEvents[i].timestamp > serverTime) {
-        break;
-      }
-    }
-    // TODO reuse to avoid garbage collection, no splice
-    // Keep always at least one element
-    this.syncEvents.splice(
-      0,
-      Math.min(this.syncEvents.length - 1, removeCount)
-    );
+    this.syncHistory.removeUntil(serverTime);
   }
 
   public setLastProcessedInput(input: Protocol.IInputProcessedEvent) {
