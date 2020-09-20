@@ -69,7 +69,6 @@ export class ClientCorrectionSystem extends System {
     if (!syncPacket) {
       return;
     }
-
     const serverId = player.getComponent(CNetworkEntity).serverId;
 
     const syncData = syncPacket.entityUpdates[serverId];

@@ -19,7 +19,7 @@ const playMenu = document.getElementById('play-menu') as HTMLDivElement;
 const assetManager = new AssetManager();
 const inputReader = new InputReader();
 const camera = new Camera();
-const inputHistory: InputHistory = new InputHistory();
+const inputHistory: InputHistory = new InputHistory(20);
 
 document.addEventListener('keydown', (event) =>
   inputReader.keyDownEventListener(event)
