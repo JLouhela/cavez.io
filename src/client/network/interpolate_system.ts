@@ -25,15 +25,16 @@ export class InterpolateSystem extends System {
         return;
       }
 
-      const latestUpdate = this.gameState.getLatestSyncEvent();
-      if (!latestUpdate) {
+      const interpolateState = this.gameState.getInterpolateState();
+      if (!interpolateState) {
         console.log('No gamestate updates yet');
         return;
       }
 
       const serverId = entity.getComponent(CNetworkEntity).serverId;
-      const syncData = latestUpdate.entityUpdates[serverId];
-      if (!syncData) {
+      const syncDataPrev = interpolateState.previous.entityUpdates[serverId];
+      const syncDataNext = interpolateState.next.entityUpdates[serverId];
+      if (!syncDataPrev || !syncDataNext) {
         console.log(
           'No sync data for entity ' +
             entity.id +
@@ -44,9 +45,17 @@ export class InterpolateSystem extends System {
         return;
       }
 
-      // TODO interpolate: now just copies the pos as is
-      entity.getMutableComponent(CPosition).copy(syncData.pos);
-      entity.getMutableComponent(CPhysics).copy(syncData.physics);
+      const interpDeltaTime = syncDataNext.timestamp - syncDataPrev.timestamp;
+      const deltaTimeNow =
+        performance.now() - this.gameState.getLocalTime(syncDataNext.timestamp);
+      const lerp = Math.min(1, deltaTimeNow / interpDeltaTime);
+      const pos = entity.getMutableComponent(CPosition);
+      pos.copy(syncDataPrev.pos);
+      pos.x += (syncDataNext.pos.x - syncDataPrev.pos.x) * lerp;
+      pos.y += (syncDataNext.pos.y - syncDataPrev.pos.y) * lerp;
+
+      const phys = entity.getMutableComponent(CPhysics);
+      phys.copy(syncDataPrev.physics);
     });
   }
 }

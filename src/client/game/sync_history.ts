@@ -1,5 +1,11 @@
 import { IEntityUpdate, IEntityUpdateEvent } from '../../shared/protocol';
 import { negativeMod } from '../../shared/math/math_utils';
+import * as Protocol from '../../shared/protocol';
+
+export interface InterpolateState {
+  previous: Protocol.IEntityUpdateEvent;
+  next: Protocol.IEntityUpdateEvent;
+}
 
 export class SyncHistory {
   // Ring buffer similar to input history
@@ -25,6 +31,18 @@ export class SyncHistory {
   public getLatest() {
     if (this.updates.length > 0) {
       return this.updates[this.getLastIndex()];
+    }
+    return null;
+  }
+
+  public getInterpolateState() {
+    if (this.updates.length > 1) {
+      return {
+        previous: this.updates[
+          negativeMod(this.getLastIndex() - 1, this.updates.length)
+        ],
+        next: this.updates[this.getLastIndex()],
+      };
     }
     return null;
   }

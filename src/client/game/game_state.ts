@@ -1,5 +1,5 @@
 import * as Protocol from '../../shared/protocol';
-import { SyncHistory } from './sync_history';
+import { SyncHistory, InterpolateState } from './sync_history';
 
 export class GameState {
   private syncHistory: SyncHistory = null;
@@ -18,6 +18,10 @@ export class GameState {
 
   public getLatestSyncEvent() {
     return this.syncHistory.getLatest();
+  }
+
+  public getInterpolateState() {
+    return this.syncHistory.getInterpolateState();
   }
 
   public getSyncEvent(serverTime: number) {
