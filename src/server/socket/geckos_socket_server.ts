@@ -11,7 +11,13 @@ export class GeckosSocketServer {
   constructor(server: Server) {
     // TODO check & study ice
     console.log(iceServers);
-    this.io = geckos({ iceServers });
+    this.io = geckos({
+      iceServers,
+      portRange: {
+        min: 19900,
+        max: 20000,
+      },
+    });
     this.io.addServer(server);
   }
 
