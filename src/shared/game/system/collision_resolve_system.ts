@@ -14,6 +14,9 @@ export class CollisionResolveSystem extends System {
   execute(delta: number, time: number) {
     this.queries.terrainCollisions.added.forEach((entity) => {
       const terrainCollision = entity.getMutableComponent(CTerrainCollision);
+      if (!terrainCollision) {
+        return;
+      }
       CollisionFunc.resolveTerrainCollision(
         entity,
         terrainCollision.localPoint,

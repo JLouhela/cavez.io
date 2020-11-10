@@ -14,14 +14,18 @@ services:
     extends:
       service: base
     command: npm run build
+  lint:
+    extends:
+      service: base
+    command: npm run lint
   compile:
     extends:
       service: base
     command: npm run tsc
-  start:
+  develop:
     extends:
       service: base
-    command: npm run start
+    command: npm run develop
     ports:
       - 1234:1234
 volumes:

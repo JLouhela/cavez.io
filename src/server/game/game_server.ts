@@ -39,7 +39,7 @@ export class GameServer {
       this._app.use(webpackDevMiddleware(compiler));
     } else {
       // Static serve the dist/ folder in production
-      this._app.use(express.static('dist'));
+      this._app.use(express.static(__dirname + '/../../../dist'));
     }
   }
 
