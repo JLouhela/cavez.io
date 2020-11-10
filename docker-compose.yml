@@ -28,6 +28,12 @@ services:
     command: npm run develop
     ports:
       - 1234:1234
+  start:
+    extends:
+      service: base
+    command: npm run start
+    ports:
+      - 1234:1234
 volumes:
   nodemodules:
     external: true
