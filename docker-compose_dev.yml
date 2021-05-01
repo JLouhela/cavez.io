@@ -27,7 +27,8 @@ services:
       service: base
     command: npm run develop
     ports:
-      - 1234:1234
+      - '1234:1234/tcp'
+      - '19990:20000/udp'
 volumes:
   nodemodules:
     external: true

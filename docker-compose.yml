@@ -23,7 +23,8 @@ services:
       service: base
     command: npm run start
     ports:
-      - 1234:1234
+      - '1234:1234/tcp'
+      - '19500:20000/udp'
 volumes:
   nodemodules:
     external: true
