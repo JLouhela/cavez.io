@@ -54,15 +54,16 @@ export class EntityInitSystem extends System {
 
   // Proper place..?
   private initializePlayer(player: Entity) {
-    console.log('Found myself! player id = ' + player.id);
+    console.log('New player! player id = ' + player.id);
     const spriteId = this.spriteCache.createSprite(AssetName.PLAYER_BASIC_SHIP);
     this.entityFactory.addPlayerComponents(player, spriteId);
     if (player.getComponent(CPlayer).name === this.gameState.getPlayerName()) {
+      console.log('Player ' + player.id + ' identified as the client');
       this.entityFactory.addClientPlayerComponents(player);
       this.gameState.setPlayerId(player.id);
     } else {
       // Terrain collider not needed for other players
-      console.log('No terrain collider for entity ' + player.id);
+      console.log('No terrain collider needed for player ' + player.id);
       player.removeComponent(CTerrainCollider);
     }
   }
