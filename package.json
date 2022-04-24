@@ -1,5 +1,6 @@
 {
   "name": "cavez.io",
+  "type": "commonjs",
   "version": "1.0.0",
   "description": "Multiplayer browser cave flying game",
   "main": "server.js",
@@ -28,6 +29,7 @@
     "ecsy": "^0.4.2",
     "express": "^4.17.3",
     "keycode-js": "^3.1.0",
+    "node-fetch": "^2.6.1",
     "pixi.js": "^6.3.0",
     "pngjs": "^6.0.0",
     "webpack": "^5.72.0",

@@ -16,7 +16,7 @@ export class ServerLevelManager implements ILevelProvider {
   }
 
   public loadLevel() {
-    const levelLoadPromise = new Promise((resolve) => {
+    const levelLoadPromise = new Promise<void>((resolve) => {
       const self = this;
       LevelParser.readPng(this.levelNameMapping[this.currentLevelName])
         .then((result) => {

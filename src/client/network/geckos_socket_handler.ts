@@ -21,7 +21,7 @@ export class GeckosSocketHandler implements ISocketEmit {
     this.levelManager = levelManager;
   }
 
-  connectedPromise = new Promise((resolve) => {
+  connectedPromise = new Promise<void>((resolve) => {
     this.channel = geckos({ port: Constants.DEFAULT_PORT });
 
     this.channel.onConnect((error: any) => {

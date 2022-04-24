@@ -1,5 +1,5 @@
 import * as webpack from 'webpack';
-import * as merge from 'webpack-merge';
+const { merge } = require("webpack-merge");
 import commonWebpackConfiguration from './webpack.common';
 
 const configuration: webpack.Configuration = merge(commonWebpackConfiguration, {

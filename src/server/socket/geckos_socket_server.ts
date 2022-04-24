@@ -1,5 +1,5 @@
 import { IRoomManager } from '../room/room_manager';
-import geckos, { GeckosServer, iceServers } from '@geckos.io/server';
+import {geckos, GeckosServer, iceServers } from '@geckos.io/server';
 import { Server } from 'http';
 import * as Protocol from '../../shared/protocol';
 import { performance } from 'perf_hooks';

@@ -22,7 +22,7 @@ export class AssetManager {
   }
 
   loadAssets() {
-    const loadedPromise = new Promise((resolve) => {
+    const loadedPromise = new Promise<void>((resolve) => {
       for (const [assetId, assetUri] of Object.entries(this.ASSET_URIS)) {
         console.log('Loading asset ' + assetId + ' : ' + assetUri);
         this.loader.add(assetId, assetUri);
