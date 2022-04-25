@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
+    "module": "ESNext",
+    "target": "ESNext",
     "noImplicitAny": true,
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "*": ["node_modules/*"]
     }
