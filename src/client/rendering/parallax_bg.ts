@@ -13,9 +13,9 @@ export class ParallaxBg {
   private parallaxMid: PIXI.TilingSprite = null;
   private parallaxNear: PIXI.TilingSprite = null;
 
-  private farSpeed: number = -0.1;
-  private midSpeed: number = -0.2;
-  private nearSpeed: number = -0.3;
+  private farSpeed = -0.1;
+  private midSpeed = -0.2;
+  private nearSpeed = -0.3;
 
   constructor(
     assetManager: AssetManager,

@@ -11,8 +11,8 @@ export interface IRoomManager {
 }
 
 export class RoomManager implements IRoomManager {
-  private maxRoomCount: number = 1;
-  private playersPerRoom: number = 10;
+  private maxRoomCount = 1;
+  private playersPerRoom = 10;
   private rooms: { [index: number]: GameRoom } = {};
 
   constructor(

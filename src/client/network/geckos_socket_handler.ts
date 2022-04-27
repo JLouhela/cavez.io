@@ -11,7 +11,7 @@ export interface ISocketEmit {
 
 export class GeckosSocketHandler implements ISocketEmit {
   private channel: any = null;
-  private roomIndex: number = -1;
+  private roomIndex = -1;
   private gameState: GameState = null;
   private worldManager: ClientWorldManager = null;
   private levelManager: ClientLevelManager = null;

@@ -12,14 +12,14 @@ export interface IGameRoom {
 }
 
 export class GameRoom implements IGameRoom {
-  private index: number = -1;
-  private title: string = 'undefined;.js';
+  private index = -1;
+  private title = 'undefined;.js';
   private players: IPlayer[] = [];
   private socketEmit: ISocketEmit = null;
   private worldManager: ServerWorldManager = null;
   private levelManager: ServerLevelManager = null;
   private inputManager: InputManager = null;
-  private initialized: boolean = false;
+  private initialized = false;
 
   constructor(index: number, title: string, socketEmit: ISocketEmit) {
     this.index = index;

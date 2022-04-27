@@ -49,7 +49,7 @@ export function terrainCollisionCheck(
 
   let localCollisionPoint: IVec2 = null;
   let terrainCollisionPoint: IVec2 = null;
-  let collision: boolean = false;
+  let collision = false;
   collider.collisionPoints.forEach((point) => {
     const rotatedCollisionPoint = MathUtils.rotatePoint(point, phys.angle);
     const terrainPoint = {

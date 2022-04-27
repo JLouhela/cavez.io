@@ -4,7 +4,7 @@ import { AssetManager } from './asset_manager.js';
 export class SpriteCache {
   private assetManager: AssetManager = null;
   private sprites: { [spriteId: number]: PIXI.Sprite } = {};
-  private nextId: number = 0;
+  private nextId = 0;
   private releasedIds: number[] = [];
 
   constructor(assetManager: AssetManager) {

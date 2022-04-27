@@ -15,8 +15,8 @@ export class ClientCorrectionSystem extends System {
   private inputHistory: InputHistory = null;
   private lastCorrectionTime: number = null;
   private levelProvider: ILevelProvider = null;
-  private forceCorrectionMS: number = 100;
-  private inputProcessed: number = -1;
+  private forceCorrectionMS = 100;
+  private inputProcessed = -1;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore

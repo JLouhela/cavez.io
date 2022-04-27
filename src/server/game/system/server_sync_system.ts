@@ -13,7 +13,7 @@ import { performance } from 'perf_hooks';
 export class ServerSyncSystem extends System {
   private gameState: GameState;
   private syncComponents: { [entityId: number]: IEntitySyncPacket } = {};
-  private cumulativeTime: number = 0;
+  private cumulativeTime = 0;
   private socketEmit: ISocketEmit;
   private gameRoom: IGameRoom;
 

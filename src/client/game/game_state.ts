@@ -4,9 +4,9 @@ import { SyncHistory, InterpolateState } from './sync_history.js';
 export class GameState {
   private syncHistory: SyncHistory = null;
   private serverProcessedInput: Protocol.IInputProcessedEvent = null;
-  private playerEntityId: number = -1;
-  private playerName: string = '.js';
-  private serverTimeOffset: number = 0;
+  private playerEntityId = -1;
+  private playerName = '.js';
+  private serverTimeOffset = 0;
 
   constructor() {
     this.syncHistory = new SyncHistory(30);

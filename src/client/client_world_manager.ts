@@ -34,7 +34,7 @@ import { InputHistory } from './input/input_history.js';
 
 export class ClientWorldManager {
   private entityFactory: EntityFactory = null;
-  private running: boolean = false;
+  private running = false;
   private world: World = null;
 
   constructor(

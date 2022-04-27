@@ -7,8 +7,8 @@ export interface IVec2 {
 }
 
 export class Vec2 {
-  private _x: number = 0;
-  private _y: number = 0;
+  private _x = 0;
+  private _y = 0;
   private _normal: IVec2 = null;
 
   constructor(x: number, y: number) {

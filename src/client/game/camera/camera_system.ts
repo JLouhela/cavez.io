@@ -6,7 +6,7 @@ import { TilingSprite } from 'pixi.js';
 
 export class CameraSystem extends System {
   private camera: Camera;
-  private cameraSnapDistance: number = 100;
+  private cameraSnapDistance = 100;
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
     // @ts-ignore

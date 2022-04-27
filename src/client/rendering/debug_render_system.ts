@@ -20,10 +20,10 @@ export class DebugRenderSystem extends System {
   private camera: Camera;
 
   // Options for rendering client server positions as received
-  private ghostSpriteId: number = -1;
+  private ghostSpriteId = -1;
   // TODO generate somehow from webpack cfg?
-  private renderGhost: boolean = true;
-  private renderTerrainCollider: boolean = true;
+  private renderGhost = true;
+  private renderTerrainCollider = true;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore

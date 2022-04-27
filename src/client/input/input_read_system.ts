@@ -13,8 +13,8 @@ export class InputReadSystem extends System {
   private inputReader: IInputReader = null;
   private socketEmit: ISocketEmit = null;
   private inputHistory: InputHistory = null;
-  private prevInputState: number = 0x00;
-  private sequenceNumber: number = 0;
+  private prevInputState = 0x00;
+  private sequenceNumber = 0;
 
   constructor(world: any, attributes: any) {
     // Missing from ts ctor -> ts-ignore
@@ -30,7 +30,7 @@ export class InputReadSystem extends System {
       const inputComp = entity.getComponent(CInput);
       const throttle = entity.getMutableComponent(CThrottle);
       const physics = entity.getMutableComponent(CPhysics);
-      let inputState: number = 0x00;
+      let inputState = 0x00;
       inputState = this.handleThrottle(
         0x00,
         throttle,

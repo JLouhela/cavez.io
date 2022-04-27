@@ -11,8 +11,8 @@ export class SyncHistory {
   // Ring buffer similar to input history
   // No generic implementation to allow store by values without heap allocation
   private updates: IEntityUpdateEvent[] = null;
-  private updateCount: number = 0;
-  private firstIndex: number = 0;
+  private updateCount = 0;
+  private firstIndex = 0;
 
   constructor(size: number) {
     this.updates = [];

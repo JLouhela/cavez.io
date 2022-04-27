@@ -16,7 +16,7 @@ export class Camera {
   private levelSize: IVec2 = { x: 0, y: 0 };
   private targetCenterPos: IVec2 = { x: 0, y: 0 };
   private movementDelta: IVec2 = { x: 0, y: 0 };
-  private lerpSpeed: number = 5;
+  private lerpSpeed = 5;
 
   public setSize(size: IVec2) {
     this.bounds.w = size.x;

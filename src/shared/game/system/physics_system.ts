@@ -6,7 +6,7 @@ import * as PhysicsFunc from '../physics/physics_functions.js';
 
 export class PhysicsSystem extends System {
   private worldBounds: IVec2 = null;
-  private updateAccumulator: number = 0.0;
+  private updateAccumulator = 0.0;
   private timeStep: number = 1 / 60; // Update ratio: 60fps
 
   constructor(world: any, attributes: any) {
