@@ -1,11 +1,11 @@
 import { System, Entity } from 'ecsy';
-import { GameState } from '../game/game_state';
-import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
-import { CPlayer } from '../../shared/game/component/cplayer';
-import { EntityFactory } from '../../shared/game/entity/entity_factory';
-import { SpriteCache } from '../assets/sprite_cache';
-import { AssetName } from '../assets/asset_names';
-import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
+import { GameState } from '../game/game_state.js';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
+import { CPlayer } from '../../shared/game/component/cplayer.js';
+import { EntityFactory } from '../../shared/game/entity/entity_factory.js';
+import { SpriteCache } from '../assets/sprite_cache.js';
+import { AssetName } from '../assets/asset_names.js';
+import { CTerrainCollider } from '../../shared/game/component/cterrain_collider.js';
 
 export class EntityInitSystem extends System {
   private gameState: GameState;

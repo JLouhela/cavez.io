@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { AssetManager } from './asset_manager';
+import { AssetManager } from './asset_manager.js';
 
 export class SpriteCache {
   private assetManager: AssetManager = null;

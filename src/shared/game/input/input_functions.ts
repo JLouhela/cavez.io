@@ -1,8 +1,8 @@
 import { Entity } from 'ecsy';
-import { CPhysics } from '../component/cphysics';
-import { CThrottle } from '../component/cthrottle';
-import * as Constants from '../../constants';
-import * as Protocol from '../../protocol';
+import { CPhysics } from '../component/cphysics.js';
+import { CThrottle } from '../component/cthrottle.js';
+import * as Constants from '../../constants.js';
+import * as Protocol from '../../protocol.js';
 
 export function executeInput(entity: Entity, keyMask: number) {
   const physics = entity.getMutableComponent(CPhysics);

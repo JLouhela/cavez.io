@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
-import { IVec2 } from '../../shared/math/vector';
-import { AssetManager } from '../assets/asset_manager';
-import { AssetName } from '../assets/asset_names';
+import { IVec2 } from '../../shared/math/vector.js';
+import { AssetManager } from '../assets/asset_manager.js';
+import { AssetName } from '../assets/asset_names.js';
 
 export class ParallaxBg {
   private container = new PIXI.Container();

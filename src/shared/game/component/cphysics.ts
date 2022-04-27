@@ -5,7 +5,7 @@ import {
   copyCopyable,
   cloneClonable,
 } from 'ecsy';
-import { Vec2Type, Vec2 } from '../../math/vector';
+import { Vec2Type, Vec2 } from '../../math/vector.js';
 
 export class CPhysics extends Component<CPhysics> {
   mass: number;

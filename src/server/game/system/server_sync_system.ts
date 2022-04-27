@@ -1,13 +1,13 @@
 import { System, Entity } from 'ecsy';
-import { GameState } from '../game_state';
-import { CPosition } from '../../../shared/game/component/cposition';
-import { CPlayer } from '../../../shared/game/component/cplayer';
-import { ISocketEmit } from '../../socket/socket_emit_interface';
-import { IGameRoom } from '../../room/game_room';
-import * as Constants from '../../../shared/constants';
-import { CPhysics } from '../../../shared/game/component/cphysics';
-import { CSync } from '../../../shared/game/component/ctags';
-import { IEntitySyncPacket } from '../../../shared/protocol';
+import { GameState } from '../game_state.js';
+import { CPosition } from '../../../shared/game/component/cposition.js';
+import { CPlayer } from '../../../shared/game/component/cplayer.js';
+import { ISocketEmit } from '../../socket/socket_emit_interface.js';
+import { IGameRoom } from '../../room/game_room.js';
+import * as Constants from '../../../shared/constants.js';
+import { CPhysics } from '../../../shared/game/component/cphysics.js';
+import { CSync } from '../../../shared/game/component/ctags.js';
+import { IEntitySyncPacket } from '../../../shared/protocol.js';
 import { performance } from 'perf_hooks';
 
 export class ServerSyncSystem extends System {

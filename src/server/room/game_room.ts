@@ -1,9 +1,9 @@
-import { IPlayer } from '../player/player_interface';
-import { ServerWorldManager } from '../game/server_world_manager';
-import { ISocketEmit } from '../socket/socket_emit_interface';
-import { ServerLevelManager } from '../game/server_level_manager';
-import * as Protocol from '../../shared/protocol';
-import { InputManager } from '../game/input_manager';
+import { IPlayer } from '../player/player_interface.js';
+import { ServerWorldManager } from '../game/server_world_manager.js';
+import { ISocketEmit } from '../socket/socket_emit_interface.js';
+import { ServerLevelManager } from '../game/server_level_manager.js';
+import * as Protocol from '../../shared/protocol.js';
+import { InputManager } from '../game/input_manager.js';
 
 export interface IGameRoom {
   getPlayers(): IPlayer[];
@@ -13,7 +13,7 @@ export interface IGameRoom {
 
 export class GameRoom implements IGameRoom {
   private index: number = -1;
-  private title: string = 'undefined;';
+  private title: string = 'undefined;.js';
   private players: IPlayer[] = [];
   private socketEmit: ISocketEmit = null;
   private worldManager: ServerWorldManager = null;

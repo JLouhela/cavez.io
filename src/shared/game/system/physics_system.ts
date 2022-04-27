@@ -1,8 +1,8 @@
 import { System } from 'ecsy';
-import { CPosition } from '../component/cposition';
-import { CPhysics } from '../component/cphysics';
-import { IVec2 } from '../../math/vector';
-import * as PhysicsFunc from '../physics/physics_functions';
+import { CPosition } from '../component/cposition.js';
+import { CPhysics } from '../component/cphysics.js';
+import { IVec2 } from '../../math/vector.js';
+import * as PhysicsFunc from '../physics/physics_functions.js';
 
 export class PhysicsSystem extends System {
   private worldBounds: IVec2 = null;

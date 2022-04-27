@@ -1,4 +1,4 @@
-import { IVec2 } from './vector';
+import { IVec2 } from './vector.js';
 
 export interface IRect {
   x: number;

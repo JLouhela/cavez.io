@@ -1,5 +1,5 @@
-import { IPlayer } from '../player/player_interface';
-import { IEntitySyncPacket, IInputProcessedEvent } from '../../shared/protocol';
+import { IPlayer } from '../player/player_interface.js';
+import { IEntitySyncPacket, IInputProcessedEvent } from '../../shared/protocol.js';
 
 export interface ISocketEmit {
   emitSyncPackets(

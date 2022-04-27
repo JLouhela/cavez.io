@@ -1,14 +1,14 @@
 import { System } from 'ecsy';
-import { GameState } from '../game/game_state';
-import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
-import { CPlayer } from '../../shared/game/component/cplayer';
-import { CPosition } from '../../shared/game/component/cposition';
-import { CPhysics } from '../../shared/game/component/cphysics';
-import { InputHistory } from '../input/input_history';
-import * as PhysicsFunc from '../../shared/game/physics/physics_functions';
-import * as CollisionFunc from '../../shared/game/collision/collision_functions';
-import * as InputFunc from '../../shared/game/input/input_functions';
-import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
+import { GameState } from '../game/game_state.js';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
+import { CPlayer } from '../../shared/game/component/cplayer.js';
+import { CPosition } from '../../shared/game/component/cposition.js';
+import { CPhysics } from '../../shared/game/component/cphysics.js';
+import { InputHistory } from '../input/input_history.js';
+import * as PhysicsFunc from '../../shared/game/physics/physics_functions.js';
+import * as CollisionFunc from '../../shared/game/collision/collision_functions.js';
+import * as InputFunc from '../../shared/game/input/input_functions.js';
+import { ILevelProvider } from '../../shared/game/level/level_provider_interface.js';
 
 export class ClientCorrectionSystem extends System {
   private gameState: GameState;

@@ -1,6 +1,6 @@
-import { GameRoom } from './game_room';
-import { IPlayer } from '../player/player_interface';
-import { ISocketEmit } from '../socket/socket_emit_interface';
+import { GameRoom } from './game_room.js';
+import { IPlayer } from '../player/player_interface.js';
+import { ISocketEmit } from '../socket/socket_emit_interface.js';
 
 export interface IRoomManager {
   addToRoom(player: IPlayer, roomIndex: number): boolean;

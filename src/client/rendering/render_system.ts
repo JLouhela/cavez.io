@@ -1,14 +1,14 @@
 import * as PIXI from 'pixi.js';
 import { System } from 'ecsy';
-import { SpriteCache } from '../assets/sprite_cache';
-import { CSprite } from './csprite';
-import { CPosition } from '../../shared/game/component/cposition';
-import { IVec2 } from '../../shared/math/vector';
-import { CPhysics } from '../../shared/game/component/cphysics';
-import { ParallaxBg } from './parallax_bg';
-import { Camera } from '../game/camera/camera';
-import { EnvironmentTexture } from './environment_texture';
-import { AssetName } from '../assets/asset_names';
+import { SpriteCache } from '../assets/sprite_cache.js';
+import { CSprite } from './csprite.js';
+import { CPosition } from '../../shared/game/component/cposition.js';
+import { IVec2 } from '../../shared/math/vector.js';
+import { CPhysics } from '../../shared/game/component/cphysics.js';
+import { ParallaxBg } from './parallax_bg.js';
+import { Camera } from '../game/camera/camera.js';
+import { EnvironmentTexture } from './environment_texture.js';
+import { AssetName } from '../assets/asset_names.js';
 
 export class RenderSystem extends System {
   private spriteCache: SpriteCache = null;

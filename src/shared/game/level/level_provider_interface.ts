@@ -1,4 +1,4 @@
-import { Level } from './level';
+import { Level } from './level.js';
 
 export interface ILevelProvider {
   getLevel(): Level;

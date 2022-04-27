@@ -1,4 +1,4 @@
-import { IVec2 } from './vector';
+import { IVec2 } from './vector.js';
 
 // lower_bound zero as no other functionality likely needed
 export function wrap(num: number, upperBound: number) {

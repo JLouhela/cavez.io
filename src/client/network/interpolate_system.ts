@@ -1,10 +1,10 @@
 import { System } from 'ecsy';
-import { GameState } from '../game/game_state';
-import { CSync } from '../../shared/game/component/ctags';
-import { CPosition } from '../../shared/game/component/cposition';
-import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
-import { CPhysics } from '../../shared/game/component/cphysics';
-import * as Constants from '../../shared/constants';
+import { GameState } from '../game/game_state.js';
+import { CSync } from '../../shared/game/component/ctags.js';
+import { CPosition } from '../../shared/game/component/cposition.js';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
+import { CPhysics } from '../../shared/game/component/cphysics.js';
+import * as Constants from '../../shared/constants.js';
 
 export class InterpolateSystem extends System {
   private gameState: GameState;

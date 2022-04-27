@@ -1,4 +1,4 @@
-import { Pixel } from './level_source';
+import { Pixel } from './level_source.js';
 
 export enum TerrainType {
   None = 0,

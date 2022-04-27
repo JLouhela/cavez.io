@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
-import { AssetName } from './asset_names';
+import * as PIXI from 'pixi.js'
+import { AssetName } from './asset_names.js';
 import ship_basic_white from '../../../public/assets/ship_basic_white.png';
 import Parallax60 from '../../../public/assets/Parallax60.png';
 import Parallax80 from '../../../public/assets/Parallax80.png';

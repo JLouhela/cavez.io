@@ -1,7 +1,7 @@
-import { ISocketEmit } from './socket_emit_interface';
+import { ISocketEmit } from './socket_emit_interface.js';
 import { GeckosServer } from '@geckos.io/server';
-import { IPlayer } from '../player/player_interface';
-import * as Protocol from '../../shared/protocol';
+import { IPlayer } from '../player/player_interface.js';
+import * as Protocol from '../../shared/protocol.js';
 
 export class GeckosSocketEmit implements ISocketEmit {
   private io: GeckosServer;

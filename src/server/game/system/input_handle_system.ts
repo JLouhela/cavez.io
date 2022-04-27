@@ -1,13 +1,13 @@
 import { System } from 'ecsy';
-import { CThrottle } from '../../../shared/game/component/cthrottle';
-import { CPhysics } from '../../../shared/game/component/cphysics';
-import { InputManager } from '../input_manager';
-import { CSocket } from '../../socket/csocket';
-import * as Protocol from '../../../shared/protocol';
-import * as Constants from '../../../shared/constants';
-import { ISocketEmit } from '../../socket/socket_emit_interface';
-import { IGameRoom } from '../../room/game_room';
-import * as InputFunc from '../../../shared/game/input/input_functions';
+import { CThrottle } from '../../../shared/game/component/cthrottle.js';
+import { CPhysics } from '../../../shared/game/component/cphysics.js';
+import { InputManager } from '../input_manager.js';
+import { CSocket } from '../../socket/csocket.js';
+import * as Protocol from '../../../shared/protocol.js';
+import * as Constants from '../../../shared/constants.js';
+import { ISocketEmit } from '../../socket/socket_emit_interface.js';
+import { IGameRoom } from '../../room/game_room.js';
+import * as InputFunc from '../../../shared/game/input/input_functions.js';
 
 export class InputHandleSystem extends System {
   private inputManager: InputManager = null;

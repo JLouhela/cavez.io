@@ -1,8 +1,7 @@
 import * as PIXI from 'pixi.js';
-import { IVec2 } from '../../shared/math/vector';
-import { AssetManager } from '../assets/asset_manager';
-import { AssetName } from '../assets/asset_names';
-import * as Constants from '../../shared/constants';
+import { AssetManager } from '../assets/asset_manager.js';
+import { AssetName } from '../assets/asset_names.js';
+import * as Constants from '../../shared/constants.js';
 
 export class EnvironmentTexture {
   private container = new PIXI.Container();

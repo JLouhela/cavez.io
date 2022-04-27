@@ -1,4 +1,4 @@
-import { negativeMod } from '../../shared/math/math_utils';
+import { negativeMod } from '../../shared/math/math_utils.js';
 
 export interface InputState {
   timestamp: number;

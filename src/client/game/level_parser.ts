@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { LevelSource } from '../../shared/game/level/level_source';
-import { Pixel } from '../../shared/game/level/level_source';
+import { LevelSource } from '../../shared/game/level/level_source.js';
+import { Pixel } from '../../shared/game/level/level_source.js';
 
 export class LevelParser {
   private renderer: PIXI.Renderer = null;

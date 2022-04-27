@@ -1,12 +1,12 @@
-import { CollisionMaskType } from './collision_mask_types';
+import { CollisionMaskType } from './collision_mask_types.js';
 import { Entity } from 'ecsy';
-import { Level } from '../level/level';
-import { CTerrainCollider } from '../component/cterrain_collider';
-import { CPosition } from '../component/cposition';
-import { CPhysics } from '../component/cphysics';
-import { IVec2, Vec2 } from '../../../shared/math/vector';
-import * as MathUtils from '../../../shared/math/math_utils';
-import { CTerrainCollision } from '../component/cterrain_collision';
+import { Level } from '../level/level.js';
+import { CTerrainCollider } from '../component/cterrain_collider.js';
+import { CPosition } from '../component/cposition.js';
+import { CPhysics } from '../component/cphysics.js';
+import { IVec2, Vec2 } from '../../../shared/math/vector.js';
+import * as MathUtils from '../../../shared/math/math_utils.js';
+import { CTerrainCollision } from '../component/cterrain_collision.js';
 
 export interface ICollisionResult {
   collision: boolean;

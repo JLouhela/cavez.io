@@ -1,9 +1,9 @@
-import { LevelParser } from './game/level_parser';
-import { Level } from '../shared/game/level/level';
-import { AssetName } from './assets/asset_names';
-import { AssetManager } from './assets/asset_manager';
-import { Levels } from '../shared/levels';
-import { ILevelProvider } from '../shared/game/level/level_provider_interface';
+import { LevelParser } from './game/level_parser.js';
+import { Level } from '../shared/game/level/level.js';
+import { AssetName } from './assets/asset_names.js';
+import { AssetManager } from './assets/asset_manager.js';
+import { Levels } from '../shared/levels.js';
+import { ILevelProvider } from '../shared/game/level/level_provider_interface.js';
 import * as PIXI from 'pixi.js';
 
 export class ClientLevelManager implements ILevelProvider {

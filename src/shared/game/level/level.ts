@@ -1,7 +1,7 @@
-import { LevelSource, Pixel } from './level_source';
-import * as Terrain from './terrain_utils';
-import { IVec2 } from '../../math/vector';
-import * as MathUtils from '../../math/math_utils';
+import { LevelSource, Pixel } from './level_source.js';
+import * as Terrain from './terrain_utils.js';
+import { IVec2 } from '../../math/vector.js';
+import * as MathUtils from '../../math/math_utils.js';
 
 export class Level {
   private width: number;

@@ -1,4 +1,4 @@
-import * as Protocol from '../../shared/protocol';
+import * as Protocol from '../../shared/protocol.js';
 
 export class InputManager {
   private inputBuffer: { [id: string]: Protocol.IInputUpdateEvent[] } = {};

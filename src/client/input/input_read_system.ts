@@ -1,13 +1,13 @@
 import { System } from 'ecsy';
-import { CInput } from '../../shared/game/component/cinput';
-import { CThrottle } from '../../shared/game/component/cthrottle';
-import { IInputReader } from './input_reader';
-import { ISocketEmit } from '../network/geckos_socket_handler';
-import * as Protocol from '../../shared/protocol';
-import * as Constants from '../../shared/constants';
-import { CPhysics } from '../../shared/game/component/cphysics';
-import { InputHistory } from './input_history';
-import * as InputFunc from '../../shared/game/input/input_functions';
+import { CInput } from '../../shared/game/component/cinput.js';
+import { CThrottle } from '../../shared/game/component/cthrottle.js';
+import { IInputReader } from './input_reader.js';
+import { ISocketEmit } from '../network/geckos_socket_handler.js';
+import * as Protocol from '../../shared/protocol.js';
+import * as Constants from '../../shared/constants.js';
+import { CPhysics } from '../../shared/game/component/cphysics.js';
+import { InputHistory } from './input_history.js';
+import * as InputFunc from '../../shared/game/input/input_functions.js';
 
 export class InputReadSystem extends System {
   private inputReader: IInputReader = null;

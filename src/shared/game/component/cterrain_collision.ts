@@ -1,5 +1,5 @@
 import { Component, Types } from 'ecsy';
-import { Vec2, Vec2Type } from '../../math/vector';
+import { Vec2, Vec2Type } from '../../math/vector.js';
 
 // Raw numbers to avoid allocations on each collider addition
 export class CTerrainCollision extends Component<CTerrainCollision> {

@@ -1,11 +1,11 @@
-import * as Protocol from '../../shared/protocol';
-import { SyncHistory, InterpolateState } from './sync_history';
+import * as Protocol from '../../shared/protocol.js';
+import { SyncHistory, InterpolateState } from './sync_history.js';
 
 export class GameState {
   private syncHistory: SyncHistory = null;
   private serverProcessedInput: Protocol.IInputProcessedEvent = null;
   private playerEntityId: number = -1;
-  private playerName: string = '';
+  private playerName: string = '.js';
   private serverTimeOffset: number = 0;
 
   constructor() {

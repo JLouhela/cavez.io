@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js';
 import { System } from 'ecsy';
-import { SpriteCache } from '../assets/sprite_cache';
-import { GameState } from '../game/game_state';
-import { CSprite } from './csprite';
-import { CPlayer } from '../../shared/game/component/cplayer';
-import { CPosition } from '../../shared/game/component/cposition';
-import { IVec2 } from '../../shared/math/vector';
-import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
-import { Camera } from '../game/camera/camera';
-import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
-import { CPhysics } from '../../shared/game/component/cphysics';
-import * as MathUtils from '../../shared/math/math_utils';
+import { SpriteCache } from '../assets/sprite_cache.js';
+import { GameState } from '../game/game_state.js';
+import { CSprite } from './csprite.js';
+import { CPlayer } from '../../shared/game/component/cplayer.js';
+import { CPosition } from '../../shared/game/component/cposition.js';
+import { IVec2 } from '../../shared/math/vector.js';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
+import { Camera } from '../game/camera/camera.js';
+import { CTerrainCollider } from '../../shared/game/component/cterrain_collider.js';
+import { CPhysics } from '../../shared/game/component/cphysics.js';
+import * as MathUtils from '../../shared/math/math_utils.js';
 
 export class DebugRenderSystem extends System {
   private spriteCache: SpriteCache = null;

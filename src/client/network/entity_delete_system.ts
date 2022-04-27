@@ -1,8 +1,8 @@
 import { System } from 'ecsy';
-import { GameState } from '../game/game_state';
-import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
-import { SpriteCache } from '../assets/sprite_cache';
-import { CSprite } from '../rendering/csprite';
+import { GameState } from '../game/game_state.js';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
+import { SpriteCache } from '../assets/sprite_cache.js';
+import { CSprite } from '../rendering/csprite.js';
 
 // Delete entities not present on server any longer
 export class EntityDeleteSystem extends System {

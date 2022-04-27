@@ -1,6 +1,6 @@
-import { IEntityUpdate, IEntityUpdateEvent } from '../../shared/protocol';
-import { negativeMod } from '../../shared/math/math_utils';
-import * as Protocol from '../../shared/protocol';
+import { IEntityUpdate, IEntityUpdateEvent } from '../../shared/protocol.js';
+import { negativeMod } from '../../shared/math/math_utils.js';
+import * as Protocol from '../../shared/protocol.js';
 
 export interface InterpolateState {
   previous: Protocol.IEntityUpdateEvent;

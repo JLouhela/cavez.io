@@ -1,7 +1,7 @@
-import { IRoomManager } from '../room/room_manager';
+import { IRoomManager } from '../room/room_manager.js';
 import {geckos, GeckosServer, iceServers } from '@geckos.io/server';
 import { Server } from 'http';
-import * as Protocol from '../../shared/protocol';
+import * as Protocol from '../../shared/protocol.js';
 import { performance } from 'perf_hooks';
 
 export class GeckosSocketServer {
