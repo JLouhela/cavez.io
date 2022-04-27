@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "NodeNext",
     "target": "ESNext",
     "noImplicitAny": true,
     "moduleResolution": "NodeNext",
@@ -10,6 +10,7 @@
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "paths": {
+      "pixi.js": ["node_modules/pixi.js/index.d.ts"],
       "*": ["node_modules/*"]
     }
   },

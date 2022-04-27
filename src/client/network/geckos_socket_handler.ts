@@ -1,7 +1,7 @@
 import * as Protocol from '../../shared/protocol.js';
 import * as Constants from '../../shared/constants.js';
 import { GameState } from '../game/game_state.js';
-import geckos from '@geckos.io/client.js';
+import geckos from '@geckos.io/client';
 import { ClientWorldManager } from '../client_world_manager.js';
 import { ClientLevelManager } from '../client_level_manager.js';
 
