@@ -14,11 +14,11 @@ export class AssetManager {
 
   // TODO support sprite sheet instead
   constructor() {
-    this.ASSET_URIS[AssetName.PLAYER_BASIC_SHIP] = ship_basic_white;
-    this.ASSET_URIS[AssetName.PARALLAX_1] = Parallax100;
-    this.ASSET_URIS[AssetName.PARALLAX_2] = Parallax80;
-    this.ASSET_URIS[AssetName.PARALLAX_3] = Parallax60;
-    this.ASSET_URIS[AssetName.LEVEL_1] = Level1;
+    this.ASSET_URIS[AssetName.PLAYER_BASIC_SHIP] = ship_basic_white as string;
+    this.ASSET_URIS[AssetName.PARALLAX_1] = Parallax100 as string;
+    this.ASSET_URIS[AssetName.PARALLAX_2] = Parallax80 as string;
+    this.ASSET_URIS[AssetName.PARALLAX_3] = Parallax60 as string;
+    this.ASSET_URIS[AssetName.LEVEL_1] = Level1 as string;
   }
 
   loadAssets() {

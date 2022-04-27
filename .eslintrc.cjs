@@ -82,19 +82,14 @@ module.exports = {
                 }
             }
         ],
-        "@typescript-eslint/naming-convention": "error",
+        "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/no-empty-function": "error",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-misused-new": "error",
         "@typescript-eslint/no-namespace": "error",
         "@typescript-eslint/no-parameter-properties": "off",
-        "@typescript-eslint/no-shadow": [
-            "error",
-            {
-                "hoist": "all"
-            }
-        ],
+        "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/no-var-requires": "error",
@@ -180,11 +175,11 @@ module.exports = {
         "no-irregular-whitespace": "off",
         "no-multiple-empty-lines": "off",
         "no-new-wrappers": "error",
-        "no-shadow": "error",
+        "no-shadow": "off",
         "no-throw-literal": "error",
         "no-trailing-spaces": "off",
         "no-undef-init": "error",
-        "no-underscore-dangle": "error",
+        "no-underscore-dangle": "off",
         "no-unsafe-finally": "error",
         "no-unused-expressions": "error",
         "no-unused-labels": "error",
