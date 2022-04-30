@@ -1,4 +1,4 @@
-import './css/styles.css.js';
+import './css/styles.css';
 
 import { GeckosSocketHandler } from './network/geckos_socket_handler.js';
 import { AssetManager } from './assets/asset_manager.js';

@@ -2,6 +2,8 @@ import * as path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
+import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
+
 import * as webpack from 'webpack';
 import * as url from 'url';
 
@@ -39,6 +41,7 @@ const configuration: webpack.Configuration = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    plugins: [new ResolveTypeScriptPlugin()]
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -49,7 +52,7 @@ const configuration: webpack.Configuration = {
       template: 'src/client/html/index.html',
       favicon: './public/assets/icon64.png',
       css: './src/client/html/styles.css',
-    }),  
+    }),
   ],
 };
 
