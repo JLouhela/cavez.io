@@ -25,6 +25,7 @@ export class Level {
   }
 
   private getHash(x: number, y: number): number {
+    // TODO multiply by x instead of str manipulation
     return parseInt(
       Math.floor(y / this.bucketSize).toString() +
         Math.floor(x / this.bucketSize).toString(),

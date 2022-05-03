@@ -1,14 +1,11 @@
 import {
   Component,
   Types,
-  createType,
-  copyCopyable,
-  cloneClonable,
 } from 'ecsy';
 
 export class CPosition extends Component<CPosition> {
-  x: number;
-  y: number;
+  declare x: number;
+  declare y: number;
 }
 
 CPosition.schema = {

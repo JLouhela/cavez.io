@@ -1,14 +1,11 @@
 import {
   Component,
   Types,
-  createType,
-  copyCopyable,
-  cloneClonable,
 } from 'ecsy';
 
 export class CPlayer extends Component<CPlayer> {
-  color: string;
-  name: string;
+  declare color: string;
+  declare name: string;
 }
 
 CPlayer.schema = {

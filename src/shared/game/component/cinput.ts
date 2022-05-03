@@ -2,9 +2,9 @@ import { Component, Types } from 'ecsy';
 import * as KeyCode from 'keycode-js';
 
 export class CInput extends Component<CInput> {
-  keyThrottle: number;
-  keyRotCW: number;
-  keyRotCCW: number;
+  declare keyThrottle: number;
+  declare keyRotCW: number;
+  declare keyRotCCW: number;
 }
 
 CInput.schema = {

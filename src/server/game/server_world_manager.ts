@@ -34,7 +34,7 @@ export class ServerWorldManager {
     inputManager: InputManager,
     levelProvider: ILevelProvider
   ) {
-    this.world = new World();
+    this.world = new World({entityPoolSize: 500});
     this.entityFactory = new EntityFactory(this.world);
     this.registerComponents();
     this.initSystems(socketEmit, gameRoom, inputManager, levelProvider);

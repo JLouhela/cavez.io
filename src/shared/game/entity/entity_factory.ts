@@ -49,6 +49,8 @@ export class EntityFactory {
     posComp.y = pos.y;
 
     const physComp = e.getMutableComponent(CPhysics);
+    const testpaska = new CPhysics();
+    console.log(physComp)
     physComp.mass = Constants.SHIP_MASS;
 
     const angleNorth = 1.5 * Math.PI;
