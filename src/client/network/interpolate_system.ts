@@ -1,10 +1,10 @@
-import { System } from 'ecsy';
+import { System, World, Entity, Attributes } from 'ecsy';
 import { GameState } from '../game/game_state.js';
 import { CSync } from '../../shared/game/component/ctags.js';
 import { CPosition } from '../../shared/game/component/cposition.js';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
 import { CPhysics } from '../../shared/game/component/cphysics.js';
-import { CopyUtils } from '../../shared/game/component/copy_utils.js';
+import * as CopyUtils from '../../shared/game/component/copy_utils.js';
 import * as Constants from '../../shared/constants.js';
 
 export class InterpolateSystem extends System {
@@ -16,18 +16,16 @@ export class InterpolateSystem extends System {
     yHalf: number;
   } = { x: 0, y: 0, xHalf: 0, yHalf: 0 };
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
-    this.gameState = attributes.gameState;
+    this.gameState = attributes.gameState as GameState;
     this.worldBounds.x = Constants.WORLD_BOUNDS.x;
     this.worldBounds.y = Constants.WORLD_BOUNDS.y;
     this.worldBounds.xHalf = this.worldBounds.x * 0.5;
     this.worldBounds.yHalf = this.worldBounds.y * 0.5;
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     // TODO may not be the latest actually to be used
     const playerId = this.gameState.getPlayerId();
 

@@ -3,19 +3,18 @@ import { ILevelProvider } from '../level/level_provider_interface.js';
 import { CTerrainCollider } from '../component/cterrain_collider.js';
 import { CPosition } from '../component/cposition.js';
 import { CPhysics } from '../component/cphysics.js';
+import { World, Attributes, Entity } from 'ecsy';
 import * as CollisionFunc from '../collision/collision_functions.js';
 
 export class CollisionDetectionSystem extends System {
   private levelProvider: ILevelProvider = null;
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
-    this.levelProvider = attributes.levelProvider;
+    this.levelProvider = attributes.levelProvider as ILevelProvider;
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     this.queries.terrainColliders.results.forEach((entity) => {
       const level = this.levelProvider.getLevel();
       const collisionResult = CollisionFunc.terrainCollisionCheck(

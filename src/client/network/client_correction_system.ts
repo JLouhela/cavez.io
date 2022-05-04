@@ -1,10 +1,10 @@
-import { System } from 'ecsy';
+import { System, World, Entity, Attributes } from 'ecsy';
 import { GameState } from '../game/game_state.js';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
 import { CPlayer } from '../../shared/game/component/cplayer.js';
 import { CPosition } from '../../shared/game/component/cposition.js';
 import { CPhysics } from '../../shared/game/component/cphysics.js';
-import { CopyUtils } from '../../shared/game/component/copy_utils.js';
+import * as CopyUtils from '../../shared/game/component/copy_utils.js';
 import { InputHistory } from '../input/input_history.js';
 import * as PhysicsFunc from '../../shared/game/physics/physics_functions.js';
 import * as CollisionFunc from '../../shared/game/collision/collision_functions.js';
@@ -19,16 +19,14 @@ export class ClientCorrectionSystem extends System {
   private forceCorrectionMS = 100;
   private inputProcessed = -1;
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
     this.gameState = attributes.gameState;
     this.inputHistory = attributes.inputHistory;
     this.levelProvider = attributes.levelProvider;
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     // TODO may not be the latest actually to be used
     const playerId = this.gameState.getPlayerId();
     if (playerId === -1) {

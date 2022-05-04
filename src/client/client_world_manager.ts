@@ -47,7 +47,7 @@ export class ClientWorldManager {
     levelManager: ClientLevelManager,
     inputHistory: InputHistory
   ) {
-    this.world = new World({entityPoolSize: 500});
+    this.world = new World({ entityPoolSize: 500 });
     this.entityFactory = new EntityFactory(this.world);
     this.registerComponents();
     this.initSystems(
@@ -131,7 +131,7 @@ export class ClientWorldManager {
 
   public start(): void {
     this.running = true;
-    function client_step() {
+    const client_step = () => {
       const time = performance.now();
       const delta = (time - lastTime) / 1000.0;
 

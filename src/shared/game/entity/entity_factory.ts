@@ -1,4 +1,4 @@
-import { World, Entity } from 'ecsy';
+import { World, Entity, Component, ComponentConstructor } from 'ecsy';
 import { CPosition } from './../component/cposition.js';
 import { CPlayer } from './../component/cplayer.js';
 import { IVec2 } from './../../math/vector.js';
@@ -12,8 +12,7 @@ import { CSync } from '../component/ctags.js';
 import * as Constants from '../../constants.js';
 import { IEntitySyncPacket } from '../../../shared/protocol.js';
 import { CTerrainCollider } from '../component/cterrain_collider.js';
-import { Vec2 } from '../../math/vector.js';
-import { CopyUtils } from '../component/copy_utils.js';
+import * as CopyUtils from '../component/copy_utils.js';
 
 // TODO: Clear server / client separation
 
@@ -24,7 +23,7 @@ export class EntityFactory {
     this.world = world;
   }
 
-  public createEntity(components: any[]) {
+  public createEntity(components: ComponentConstructor<Component<any>>[]) {
     const entity = this.world.createEntity(null);
     for (const component of components) {
       entity.addComponent(component);
@@ -50,8 +49,6 @@ export class EntityFactory {
     posComp.y = pos.y;
 
     const physComp = e.getMutableComponent(CPhysics);
-    const testpaska = new CPhysics();
-    console.log(physComp)
     physComp.mass = Constants.SHIP_MASS;
 
     const angleNorth = 1.5 * Math.PI;
@@ -80,7 +77,7 @@ export class EntityFactory {
       sync.player.color,
       sync.pos
     );
-    let physics = player.getMutableComponent(CPhysics)
+    const physics = player.getMutableComponent(CPhysics)
     CopyUtils.copyPhysics(sync.physics, physics);
     return player;
   }

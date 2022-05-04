@@ -1,4 +1,4 @@
-import { Component, Types } from 'ecsy';
+import { Component } from 'ecsy';
 import { Vec2, Vec2Type } from '../../math/vector.js';
 
 // Raw numbers to avoid allocations on each collider addition

@@ -14,21 +14,21 @@ export interface ICollisionResult {
   otherCollisionPoint: IVec2;
 }
 
-export function collidesWith(
+export const collidesWith = (
   mask: number,
   collisionType: CollisionMaskType
-): boolean {
+): boolean => {
   return (mask & collisionType) > 0;
 }
 
-export function addTerrainCollisionComponent(
+export const addTerrainCollisionComponent = (
   entity: Entity,
   localCollisionPoint: IVec2,
   terrainCollisionPoint: IVec2
-) {
+) => {
   if (entity.hasComponent(CTerrainCollision)) {
     console.log(
-      'Entity ' + entity.id + ' has already unresolved terrain collision!'
+      `Entity ${entity.id} has already unresolved terrain collision!`
     );
     return;
   }
@@ -39,10 +39,10 @@ export function addTerrainCollisionComponent(
 }
 
 // Call only from systems!
-export function terrainCollisionCheck(
+export const terrainCollisionCheck = (
   entity: Entity,
   level: Level
-): ICollisionResult {
+): ICollisionResult => {
   const collider = entity.getComponent(CTerrainCollider);
   const pos = entity.getComponent(CPosition);
   const phys = entity.getComponent(CPhysics);
@@ -70,12 +70,12 @@ export function terrainCollisionCheck(
   };
 }
 
-export function resolveTerrainCollision(
+export const resolveTerrainCollision = (
   entity: Entity,
-  localCollisionPoint: IVec2,
-  terrainCollisionPoint: IVec2,
+  _localCollisionPoint: IVec2,
+  _terrainCollisionPoint: IVec2,
   delta: number
-) {
+) => {
   const pos = entity.getMutableComponent(CPosition);
   const phys = entity.getMutableComponent(CPhysics);
 

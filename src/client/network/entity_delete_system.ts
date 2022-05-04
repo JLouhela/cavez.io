@@ -3,21 +3,20 @@ import { GameState } from '../game/game_state.js';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
 import { SpriteCache } from '../assets/sprite_cache.js';
 import { CSprite } from '../rendering/csprite.js';
+import { World, Attributes, Entity } from 'ecsy';
 
 // Delete entities not present on server any longer
 export class EntityDeleteSystem extends System {
   private gameState: GameState;
   private spriteCache: SpriteCache;
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
     this.gameState = attributes.gameState;
     this.spriteCache = attributes.spriteCache;
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     const latestUpdate = this.gameState.getLatestSyncEvent();
     if (latestUpdate == null) {
       return;
