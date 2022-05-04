@@ -1,12 +1,13 @@
 import { GameRoom } from './game_room.js';
-import { IPlayer } from '../player/player_interface.js';
+import { IServerPlayer } from '../player/player_interface.js';
 import { ISocketEmit } from '../socket/socket_emit_interface.js';
+import { ServerChannel } from '@geckos.io/server';
 
 export interface IRoomManager {
-  addToRoom(player: IPlayer, roomId: string): boolean;
+  addToRoom(player: IServerPlayer, roomId: string): boolean;
   removeFromRoom(socket: any): void;
   getRoom(roomId: string): GameRoom;
-  getPlayer(socketId: string, roomId: string): IPlayer;
+  getPlayer(socketId: string, roomId: string): IServerPlayer;
   getLevel(roomId: string): string;
 }
 
@@ -22,10 +23,10 @@ export class RoomManager implements IRoomManager {
   ) {
     this.maxRoomCount = maxRoomCount;
     this.playersPerRoom = playersPerRoom;
-    this.rooms[0] = new GameRoom(0, 'Test room', socketEmit);
+    this.rooms[0] = new GameRoom("0", 'Test room', socketEmit);
   }
 
-  public addToRoom(player: IPlayer, roomId: string) {
+  public addToRoom(player: IServerPlayer, roomId: string) {
     if (!this.rooms[roomId]) {
       console.log(`Room ${roomId} does not exist`);
       return false;
@@ -42,7 +43,7 @@ export class RoomManager implements IRoomManager {
     return true;
   }
 
-  public removeFromRoom(socket: any) {
+  public removeFromRoom(socket: ServerChannel) {
     if (socket.roomId in this.rooms) {
       this.rooms[socket.roomId].removePlayer(socket.id);
     }

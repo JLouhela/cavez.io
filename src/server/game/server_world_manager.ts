@@ -1,4 +1,4 @@
-import { IPlayer } from '../player/player_interface.js';
+import { IServerPlayer } from '../player/player_interface.js';
 import { IVec2 } from '../../shared/math/vector.js';
 import { EntityFactory } from '../../shared/game/entity/entity_factory.js';
 import { ISocketEmit } from '../socket/socket_emit_interface.js';
@@ -34,7 +34,7 @@ export class ServerWorldManager {
     inputManager: InputManager,
     levelProvider: ILevelProvider
   ) {
-    this.world = new World({entityPoolSize: 500});
+    this.world = new World({ entityPoolSize: 500 });
     this.entityFactory = new EntityFactory(this.world);
     this.registerComponents();
     this.initSystems(socketEmit, gameRoom, inputManager, levelProvider);
@@ -71,10 +71,8 @@ export class ServerWorldManager {
       .registerSystem(CollisionResolveSystem);
   }
 
-  public spawnPlayer(player: IPlayer, pos: IVec2) {
-    console.log(
-      'spawning player ' + player.name + ' to ' + pos.x + ', ' + pos.y
-    );
+  public spawnPlayer(player: IServerPlayer, pos: IVec2) {
+    console.log(`spawning player ${player.name} to ${pos.x}, ${pos.y}`);
     const e = this.entityFactory.createPlayerEntity(
       player.name,
       player.color,
