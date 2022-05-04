@@ -4,6 +4,7 @@ import { CSync } from '../../shared/game/component/ctags.js';
 import { CPosition } from '../../shared/game/component/cposition.js';
 import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
 import { CPhysics } from '../../shared/game/component/cphysics.js';
+import { CopyUtils } from '../../shared/game/component/copy_utils.js';
 import * as Constants from '../../shared/constants.js';
 
 export class InterpolateSystem extends System {
@@ -48,10 +49,10 @@ export class InterpolateSystem extends System {
       if (!syncDataPrev || !syncDataNext) {
         console.log(
           'No sync data for entity ' +
-            entity.id +
-            ' (server: ' +
-            serverId +
-            ') in game state'
+          entity.id +
+          ' (server: ' +
+          serverId +
+          ') in game state'
         );
         return;
       }
@@ -61,7 +62,7 @@ export class InterpolateSystem extends System {
         performance.now() - this.gameState.getLocalTime(syncDataNext.timestamp);
       const lerp = Math.min(1, deltaTimeNow / interpDeltaTime);
       const pos = entity.getMutableComponent(CPosition);
-      pos.copy(syncDataPrev.pos);
+      CopyUtils.copyPosData(syncDataPrev.pos, pos);
       const interpX =
         (((((syncDataNext.pos.x - syncDataPrev.pos.x) % this.worldBounds.x) +
           this.worldBounds.x +
@@ -80,7 +81,7 @@ export class InterpolateSystem extends System {
       pos.x += interpX;
       pos.y += interpY;
       const phys = entity.getMutableComponent(CPhysics);
-      phys.copy(syncDataPrev.physics);
+      CopyUtils.copyPhysics(syncDataPrev.physics, phys);
     });
   }
 }

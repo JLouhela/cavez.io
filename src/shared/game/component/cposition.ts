@@ -3,7 +3,12 @@ import {
   Types,
 } from 'ecsy';
 
-export class CPosition extends Component<CPosition> {
+export interface IPosition {
+  x: number;
+  y: number;
+}
+
+export class CPosition extends Component<CPosition> implements IPosition {
   declare x: number;
   declare y: number;
 }

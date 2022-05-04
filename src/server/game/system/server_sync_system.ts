@@ -76,6 +76,7 @@ export class ServerSyncSystem extends System {
   private updateSyncComponent(sync: IEntitySyncPacket, entity: Entity) {
     sync.timestamp = performance.now();
     if (entity.hasComponent(CPosition)) {
+      // TODO debug if unnecessary stuff is copied to sync
       sync.pos = entity.getComponent(CPosition).clone();
     }
     if (entity.hasComponent(CPlayer)) {

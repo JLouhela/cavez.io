@@ -4,6 +4,7 @@ import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
 import { CPlayer } from '../../shared/game/component/cplayer.js';
 import { CPosition } from '../../shared/game/component/cposition.js';
 import { CPhysics } from '../../shared/game/component/cphysics.js';
+import { CopyUtils } from '../../shared/game/component/copy_utils.js';
 import { InputHistory } from '../input/input_history.js';
 import * as PhysicsFunc from '../../shared/game/physics/physics_functions.js';
 import * as CollisionFunc from '../../shared/game/collision/collision_functions.js';
@@ -79,8 +80,9 @@ export class ClientCorrectionSystem extends System {
 
     const clientPos = player.getMutableComponent(CPosition);
     const clientPhys = player.getMutableComponent(CPhysics);
-    clientPos.copy(syncData.pos);
-    clientPhys.copy(syncData.physics);
+
+    CopyUtils.copyPosData(syncData.pos, clientPos);
+    CopyUtils.copyPhysics(syncData.physics, clientPhys);
 
     const fps = 1 / 60;
     let correctTime = this.gameState.getLocalTime(syncPacket.timestamp) + fps;

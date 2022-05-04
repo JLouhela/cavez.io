@@ -5,7 +5,17 @@ import {
 
 import { Vec2Type, Vec2 } from '../../math/vector.js';
 
-export class CPhysics extends Component<CPhysics> {
+export interface IPhysics {
+  mass: number;
+  velocity: Vec2;
+  acceleration: Vec2;
+  rotation: number;
+  angle: number;
+  drag: number;
+
+}
+
+export class CPhysics extends Component<CPhysics> implements IPhysics {
   declare mass: number;
   declare velocity: Vec2;
   declare acceleration: Vec2;

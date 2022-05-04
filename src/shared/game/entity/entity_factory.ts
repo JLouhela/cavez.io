@@ -13,6 +13,7 @@ import * as Constants from '../../constants.js';
 import { IEntitySyncPacket } from '../../../shared/protocol.js';
 import { CTerrainCollider } from '../component/cterrain_collider.js';
 import { Vec2 } from '../../math/vector.js';
+import { CopyUtils } from '../component/copy_utils.js';
 
 // TODO: Clear server / client separation
 
@@ -79,7 +80,8 @@ export class EntityFactory {
       sync.player.color,
       sync.pos
     );
-    player.getMutableComponent(CPhysics).copy(sync.physics);
+    let physics = player.getMutableComponent(CPhysics)
+    CopyUtils.copyPhysics(sync.physics, physics);
     return player;
   }
 

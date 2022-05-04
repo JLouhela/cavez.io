@@ -1,6 +1,6 @@
-import { CPosition } from './game/component/cposition.js';
-import { CPlayer } from './game/component/cplayer.js';
-import { CPhysics } from './game/component/cphysics.js';
+import { IPosition } from './game/component/cposition.js';
+import { IPlayer } from './game/component/cplayer.js';
+import { IPhysics } from './game/component/cphysics.js';
 
 export enum SOCKET_EVENT {
   CONNECT = 'connect',
@@ -21,10 +21,11 @@ export enum INPUT_MASK {
   ROT_CCW = 0x04,
 }
 
+// TODO no no nooo dont copy components via network
 export interface IEntitySyncPacket {
-  pos: CPosition;
-  player: CPlayer;
-  physics: CPhysics;
+  pos: IPosition;
+  player: IPlayer;
+  physics: IPhysics;
   timestamp: number;
 }
 

@@ -58,9 +58,9 @@ export class GeckosSocketHandler implements ISocketEmit {
           if (this.roomIndex !== response.room) {
             console.log(
               'Received join game response for wrong room index, expected ' +
-                this.roomIndex +
-                ', received ' +
-                response.room
+              this.roomIndex +
+              ', received ' +
+              response.room
             );
             this.roomIndex = -1;
             return;
@@ -122,9 +122,9 @@ export class GeckosSocketHandler implements ISocketEmit {
       clientTime: performance.now(),
       serverTime: 0,
     };
-    this.channel.emit(Protocol.SOCKET_EVENT.PING, pingEvent);
+    this.channel.emit(Protocol.SOCKET_EVENT.PING, pingEvent, { reliable: true });
     this.channel.emit(Protocol.SOCKET_EVENT.JOIN_GAME, joinGameEvent, {
-      reliable: true,
+      reliable: true
     });
   }
 
