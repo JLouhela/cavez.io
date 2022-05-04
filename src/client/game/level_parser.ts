@@ -26,7 +26,8 @@ export class LevelParser {
         );
       }
     }
-    console.log('PARSED LEVEL IMG DATA ');
+    const approxKiloBytes = 8 * 4 * source.width * source.height / 1024;
+    console.log(`Level image data parsed, approx size ${approxKiloBytes}kb`);
     return source;
   }
 }
