@@ -11,7 +11,7 @@ export interface ISocketEmit {
 
 export class GeckosSocketHandler implements ISocketEmit {
   private channel: any = null;
-  private roomIndex = -1;
+  private roomId: string = "";
   private gameState: GameState = null;
   private worldManager: ClientWorldManager = null;
   private levelManager: ClientLevelManager = null;
@@ -55,14 +55,11 @@ export class GeckosSocketHandler implements ISocketEmit {
             console.log('Join game responded with NOK');
             return;
           }
-          if (this.roomIndex !== response.room) {
+          if (this.roomId !== response.room) {
             console.log(
-              'Received join game response for wrong room index, expected ' +
-              this.roomIndex +
-              ', received ' +
-              response.room
-            );
-            this.roomIndex = -1;
+              `Received join game response for wrong room index, expected
+              ${this.roomId} received ${response.room}`);
+            this.roomId = "";
             return;
           }
           console.log('Loading level ' + response.level);
@@ -107,15 +104,15 @@ export class GeckosSocketHandler implements ISocketEmit {
     return this.connectedPromise;
   }
 
-  public joinGame(userName: string, roomIndex: number) {
+  public joinGame(userName: string, roomId: string) {
     // Temporary copypaste color randomizer
     const color: string =
       '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
-    this.roomIndex = roomIndex;
+    this.roomId = roomId;
     const joinGameEvent: Protocol.IJoinGameEvent = {
       name: userName,
       color,
-      room: roomIndex,
+      room: roomId,
     };
 
     const pingEvent: Protocol.IPingEvent = {

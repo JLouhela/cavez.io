@@ -49,12 +49,12 @@ export interface IInputProcessedEvent {
 export interface IJoinGameEvent {
   name: string;
   color: string;
-  room: number;
+  room: string;
 }
 
 export interface IJoinGameEventResponse {
   ok: boolean;
-  room: number;
+  room: string;
   level: string;
 }
 

@@ -69,10 +69,10 @@ Promise.all([assetManager.loadAssets()]).then(() => {
     usernameInput.focus();
     playButton.onclick = () => {
       // TODO: display list of rooms to join, for now push all to room 0
-      const roomNumber = 0;
+      const roomId = "0";
       // TODO validate, store to gamestate afterjoin game reply ok
       const playerName: string = usernameInput.value;
-      socketHandler.joinGame(playerName, roomNumber);
+      socketHandler.joinGame(playerName, roomId);
       gameState.setPlayerName(playerName);
       playMenu.classList.add('hidden');
     };

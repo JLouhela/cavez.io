@@ -3,17 +3,17 @@ import { IPlayer } from '../player/player_interface.js';
 import { ISocketEmit } from '../socket/socket_emit_interface.js';
 
 export interface IRoomManager {
-  addToRoom(player: IPlayer, roomIndex: number): boolean;
+  addToRoom(player: IPlayer, roomId: string): boolean;
   removeFromRoom(socket: any): void;
-  getRoom(index: number): GameRoom;
-  getPlayer(socketId: string, roomIndex: number): IPlayer;
-  getLevel(roomIndex: number): string;
+  getRoom(roomId: string): GameRoom;
+  getPlayer(socketId: string, roomId: string): IPlayer;
+  getLevel(roomId: string): string;
 }
 
 export class RoomManager implements IRoomManager {
   private maxRoomCount = 1;
   private playersPerRoom = 10;
-  private rooms: { [index: number]: GameRoom } = {};
+  private rooms: { [id: string]: GameRoom } = {};
 
   constructor(
     maxRoomCount: number,
@@ -25,20 +25,20 @@ export class RoomManager implements IRoomManager {
     this.rooms[0] = new GameRoom(0, 'Test room', socketEmit);
   }
 
-  public addToRoom(player: IPlayer, roomIndex: number) {
-    if (!this.rooms[roomIndex]) {
-      console.log('Room ' + roomIndex + ' does not exist');
+  public addToRoom(player: IPlayer, roomId: string) {
+    if (!this.rooms[roomId]) {
+      console.log(`Room ${roomId} does not exist`);
       return false;
     }
-    if (!this.rooms[roomIndex].isReady()) {
-      console.log('Room ' + roomIndex + ' not ready yet');
+    if (!this.rooms[roomId].isReady()) {
+      console.log(`Room ${roomId} not ready yet`);
       return false;
     }
-    if (this.rooms[roomIndex].playerCount() >= this.playersPerRoom) {
-      console.log('Room ' + roomIndex + ' is full');
+    if (this.rooms[roomId].playerCount() >= this.playersPerRoom) {
+      console.log(`Room ${roomId}  is full`);
       return false;
     }
-    this.rooms[roomIndex].addPlayer(player);
+    this.rooms[roomId].addPlayer(player);
     return true;
   }
 
@@ -48,15 +48,15 @@ export class RoomManager implements IRoomManager {
     }
   }
 
-  public getPlayer(socketId: string, roomIndex: number) {
-    return this.rooms[roomIndex].getPlayer(socketId);
+  public getPlayer(socketId: string, roomId: string) {
+    return this.rooms[roomId].getPlayer(socketId);
   }
 
-  public getRoom(roomIndex: number): GameRoom {
-    return this.rooms[roomIndex];
+  public getRoom(roomId: string): GameRoom {
+    return this.rooms[roomId];
   }
 
-  public getLevel(roomIndex: number): string {
-    return this.rooms[roomIndex].getLevel();
+  public getLevel(roomId: string): string {
+    return this.rooms[roomId].getLevel();
   }
 }

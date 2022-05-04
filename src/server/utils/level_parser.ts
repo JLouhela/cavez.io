@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { LevelSource } from '../../shared/game/level/level_source.js';
 import { Pixel } from '../../shared/game/level/level_source.js';
 
-export function readPng(pngFile: string): Promise<LevelSource> {
+export const readPng = (pngFile: string): Promise<LevelSource> => {
   const parsedPromise = new Promise<LevelSource>((resolve) => {
     fs.createReadStream(pngFile)
       .pipe(new PNG({ filterType: 4 }))
