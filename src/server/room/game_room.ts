@@ -26,19 +26,25 @@ export class GameRoom implements IGameRoom {
     this.title = title;
     this.levelManager = new ServerLevelManager();
 
-    this.levelManager.loadLevel().then(() => {
-      // TODO check if load was ok?
-      this.inputManager = new InputManager();
-      this.worldManager = new ServerWorldManager(
-        socketEmit,
-        this,
-        this.inputManager,
-        this.levelManager
-      );
-      this.initialized = true;
-      console.log(`Game room ${this.id} with title ${title} started successfully`);
-      console.log(`Current level: ${this.levelManager.levelName}`);
-    });
+    this.levelManager.loadLevel().then(
+      () => {
+        // TODO check if load was ok?
+        this.inputManager = new InputManager();
+        this.worldManager = new ServerWorldManager(
+          socketEmit,
+          this,
+          this.inputManager,
+          this.levelManager
+        );
+        this.initialized = true;
+        console.log(`Game room ${this.id} with title ${title} started successfully`);
+        console.log(`Current level: ${this.levelManager.levelName}`);
+      },
+      () => {
+        console.error("Load level failed!");
+        // TODO error handling
+      },
+    );
   }
 
   public getPlayers() {
@@ -63,9 +69,15 @@ export class GameRoom implements IGameRoom {
   removePlayer(socketId: string) {
     const found = this.players.find((p) => p.socket.id === socketId);
     if (found) {
-      console.log('Erased player ' + found.name + ' from room ' + this.id);
       found.socket.leave();
-      found.socket.close();
+      found.socket.close().then(
+        () => {
+          console.log(`Erased player ${found.name} from room ${this.id}`);
+        },
+        () => {
+          console.error(`Could not close socket for player ${found.name} in room ${this.id}`);
+        }
+      );
       this.worldManager.removePlayer(found.name);
       this.players.splice(this.players.indexOf(found), 1);
     }
