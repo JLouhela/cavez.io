@@ -26,7 +26,7 @@ export const readPng = (pngFile: string): Promise<LevelSource> => {
             );
           }
         }
-        console.log('Level image data parsed from ' + pngFile);
+        console.log(`Level image data parsed from ${pngFile}`);
         resolve(source);
       });
   });

@@ -12,8 +12,8 @@ export class EntityDeleteSystem extends System {
 
   constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
-    this.gameState = attributes.gameState;
-    this.spriteCache = attributes.spriteCache;
+    this.gameState = attributes.gameState as GameState;
+    this.spriteCache = attributes.spriteCache as SpriteCache;
   }
 
   execute(_delta: number, _time: number) {
@@ -28,7 +28,7 @@ export class EntityDeleteSystem extends System {
       }
       // Entity queried but not any longer in the gamestate
       // => can be deleted from client
-      console.log('Removed entity ' + entity.id + ' from client');
+      console.log(`Removed entity ${entity.id} from client`);
       const spriteComp = entity.getComponent(CSprite);
       if (spriteComp) {
         this.spriteCache.releaseSprite(spriteComp.spriteId);

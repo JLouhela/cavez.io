@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { System } from 'ecsy';
+import { System, World, Entity, Attributes } from 'ecsy';
 import { SpriteCache } from '../assets/sprite_cache.js';
 import { GameState } from '../game/game_state.js';
 import { CSprite } from './csprite.js';
@@ -25,20 +25,18 @@ export class DebugRenderSystem extends System {
   private renderGhost = true;
   private renderTerrainCollider = true;
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
 
-    this.spriteCache = attributes.spriteCache;
-    this.gameState = attributes.gameState;
-    this.camera = attributes.camera;
-    this.renderer = attributes.renderer;
+    this.spriteCache = attributes.spriteCache as SpriteCache;
+    this.gameState = attributes.gameState as GameState;
+    this.camera = attributes.camera as Camera;
+    this.renderer = attributes.renderer as PIXI.Renderer;
 
     this.container = new PIXI.Container();
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     this.container.removeChildren();
     // Render unmodified server positions for client player
     this.handleGhostRender();

@@ -109,7 +109,7 @@ export class SyncHistory {
         return this.updates[prevIndex];
       }
     }
-    console.log('Active sync events on timestamp ' + timestamp + ' not found');
+    console.log(`Active sync events on timestamp ${timestamp} not found`);
     return null;
   }
 }

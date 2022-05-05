@@ -1,5 +1,5 @@
 import * as Protocol from '../../shared/protocol.js';
-import { SyncHistory, InterpolateState } from './sync_history.js';
+import { SyncHistory } from './sync_history.js';
 
 export class GameState {
   private syncHistory: SyncHistory = null;

@@ -17,15 +17,14 @@ export class ServerLevelManager implements ILevelProvider {
 
   public loadLevel() {
     const levelLoadPromise = new Promise<void>((resolve) => {
-      const self = this;
       LevelParser.readPng(this.levelNameMapping[this.currentLevelName])
         .then((result) => {
           return new Promise(() => {
-            self.initLevel(result);
+            this.initLevel(result);
             resolve();
           });
         })
-        .catch((error) => console.log(error.message));
+        .catch(() => console.error(`Failed to read png from ${this.levelNameMapping[this.currentLevelName]}`));
     });
     return levelLoadPromise;
   }

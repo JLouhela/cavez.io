@@ -76,5 +76,5 @@ Promise.all([assetManager.loadAssets()]).then(() => {
       gameState.setPlayerName(playerName);
       playMenu.classList.add('hidden');
     };
-  });
-});
+  }).catch((error: Error) => { console.error(`Failed to connect to server: ${error.message}`) });
+}).catch((error: Error) => { console.error(`Failed to setup game: ${error.message}`) });

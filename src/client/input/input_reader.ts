@@ -13,11 +13,12 @@ export class InputReader implements IInputReader {
     return this.keysDown.has(keyCode);
   }
 
-  public keyDownEventListener(event: any) {
+  // TODO KeyboardEvent deprecated
+  public keyDownEventListener(event: KeyboardEvent) {
     this.keysDown.add(event.keyCode);
   }
 
-  public keyUpEventListener(event: any) {
+  public keyUpEventListener(event: KeyboardEvent) {
     this.keysDown.delete(event.keyCode);
   }
 }

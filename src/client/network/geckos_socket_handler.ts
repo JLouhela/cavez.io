@@ -4,14 +4,15 @@ import { GameState } from '../game/game_state.js';
 import geckos from '@geckos.io/client';
 import { ClientWorldManager } from '../client_world_manager.js';
 import { ClientLevelManager } from '../client_level_manager.js';
+import { ClientChannel } from '@geckos.io/client';
 
 export interface ISocketEmit {
   sendInputState(keyMask: number, id: number): void;
 }
 
 export class GeckosSocketHandler implements ISocketEmit {
-  private channel: any = null;
-  private roomId: string = "";
+  private channel: ClientChannel = null;
+  private roomId = "";
   private gameState: GameState = null;
   private worldManager: ClientWorldManager = null;
   private levelManager: ClientLevelManager = null;
@@ -24,14 +25,10 @@ export class GeckosSocketHandler implements ISocketEmit {
   connectedPromise = new Promise<void>((resolve) => {
     this.channel = geckos({ port: Constants.DEFAULT_PORT });
 
-    this.channel.onConnect((error: any) => {
-      if (error) {
-        console.error(error.message);
-        return;
-      }
-      console.log('Connected to server, channel id ' + this.channel.id);
+    this.channel.onConnect(() => {
+      console.log(`Connected to server, channel id ${this.channel.id}`);
       resolve();
-    });
+    }).catch((error: Error) => console.error(error.message));
   });
 
   public connect(worldManager: ClientWorldManager) {
@@ -50,7 +47,7 @@ export class GeckosSocketHandler implements ISocketEmit {
       this.channel.on(
         Protocol.SOCKET_EVENT.JOIN_GAME_RESPONSE,
         (response: Protocol.IJoinGameEventResponse) => {
-          console.log('Game join ' + response.ok ? 'ok' : 'not ok');
+          console.log(`Game join ${response.ok ? 'ok' : 'not ok'}`);
           if (!response.ok) {
             console.log('Join game responded with NOK');
             return;
@@ -58,11 +55,11 @@ export class GeckosSocketHandler implements ISocketEmit {
           if (this.roomId !== response.room) {
             console.log(
               `Received join game response for wrong room index, expected
-              ${this.roomId} received ${response.room}`);
+              ${this.roomId} received ${response.room} `);
             this.roomId = "";
             return;
           }
-          console.log('Loading level ' + response.level);
+          console.log(`Loading level ${response.level} `);
           this.levelManager.loadLevel(response.level);
           console.log('Starting world');
           this.worldManager.start();
@@ -79,9 +76,7 @@ export class GeckosSocketHandler implements ISocketEmit {
           const timeOffset =
             event.serverTime - performance.now() - roundTripTime / 2;
           this.gameState.setServerTimeOffset(timeOffset);
-          console.log(
-            'Ping: ' + roundTripTime + ', timeOffset = ' + timeOffset
-          );
+          console.log(`Ping: ${roundTripTime}, timeOffset = ${timeOffset} `);
         }
       );
 
@@ -100,7 +95,7 @@ export class GeckosSocketHandler implements ISocketEmit {
           this.gameState.setLastProcessedInput(event);
         }
       );
-    });
+    }).catch((error: Error) => console.error(error.message));
     return this.connectedPromise;
   }
 

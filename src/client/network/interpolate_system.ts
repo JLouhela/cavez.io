@@ -45,13 +45,7 @@ export class InterpolateSystem extends System {
       const syncDataPrev = interpolateState.previous.entityUpdates[serverId];
       const syncDataNext = interpolateState.next.entityUpdates[serverId];
       if (!syncDataPrev || !syncDataNext) {
-        console.log(
-          'No sync data for entity ' +
-          entity.id +
-          ' (server: ' +
-          serverId +
-          ') in game state'
-        );
+        console.log(`No sync data for entity ${entity.id} (server: ${serverId}) in game state`);
         return;
       }
 

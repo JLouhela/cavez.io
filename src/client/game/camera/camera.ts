@@ -1,4 +1,3 @@
-import { Entity } from 'ecsy';
 import { IVec2 } from '../../../shared/math/vector.js';
 import { IRect } from '../../../shared/math/rect.js';
 import { Rect } from '../../../shared/math/rect.js';

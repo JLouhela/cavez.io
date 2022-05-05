@@ -14,9 +14,9 @@ export class EntityInitSystem extends System {
 
   constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
-    this.gameState = attributes.gameState;
-    this.entityFactory = attributes.entityFactory;
-    this.spriteCache = attributes.spriteCache;
+    this.gameState = attributes.gameState as GameState;
+    this.entityFactory = attributes.entityFactory as EntityFactory;
+    this.spriteCache = attributes.spriteCache as SpriteCache;
   }
 
   execute(_delta: number, _time: number) {
@@ -42,7 +42,7 @@ export class EntityInitSystem extends System {
         console.log('Failed to create entity client side');
         return;
       }
-      console.log('Created new entity: id ' + newEntity.id);
+      console.log(`Created new entity: id ${newEntity.id}`);
       // Check if we just created our player entity
       if (update.player) {
         this.initializePlayer(newEntity);
@@ -52,16 +52,16 @@ export class EntityInitSystem extends System {
 
   // Proper place..?
   private initializePlayer(player: Entity) {
-    console.log('New player! player id = ' + player.id);
+    console.log(`New player! player id = ${player.id}`);
     const spriteId = this.spriteCache.createSprite(AssetName.PLAYER_BASIC_SHIP);
     this.entityFactory.addPlayerComponents(player, spriteId);
     if (player.getComponent(CPlayer).name === this.gameState.getPlayerName()) {
-      console.log('Player ' + player.id + ' identified as the client');
+      console.log(`Player ${player.id} identified as the client`);
       this.entityFactory.addClientPlayerComponents(player);
       this.gameState.setPlayerId(player.id);
     } else {
       // Terrain collider not needed for other players
-      console.log('No terrain collider needed for player ' + player.id);
+      console.log(`No terrain collider needed for player ${player.id}`);
       player.removeComponent(CTerrainCollider);
     }
   }

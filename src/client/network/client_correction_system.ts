@@ -21,9 +21,9 @@ export class ClientCorrectionSystem extends System {
 
   constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
-    this.gameState = attributes.gameState;
-    this.inputHistory = attributes.inputHistory;
-    this.levelProvider = attributes.levelProvider;
+    this.gameState = attributes.gameState as GameState;
+    this.inputHistory = attributes.inputHistory as InputHistory;
+    this.levelProvider = attributes.levelProvider as ILevelProvider;
   }
 
   execute(_delta: number, _time: number) {

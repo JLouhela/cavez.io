@@ -9,7 +9,8 @@ export class LevelParser {
   }
 
   public readPng = (sprite: PIXI.Sprite) => {
-    const pixels = this.renderer.plugins.extract.pixels(sprite);
+    const extract = this.renderer.plugins.extract as PIXI.Extract
+    const pixels = extract.pixels(sprite);
     const source: LevelSource = { width: 0, height: 0, pixelData: [] };
     source.width = sprite.width;
     source.height = sprite.height;

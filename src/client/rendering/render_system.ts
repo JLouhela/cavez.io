@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { System } from 'ecsy';
+import { System, World, Entity, Attributes } from 'ecsy';
 import { SpriteCache } from '../assets/sprite_cache.js';
 import { CSprite } from './csprite.js';
 import { CPosition } from '../../shared/game/component/cposition.js';
@@ -19,14 +19,12 @@ export class RenderSystem extends System {
   private camera: Camera;
 
   // TODO pass in level manager for current level
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
 
-    this.spriteCache = attributes.spriteCache;
-    this.camera = attributes.camera;
-    this.renderer = attributes.renderer;
+    this.spriteCache = attributes.spriteCache as SpriteCache;
+    this.camera = attributes.camera as Camera;
+    this.renderer = attributes.renderer as PIXI.Renderer;
 
     this.container = new PIXI.Container();
     const TODO_PASS_AS_ARG_LEVEL = AssetName.LEVEL_1;
@@ -44,7 +42,7 @@ export class RenderSystem extends System {
     );
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     // TODO optimize: re-add on each frame is costly
     // Could use access by name
     this.container.removeChildren();

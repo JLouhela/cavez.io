@@ -81,7 +81,7 @@ export class InputHistory {
         return this.inputs[prevIndex].inputMask;
       }
     }
-    console.log('Active input on timestamp ' + timestamp + ' not found');
+    console.log(`Active input on timestamp ${timestamp} not found`);
     return 0x00;
   }
 
