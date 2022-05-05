@@ -86,7 +86,7 @@ export class ServerWorldManager {
   }
 
   private start(): void {
-    function server_step() {
+    const server_step = () => {
       const time = performance.now();
       const delta = (time - lastWorldUpdate) / 1000.0;
       if (delta > Constants.SERVER_WORLD_STEP_RATE) {

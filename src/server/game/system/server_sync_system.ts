@@ -1,4 +1,4 @@
-import { System, Entity } from 'ecsy';
+import { System, Entity, Attributes, World } from 'ecsy';
 import { GameState } from '../game_state.js';
 import { CPosition } from '../../../shared/game/component/cposition.js';
 import { CPlayer } from '../../../shared/game/component/cplayer.js';
@@ -17,13 +17,11 @@ export class ServerSyncSystem extends System {
   private socketEmit: ISocketEmit;
   private gameRoom: IGameRoom;
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
     this.gameState = new GameState();
-    this.socketEmit = attributes.socketEmit;
-    this.gameRoom = attributes.gameRoom;
+    this.socketEmit = attributes.socketEmit as ISocketEmit;
+    this.gameRoom = attributes.gameRoom as IGameRoom;
   }
 
   execute(delta: number, time: number) {
