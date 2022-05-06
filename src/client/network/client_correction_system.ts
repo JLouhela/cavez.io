@@ -80,7 +80,7 @@ export class ClientCorrectionSystem extends System {
     const clientPhys = player.getMutableComponent(CPhysics);
 
     CopyUtils.copyPosData(syncData.pos, clientPos);
-    CopyUtils.copyPhysics(syncData.physics, clientPhys);
+    CopyUtils.copyPhysicsData(syncData.physics, clientPhys);
 
     const fps = 1 / 60;
     let correctTime = this.gameState.getLocalTime(syncPacket.timestamp) + fps;

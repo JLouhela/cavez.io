@@ -73,7 +73,7 @@ export class InterpolateSystem extends System {
       pos.x += interpX;
       pos.y += interpY;
       const phys = entity.getMutableComponent(CPhysics);
-      CopyUtils.copyPhysics(syncDataPrev.physics, phys);
+      CopyUtils.copyPhysicsData(syncDataPrev.physics, phys);
     });
   }
 }

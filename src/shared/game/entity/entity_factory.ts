@@ -78,7 +78,7 @@ export class EntityFactory {
       sync.pos
     );
     const physics = player.getMutableComponent(CPhysics)
-    CopyUtils.copyPhysics(sync.physics, physics);
+    CopyUtils.copyPhysicsData(sync.physics, physics);
     return player;
   }
 

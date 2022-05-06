@@ -18,7 +18,7 @@ export const copyPlayerData = (src: IPlayer, target: CPlayer): void => {
   target.color = src.color;
 }
 
-export const copyPhysics = (src: IPhysics, target: CPhysics): void => {
+export const copyPhysicsData = (src: IPhysics, target: CPhysics): void => {
   target.mass = src.mass;
   target.velocity.copy(src.velocity);
   target.acceleration.copy(src.acceleration);
@@ -27,3 +27,22 @@ export const copyPhysics = (src: IPhysics, target: CPhysics): void => {
   target.drag = src.drag;
 }
 
+// TODO consider naming at least better
+export const copyIPosition = (src: CPosition, target: IPosition): void => {
+  target.x = src.x;
+  target.y = src.y;
+}
+
+export const copyIPlayer = (src: CPlayer, target: IPlayer): void => {
+  target.name = src.name;
+  target.color = src.color;
+}
+
+export const copyIPhysics = (src: CPhysics, target: IPhysics): void => {
+  target.mass = src.mass;
+  target.velocity.copy(src.velocity);
+  target.acceleration.copy(src.acceleration);
+  target.rotation = src.rotation;
+  target.angle = src.angle;
+  target.drag = src.drag;
+}

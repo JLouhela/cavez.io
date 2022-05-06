@@ -21,7 +21,6 @@ export enum INPUT_MASK {
   ROT_CCW = 0x04,
 }
 
-// TODO no no nooo dont copy components via network
 export interface IEntitySyncPacket {
   pos: IPosition;
   player: IPlayer;

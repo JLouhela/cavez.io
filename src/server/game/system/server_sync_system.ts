@@ -8,7 +8,9 @@ import * as Constants from '../../../shared/constants.js';
 import { CPhysics } from '../../../shared/game/component/cphysics.js';
 import { CSync } from '../../../shared/game/component/ctags.js';
 import { IEntitySyncPacket } from '../../../shared/protocol.js';
+import * as CopyUtils from '../../../shared/game/component/copy_utils.js'
 import { performance } from 'perf_hooks';
+import { Vec2 } from '../../../shared/math/vector.js';
 
 export class ServerSyncSystem extends System {
   private gameState: GameState;
@@ -38,12 +40,7 @@ export class ServerSyncSystem extends System {
       const entityDelta = this.gameState.getDelta(entity.id);
 
       if (!this.syncComponents[entity.id]) {
-        this.syncComponents[entity.id] = {
-          pos: null,
-          player: null,
-          physics: null,
-          timestamp: 0,
-        };
+        this.syncComponents[entity.id] = this.createSyncPacket();
       }
       this.updateSyncComponent(this.syncComponents[entity.id], entityDelta);
     });
@@ -60,7 +57,7 @@ export class ServerSyncSystem extends System {
 
     // Finally delete removed entities
     componentsToDelete.forEach((id) => {
-      console.log('Deleted sync component for entity ' + id);
+      console.log(`Deleted sync component for entity ${id}`);
       delete this.syncComponents[+id];
     });
 
@@ -71,17 +68,25 @@ export class ServerSyncSystem extends System {
     );
   }
 
+  private createSyncPacket = () => {
+    return {
+      pos: { x: 0, y: 0 },
+      player: { color: "#000000", name: "unnamed" },
+      physics: { mass: 0, velocity: new Vec2(0, 0), acceleration: new Vec2(0, 0), rotation: 0, angle: 0, drag: 0 },
+      timestamp: 0
+    } as IEntitySyncPacket;
+  }
+
   private updateSyncComponent(sync: IEntitySyncPacket, entity: Entity) {
     sync.timestamp = performance.now();
     if (entity.hasComponent(CPosition)) {
-      // TODO debug if unnecessary stuff is copied to sync
-      sync.pos = entity.getComponent(CPosition).clone();
+      CopyUtils.copyIPosition(entity.getComponent(CPosition), sync.pos);
     }
     if (entity.hasComponent(CPlayer)) {
-      sync.player = entity.getComponent(CPlayer).clone();
+      CopyUtils.copyIPlayer(entity.getComponent(CPlayer), sync.player);
     }
     if (entity.hasComponent(CPhysics)) {
-      sync.physics = entity.getComponent(CPhysics).clone();
+      CopyUtils.copyIPhysics(entity.getComponent(CPhysics), sync.physics);
     }
   }
 }
