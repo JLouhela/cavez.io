@@ -1,6 +1,6 @@
-import { CPosition } from './game/component/cposition';
-import { CPlayer } from './game/component/cplayer';
-import { CPhysics } from './game/component/cphysics';
+import { IPosition } from './game/component/cposition.js';
+import { IPlayer } from './game/component/cplayer.js';
+import { IPhysics } from './game/component/cphysics.js';
 
 export enum SOCKET_EVENT {
   CONNECT = 'connect',
@@ -22,9 +22,9 @@ export enum INPUT_MASK {
 }
 
 export interface IEntitySyncPacket {
-  pos: CPosition;
-  player: CPlayer;
-  physics: CPhysics;
+  pos: IPosition;
+  player: IPlayer;
+  physics: IPhysics;
   timestamp: number;
 }
 
@@ -48,12 +48,12 @@ export interface IInputProcessedEvent {
 export interface IJoinGameEvent {
   name: string;
   color: string;
-  room: number;
+  room: string;
 }
 
 export interface IJoinGameEventResponse {
   ok: boolean;
-  room: number;
+  room: string;
   level: string;
 }
 

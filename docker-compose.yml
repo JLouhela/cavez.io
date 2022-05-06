@@ -1,7 +1,7 @@
-version: '2'
+version: '3'
 services:
   base:
-    image: node:11
+    image: node:17
     volumes:
       - nodemodules:/usr/src/node_modules
       - .:/usr/src
@@ -24,7 +24,7 @@ services:
     command: npm run start
     ports:
       - '1234:1234/tcp'
-      - '19500:20000/udp'
+      - '19900:20000/udp'
 volumes:
   nodemodules:
     external: true

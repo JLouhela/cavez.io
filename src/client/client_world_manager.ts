@@ -1,40 +1,40 @@
-import { RenderSystem } from './rendering/render_system';
-import { DebugRenderSystem } from './rendering/debug_render_system';
-import { SpriteCache } from './assets/sprite_cache';
-import { EntityInitSystem } from './network/entity_init_system';
-import { GameState } from './game/game_state';
-import { EntityFactory } from '../shared/game/entity/entity_factory';
-import { InterpolateSystem } from './network/interpolate_system';
-import { ClientCorrectionSystem } from './network/client_correction_system';
-import { EntityDeleteSystem } from './network/entity_delete_system';
-import { IInputReader } from './input/input_reader';
-import { InputReadSystem } from './input/input_read_system';
-import { ISocketEmit } from './network/geckos_socket_handler';
-import { PhysicsSystem } from '../shared/game/system/physics_system';
-import * as Constants from '../shared/constants';
-import { Camera } from './game/camera/camera';
-import { CameraSystem } from './game/camera/camera_system';
+import { RenderSystem } from './rendering/render_system.js';
+import { DebugRenderSystem } from './rendering/debug_render_system.js';
+import { SpriteCache } from './assets/sprite_cache.js';
+import { EntityInitSystem } from './network/entity_init_system.js';
+import { GameState } from './game/game_state.js';
+import { EntityFactory } from '../shared/game/entity/entity_factory.js';
+import { InterpolateSystem } from './network/interpolate_system.js';
+import { ClientCorrectionSystem } from './network/client_correction_system.js';
+import { EntityDeleteSystem } from './network/entity_delete_system.js';
+import { IInputReader } from './input/input_reader.js';
+import { InputReadSystem } from './input/input_read_system.js';
+import { ISocketEmit } from './network/geckos_socket_handler.js';
+import { PhysicsSystem } from '../shared/game/system/physics_system.js';
+import * as Constants from '../shared/constants.js';
+import { Camera } from './game/camera/camera.js';
+import { CameraSystem } from './game/camera/camera_system.js';
 import * as PIXI from 'pixi.js';
 import { World } from 'ecsy';
-import { CPhysics } from '../shared/game/component/cphysics';
-import { CThrottle } from '../shared/game/component/cthrottle';
-import { CSync } from '../shared/game/component/ctags';
-import { CPlayer } from '../shared/game/component/cplayer';
-import { CNetworkEntity } from '../shared/game/component/cnetwork_entity';
-import { CPosition } from '../shared/game/component/cposition';
-import { CCameraFollow } from './game/camera/ccamera_follow';
-import { CSprite } from './rendering/csprite';
-import { CInput } from '../shared/game/component/cinput';
-import { CTerrainCollider } from '../shared/game/component/cterrain_collider';
-import { CTerrainCollision } from '../shared/game/component/cterrain_collision';
-import { CollisionDetectionSystem } from '../shared/game/system/collision_detection_system';
-import { ClientLevelManager } from './client_level_manager';
-import { CollisionResolveSystem } from '../shared/game/system/collision_resolve_system';
-import { InputHistory } from './input/input_history';
+import { CPhysics } from '../shared/game/component/cphysics.js';
+import { CThrottle } from '../shared/game/component/cthrottle.js';
+import { CSync } from '../shared/game/component/ctags.js';
+import { CPlayer } from '../shared/game/component/cplayer.js';
+import { CNetworkEntity } from '../shared/game/component/cnetwork_entity.js';
+import { CPosition } from '../shared/game/component/cposition.js';
+import { CCameraFollow } from './game/camera/ccamera_follow.js';
+import { CSprite } from './rendering/csprite.js';
+import { CInput } from '../shared/game/component/cinput.js';
+import { CTerrainCollider } from '../shared/game/component/cterrain_collider.js';
+import { CTerrainCollision } from '../shared/game/component/cterrain_collision.js';
+import { CollisionDetectionSystem } from '../shared/game/system/collision_detection_system.js';
+import { ClientLevelManager } from './client_level_manager.js';
+import { CollisionResolveSystem } from '../shared/game/system/collision_resolve_system.js';
+import { InputHistory } from './input/input_history.js';
 
 export class ClientWorldManager {
   private entityFactory: EntityFactory = null;
-  private running: boolean = false;
+  private running = false;
   private world: World = null;
 
   constructor(
@@ -47,7 +47,7 @@ export class ClientWorldManager {
     levelManager: ClientLevelManager,
     inputHistory: InputHistory
   ) {
-    this.world = new World();
+    this.world = new World({ entityPoolSize: 500 });
     this.entityFactory = new EntityFactory(this.world);
     this.registerComponents();
     this.initSystems(
@@ -131,7 +131,7 @@ export class ClientWorldManager {
 
   public start(): void {
     this.running = true;
-    function client_step() {
+    const client_step = () => {
       const time = performance.now();
       const delta = (time - lastTime) / 1000.0;
 

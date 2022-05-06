@@ -1,10 +1,10 @@
-import { Component, Types } from 'ecsy';
-import { Vec2, Vec2Type } from '../../math/vector';
+import { Component } from 'ecsy';
+import { Vec2, Vec2Type } from '../../math/vector.js';
 
 // Raw numbers to avoid allocations on each collider addition
 export class CTerrainCollision extends Component<CTerrainCollision> {
-  localPoint: Vec2; // Relative to obj center
-  terrainPoint: Vec2;
+  declare localPoint: Vec2; // Relative to obj center
+  declare terrainPoint: Vec2;
 }
 
 CTerrainCollision.schema = {

@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { LevelSource } from '../../shared/game/level/level_source';
-import { Pixel } from '../../shared/game/level/level_source';
+import { LevelSource } from '../../shared/game/level/level_source.js';
+import { Pixel } from '../../shared/game/level/level_source.js';
 
 export class LevelParser {
   private renderer: PIXI.Renderer = null;
@@ -8,8 +8,9 @@ export class LevelParser {
     this.renderer = renderer;
   }
 
-  public readPng(sprite: PIXI.Sprite) {
-    const pixels = this.renderer.plugins.extract.pixels(sprite);
+  public readPng = (sprite: PIXI.Sprite) => {
+    const extract = this.renderer.plugins.extract as PIXI.Extract
+    const pixels = extract.pixels(sprite);
     const source: LevelSource = { width: 0, height: 0, pixelData: [] };
     source.width = sprite.width;
     source.height = sprite.height;
@@ -26,7 +27,8 @@ export class LevelParser {
         );
       }
     }
-    console.log('PARSED LEVEL IMG DATA ');
+    const approxKiloBytes = 8 * 4 * source.width * source.height / 1024;
+    console.log(`Level image data parsed, approx size ${approxKiloBytes}kb`);
     return source;
   }
 }

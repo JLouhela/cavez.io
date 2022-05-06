@@ -1,7 +1,7 @@
-import * as PIXI from 'pixi.js';
-import { IVec2 } from '../../shared/math/vector';
-import { AssetManager } from '../assets/asset_manager';
-import { AssetName } from '../assets/asset_names';
+import * as PIXI from 'pixi.js'
+import { IVec2 } from '../../shared/math/vector.js';
+import { AssetManager } from '../assets/asset_manager.js';
+import { AssetName } from '../assets/asset_names.js';
 
 export class ParallaxBg {
   private container = new PIXI.Container();
@@ -13,9 +13,9 @@ export class ParallaxBg {
   private parallaxMid: PIXI.TilingSprite = null;
   private parallaxNear: PIXI.TilingSprite = null;
 
-  private farSpeed: number = -0.1;
-  private midSpeed: number = -0.2;
-  private nearSpeed: number = -0.3;
+  private farSpeed = -0.1;
+  private midSpeed = -0.2;
+  private nearSpeed = -0.3;
 
   constructor(
     assetManager: AssetManager,

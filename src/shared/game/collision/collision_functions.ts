@@ -1,12 +1,12 @@
-import { CollisionMaskType } from './collision_mask_types';
+import { CollisionMaskType } from './collision_mask_types.js';
 import { Entity } from 'ecsy';
-import { Level } from '../level/level';
-import { CTerrainCollider } from '../component/cterrain_collider';
-import { CPosition } from '../component/cposition';
-import { CPhysics } from '../component/cphysics';
-import { IVec2, Vec2 } from '../../../shared/math/vector';
-import * as MathUtils from '../../../shared/math/math_utils';
-import { CTerrainCollision } from '../component/cterrain_collision';
+import { Level } from '../level/level.js';
+import { CTerrainCollider } from '../component/cterrain_collider.js';
+import { CPosition } from '../component/cposition.js';
+import { CPhysics } from '../component/cphysics.js';
+import { IVec2, Vec2 } from '../../../shared/math/vector.js';
+import * as MathUtils from '../../../shared/math/math_utils.js';
+import { CTerrainCollision } from '../component/cterrain_collision.js';
 
 export interface ICollisionResult {
   collision: boolean;
@@ -14,21 +14,21 @@ export interface ICollisionResult {
   otherCollisionPoint: IVec2;
 }
 
-export function collidesWith(
+export const collidesWith = (
   mask: number,
   collisionType: CollisionMaskType
-): boolean {
+): boolean => {
   return (mask & collisionType) > 0;
 }
 
-export function addTerrainCollisionComponent(
+export const addTerrainCollisionComponent = (
   entity: Entity,
   localCollisionPoint: IVec2,
   terrainCollisionPoint: IVec2
-) {
+) => {
   if (entity.hasComponent(CTerrainCollision)) {
     console.log(
-      'Entity ' + entity.id + ' has already unresolved terrain collision!'
+      `Entity ${entity.id} has already unresolved terrain collision!`
     );
     return;
   }
@@ -39,17 +39,17 @@ export function addTerrainCollisionComponent(
 }
 
 // Call only from systems!
-export function terrainCollisionCheck(
+export const terrainCollisionCheck = (
   entity: Entity,
   level: Level
-): ICollisionResult {
+): ICollisionResult => {
   const collider = entity.getComponent(CTerrainCollider);
   const pos = entity.getComponent(CPosition);
   const phys = entity.getComponent(CPhysics);
 
   let localCollisionPoint: IVec2 = null;
   let terrainCollisionPoint: IVec2 = null;
-  let collision: boolean = false;
+  let collision = false;
   collider.collisionPoints.forEach((point) => {
     const rotatedCollisionPoint = MathUtils.rotatePoint(point, phys.angle);
     const terrainPoint = {
@@ -70,12 +70,12 @@ export function terrainCollisionCheck(
   };
 }
 
-export function resolveTerrainCollision(
+export const resolveTerrainCollision = (
   entity: Entity,
-  localCollisionPoint: IVec2,
-  terrainCollisionPoint: IVec2,
+  _localCollisionPoint: IVec2,
+  _terrainCollisionPoint: IVec2,
   delta: number
-) {
+) => {
   const pos = entity.getMutableComponent(CPosition);
   const phys = entity.getMutableComponent(CPhysics);
 

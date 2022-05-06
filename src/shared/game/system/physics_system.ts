@@ -1,17 +1,14 @@
 import { System } from 'ecsy';
-import { CPosition } from '../component/cposition';
-import { CPhysics } from '../component/cphysics';
-import { IVec2 } from '../../math/vector';
-import * as PhysicsFunc from '../physics/physics_functions';
+import { CPosition } from '../component/cposition.js';
+import { CPhysics } from '../component/cphysics.js';
+import { World, Attributes, Entity } from 'ecsy';
+import * as PhysicsFunc from '../physics/physics_functions.js';
 
 export class PhysicsSystem extends System {
-  private worldBounds: IVec2 = null;
-  private updateAccumulator: number = 0.0;
+  private updateAccumulator = 0.0;
   private timeStep: number = 1 / 60; // Update ratio: 60fps
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
   }
 
@@ -25,7 +22,7 @@ export class PhysicsSystem extends System {
     }
   }
 
-  execute(delta: number, time: number) {
+  execute(delta: number, _: number) {
     this.fixedUpdate(delta);
   }
 }

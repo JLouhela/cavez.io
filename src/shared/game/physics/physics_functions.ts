@@ -1,13 +1,13 @@
 import { Entity } from 'ecsy';
-import { CPosition } from '../component/cposition';
-import { CPhysics } from '../component/cphysics';
-import { IVec2 } from '../../math/vector';
-import * as MathUtils from '../../math/math_utils';
-import * as Constants from '../../constants';
-import { CThrottle } from '../component/cthrottle';
+import { CPosition } from '../component/cposition.js';
+import { CPhysics } from '../component/cphysics.js';
+import { IVec2 } from '../../math/vector.js';
+import * as MathUtils from '../../math/math_utils.js';
+import * as Constants from '../../constants.js';
+import { CThrottle } from '../component/cthrottle.js';
 
 // Only call from systems! Make sure necessary components are present
-export function physicsStep(entity: Entity, delta: number) {
+export const physicsStep = (entity: Entity, delta: number) => {
   const physComp = entity.getMutableComponent(CPhysics);
   physComp.angle += physComp.rotation * delta;
   physComp.angle %= 2 * Math.PI;

@@ -1,9 +1,9 @@
 import * as webpack from 'webpack';
-import * as merge from 'webpack-merge';
-import commonWebpackConfiguration from './webpack.common';
+import {merge} from 'webpack-merge';
+import commonWebpackConfiguration from './webpack.common.js';
 
 const configuration: webpack.Configuration = merge(commonWebpackConfiguration, {
-  mode: 'development'
+  mode: 'development',
 });
 
 export default configuration;

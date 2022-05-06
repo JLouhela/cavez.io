@@ -1,29 +1,29 @@
-import { System, Entity } from 'ecsy';
-import { GameState } from '../game_state';
-import { CPosition } from '../../../shared/game/component/cposition';
-import { CPlayer } from '../../../shared/game/component/cplayer';
-import { ISocketEmit } from '../../socket/socket_emit_interface';
-import { IGameRoom } from '../../room/game_room';
-import * as Constants from '../../../shared/constants';
-import { CPhysics } from '../../../shared/game/component/cphysics';
-import { CSync } from '../../../shared/game/component/ctags';
-import { IEntitySyncPacket } from '../../../shared/protocol';
+import { System, Entity, Attributes, World } from 'ecsy';
+import { GameState } from '../game_state.js';
+import { CPosition } from '../../../shared/game/component/cposition.js';
+import { CPlayer } from '../../../shared/game/component/cplayer.js';
+import { ISocketEmit } from '../../socket/socket_emit_interface.js';
+import { IGameRoom } from '../../room/game_room.js';
+import * as Constants from '../../../shared/constants.js';
+import { CPhysics } from '../../../shared/game/component/cphysics.js';
+import { CSync } from '../../../shared/game/component/ctags.js';
+import { IEntitySyncPacket } from '../../../shared/protocol.js';
+import * as CopyUtils from '../../../shared/game/component/copy_utils.js'
 import { performance } from 'perf_hooks';
+import { Vec2 } from '../../../shared/math/vector.js';
 
 export class ServerSyncSystem extends System {
   private gameState: GameState;
   private syncComponents: { [entityId: number]: IEntitySyncPacket } = {};
-  private cumulativeTime: number = 0;
+  private cumulativeTime = 0;
   private socketEmit: ISocketEmit;
   private gameRoom: IGameRoom;
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
     this.gameState = new GameState();
-    this.socketEmit = attributes.socketEmit;
-    this.gameRoom = attributes.gameRoom;
+    this.socketEmit = attributes.socketEmit as ISocketEmit;
+    this.gameRoom = attributes.gameRoom as IGameRoom;
   }
 
   execute(delta: number, time: number) {
@@ -40,12 +40,7 @@ export class ServerSyncSystem extends System {
       const entityDelta = this.gameState.getDelta(entity.id);
 
       if (!this.syncComponents[entity.id]) {
-        this.syncComponents[entity.id] = {
-          pos: null,
-          player: null,
-          physics: null,
-          timestamp: 0,
-        };
+        this.syncComponents[entity.id] = this.createSyncPacket();
       }
       this.updateSyncComponent(this.syncComponents[entity.id], entityDelta);
     });
@@ -62,7 +57,7 @@ export class ServerSyncSystem extends System {
 
     // Finally delete removed entities
     componentsToDelete.forEach((id) => {
-      console.log('Deleted sync component for entity ' + id);
+      console.log(`Deleted sync component for entity ${id}`);
       delete this.syncComponents[+id];
     });
 
@@ -73,16 +68,25 @@ export class ServerSyncSystem extends System {
     );
   }
 
+  private createSyncPacket = () => {
+    return {
+      pos: { x: 0, y: 0 },
+      player: { color: "#000000", name: "unnamed" },
+      physics: { mass: 0, velocity: new Vec2(0, 0), acceleration: new Vec2(0, 0), rotation: 0, angle: 0, drag: 0 },
+      timestamp: 0
+    } as IEntitySyncPacket;
+  }
+
   private updateSyncComponent(sync: IEntitySyncPacket, entity: Entity) {
     sync.timestamp = performance.now();
     if (entity.hasComponent(CPosition)) {
-      sync.pos = entity.getComponent(CPosition).clone();
+      CopyUtils.copyIPosition(entity.getComponent(CPosition), sync.pos);
     }
     if (entity.hasComponent(CPlayer)) {
-      sync.player = entity.getComponent(CPlayer).clone();
+      CopyUtils.copyIPlayer(entity.getComponent(CPlayer), sync.player);
     }
     if (entity.hasComponent(CPhysics)) {
-      sync.physics = entity.getComponent(CPhysics).clone();
+      CopyUtils.copyIPhysics(entity.getComponent(CPhysics), sync.physics);
     }
   }
 }

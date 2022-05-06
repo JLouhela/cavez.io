@@ -1,7 +1,7 @@
-import { ISocketEmit } from './socket_emit_interface';
-import { GeckosServer } from '@geckos.io/server';
-import { IPlayer } from '../player/player_interface';
-import * as Protocol from '../../shared/protocol';
+import { ISocketEmit } from './socket_emit_interface.js';
+import { GeckosServer, ServerChannel } from '@geckos.io/server';
+import { IServerPlayer } from '../player/player_interface.js';
+import * as Protocol from '../../shared/protocol.js';
 
 export class GeckosSocketEmit implements ISocketEmit {
   private io: GeckosServer;
@@ -11,7 +11,7 @@ export class GeckosSocketEmit implements ISocketEmit {
   }
 
   public emitSyncPackets(
-    listeners: IPlayer[],
+    listeners: IServerPlayer[],
     packets: Protocol.IEntityUpdate,
     timestamp: number
   ) {
@@ -22,7 +22,7 @@ export class GeckosSocketEmit implements ISocketEmit {
   }
 
   public emitInputProcessed(
-    socket: any,
+    socket: ServerChannel,
     event: Protocol.IInputProcessedEvent
   ): void {
     socket.emit(Protocol.SOCKET_EVENT.INPUT_PROCESSED, event);

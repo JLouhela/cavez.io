@@ -1,4 +1,4 @@
-import { negativeMod } from '../../shared/math/math_utils';
+import { negativeMod } from '../../shared/math/math_utils.js';
 
 export interface InputState {
   timestamp: number;
@@ -10,8 +10,8 @@ export class InputHistory {
   // Ring buffer similar to sync events
   // No generic implementation to allow store by values without heap allocation
   private inputs: InputState[] = null;
-  private inputCount: number = 0;
-  private firstIndex: number = 0;
+  private inputCount = 0;
+  private firstIndex = 0;
 
   constructor(size: number) {
     this.inputs = [];
@@ -81,7 +81,7 @@ export class InputHistory {
         return this.inputs[prevIndex].inputMask;
       }
     }
-    console.log('Active input on timestamp ' + timestamp + ' not found');
+    console.log(`Active input on timestamp ${timestamp} not found`);
     return 0x00;
   }
 

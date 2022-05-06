@@ -1,25 +1,21 @@
-import { System, Entity } from 'ecsy';
-import { CPlayer } from '../../../shared/game/component/cplayer';
+import { System, Entity, Attributes, World } from 'ecsy';
+import { CPlayer } from '../../../shared/game/component/cplayer.js';
 
 export class EntityDeleteSystem extends System {
   private eraseByPlayerName: string[] = [];
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
-    this.eraseByPlayerName = attributes.eraseByPlayerName;
+    this.eraseByPlayerName = attributes.eraseByPlayerName as string[];
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     this.queries.players.results.forEach((entity) => {
       const name = entity.getComponent(CPlayer).name;
       if (this.eraseByPlayerName.includes(name)) {
-        console.log(
-          'Erased player ' + name + ' with id ' + entity.id + ' from  world'
-        );
         entity.remove();
         this.eraseByPlayerName.splice(this.eraseByPlayerName.indexOf(name), 1);
+        console.log(`Erased player ${name} with id ${entity.id} from world`);
       }
     });
   }

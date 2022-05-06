@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js';
-import { System } from 'ecsy';
-import { SpriteCache } from '../assets/sprite_cache';
-import { GameState } from '../game/game_state';
-import { CSprite } from './csprite';
-import { CPlayer } from '../../shared/game/component/cplayer';
-import { CPosition } from '../../shared/game/component/cposition';
-import { IVec2 } from '../../shared/math/vector';
-import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity';
-import { Camera } from '../game/camera/camera';
-import { CTerrainCollider } from '../../shared/game/component/cterrain_collider';
-import { CPhysics } from '../../shared/game/component/cphysics';
-import * as MathUtils from '../../shared/math/math_utils';
+import { System, World, Entity, Attributes } from 'ecsy';
+import { SpriteCache } from '../assets/sprite_cache.js';
+import { GameState } from '../game/game_state.js';
+import { CSprite } from './csprite.js';
+import { CPlayer } from '../../shared/game/component/cplayer.js';
+import { CPosition } from '../../shared/game/component/cposition.js';
+import { IVec2 } from '../../shared/math/vector.js';
+import { CNetworkEntity } from '../../shared/game/component/cnetwork_entity.js';
+import { Camera } from '../game/camera/camera.js';
+import { CTerrainCollider } from '../../shared/game/component/cterrain_collider.js';
+import { CPhysics } from '../../shared/game/component/cphysics.js';
+import * as MathUtils from '../../shared/math/math_utils.js';
 
 export class DebugRenderSystem extends System {
   private spriteCache: SpriteCache = null;
@@ -20,25 +20,23 @@ export class DebugRenderSystem extends System {
   private camera: Camera;
 
   // Options for rendering client server positions as received
-  private ghostSpriteId: number = -1;
+  private ghostSpriteId = -1;
   // TODO generate somehow from webpack cfg?
-  private renderGhost: boolean = true;
-  private renderTerrainCollider: boolean = true;
+  private renderGhost = true;
+  private renderTerrainCollider = true;
 
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
 
-    this.spriteCache = attributes.spriteCache;
-    this.gameState = attributes.gameState;
-    this.camera = attributes.camera;
-    this.renderer = attributes.renderer;
+    this.spriteCache = attributes.spriteCache as SpriteCache;
+    this.gameState = attributes.gameState as GameState;
+    this.camera = attributes.camera as Camera;
+    this.renderer = attributes.renderer as PIXI.Renderer;
 
     this.container = new PIXI.Container();
   }
 
-  execute(delta: number, time: number) {
+  execute(_delta: number, _time: number) {
     this.container.removeChildren();
     // Render unmodified server positions for client player
     this.handleGhostRender();

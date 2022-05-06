@@ -1,8 +1,13 @@
 import * as path from 'path';
-import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
 
 import * as webpack from 'webpack';
+import * as url from 'url';
+
+const dirName = url.fileURLToPath(new URL('.', import.meta.url));
 
 const configuration: webpack.Configuration = {
   entry: {
@@ -10,7 +15,7 @@ const configuration: webpack.Configuration = {
   },
   output: {
     filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(dirName, 'dist'),
   },
   module: {
     rules: [
@@ -36,6 +41,7 @@ const configuration: webpack.Configuration = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    plugins: [new ResolveTypeScriptPlugin()]
   },
   plugins: [
     new MiniCssExtractPlugin({

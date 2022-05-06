@@ -1,15 +1,15 @@
 import './css/styles.css';
 
-import { GeckosSocketHandler } from './network/geckos_socket_handler';
-import { AssetManager } from './assets/asset_manager';
-import { SpriteCache } from './assets/sprite_cache';
-import { ClientWorldManager } from './client_world_manager';
-import { InputReader } from './input/input_reader';
-import { Camera } from './game/camera/camera';
+import { GeckosSocketHandler } from './network/geckos_socket_handler.js';
+import { AssetManager } from './assets/asset_manager.js';
+import { SpriteCache } from './assets/sprite_cache.js';
+import { ClientWorldManager } from './client_world_manager.js';
+import { InputReader } from './input/input_reader.js';
+import { Camera } from './game/camera/camera.js';
 import * as PIXI from 'pixi.js';
-import { GameState } from './game/game_state';
-import { ClientLevelManager } from './client_level_manager';
-import { InputHistory } from './input/input_history';
+import { GameState } from './game/game_state.js';
+import { ClientLevelManager } from './client_level_manager.js';
+import { InputHistory } from './input/input_history.js';
 
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById(
@@ -69,12 +69,12 @@ Promise.all([assetManager.loadAssets()]).then(() => {
     usernameInput.focus();
     playButton.onclick = () => {
       // TODO: display list of rooms to join, for now push all to room 0
-      const roomNumber: number = 0;
+      const roomId = "0";
       // TODO validate, store to gamestate afterjoin game reply ok
       const playerName: string = usernameInput.value;
-      socketHandler.joinGame(playerName, roomNumber);
+      socketHandler.joinGame(playerName, roomId);
       gameState.setPlayerName(playerName);
       playMenu.classList.add('hidden');
     };
-  });
-});
+  }).catch((error: Error) => { console.error(`Failed to connect to server: ${error.message}`) });
+}).catch((error: Error) => { console.error(`Failed to setup game: ${error.message}`) });

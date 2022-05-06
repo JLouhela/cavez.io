@@ -1,4 +1,4 @@
-import { Pixel } from './level_source';
+import { Pixel } from './level_source.js';
 
 export enum TerrainType {
   None = 0,
@@ -6,7 +6,7 @@ export enum TerrainType {
   Destructible = 2,
 }
 
-export function getTerrainType(pixel: Pixel) {
+export const getTerrainType = (pixel: Pixel) => {
   // TODO design terrain types
   if (pixel.a > 0) {
     return TerrainType.Solid;

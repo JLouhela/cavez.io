@@ -1,7 +1,7 @@
-import { IRoomManager } from '../room/room_manager';
-import geckos, { GeckosServer, iceServers } from '@geckos.io/server';
+import { IRoomManager } from '../room/room_manager.js';
+import { geckos, GeckosServer, iceServers, ServerChannel } from '@geckos.io/server';
 import { Server } from 'http';
-import * as Protocol from '../../shared/protocol';
+import * as Protocol from '../../shared/protocol.js';
 import { performance } from 'perf_hooks';
 
 export class GeckosSocketServer {
@@ -30,7 +30,7 @@ export class GeckosSocketServer {
   }
 
   public registerEvents(): void {
-    this.io.onConnection((channel: any) => {
+    this.io.onConnection((channel: ServerChannel) => {
       channel.onDisconnect(() => {
         this.roomManager.removeFromRoom(channel);
         console.log(`${channel.id} disconnected`);

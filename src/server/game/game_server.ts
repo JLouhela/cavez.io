@@ -1,14 +1,14 @@
-import * as express from 'express';
-import * as webpack from 'webpack';
-import * as webpackDevMiddleware from 'webpack-dev-middleware';
+import express from 'express';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
 import { createServer, Server } from 'http';
 
-import * as Constants from '../../shared/constants';
-import * as webpackConfig from '../../../webpack.dev';
+import * as Constants from '../../shared/constants.js';
+import * as webpackConfig from '../../../webpack.dev.js';
 
-import { RoomManager } from '../room/room_manager';
-import { GeckosSocketServer } from '../socket/geckos_socket_server';
-import { GeckosSocketEmit } from '../socket/geckos_socket_emit';
+import { RoomManager } from '../room/room_manager.js';
+import { GeckosSocketServer } from '../socket/geckos_socket_server.js';
+import { GeckosSocketEmit } from '../socket/geckos_socket_emit.js';
 
 export class GameServer {
   private _app: express.Application;

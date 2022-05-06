@@ -1,8 +1,8 @@
 import { Component, Types } from 'ecsy';
 
 export class CThrottle extends Component<CThrottle> {
-  throttlePower: number;
-  throttleOn: boolean;
+  declare throttlePower: number;
+  declare throttleOn: boolean;
 }
 
 CThrottle.schema = {

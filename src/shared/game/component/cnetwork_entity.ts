@@ -1,8 +1,8 @@
 import { Component, Types } from 'ecsy';
 
 export class CNetworkEntity extends Component<CNetworkEntity> {
-  serverId: number;
-  clientId: number;
+  declare serverId: number;
+  declare clientId: number;
 }
 
 CNetworkEntity.schema = {

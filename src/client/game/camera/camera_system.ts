@@ -1,20 +1,18 @@
-import { System } from 'ecsy';
-import { CCameraFollow } from './ccamera_follow';
-import { Camera } from './camera';
-import { CPosition } from '../../../shared/game/component/cposition';
-import { TilingSprite } from 'pixi.js';
+import { System, World, Entity, Attributes } from 'ecsy';
+import { CCameraFollow } from './ccamera_follow.js';
+import { Camera } from './camera.js';
+import { CPosition } from '../../../shared/game/component/cposition.js';
 
 export class CameraSystem extends System {
   private camera: Camera;
-  private cameraSnapDistance: number = 100;
-  constructor(world: any, attributes: any) {
-    // Missing from ts ctor -> ts-ignore
-    // @ts-ignore
+  private cameraSnapDistance = 100;
+
+  constructor(world: World<Entity>, attributes?: Attributes) {
     super(world, attributes);
-    this.camera = attributes.camera;
+    this.camera = attributes.camera as Camera;
   }
 
-  execute(delta: number, time: number) {
+  execute(delta: number, _time: number) {
     // Assume there's only single CCameraFollow for now
     this.queries.all.results.forEach((entity) => {
       const pos = entity.getComponent(CPosition);

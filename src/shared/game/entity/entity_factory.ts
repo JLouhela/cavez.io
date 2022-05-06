@@ -1,18 +1,18 @@
-import { World, Entity } from 'ecsy';
-import { CPosition } from './../component/cposition';
-import { CPlayer } from './../component/cplayer';
-import { IVec2 } from './../../math/vector';
-import { CNetworkEntity } from '../component/cnetwork_entity';
-import { CCameraFollow } from '../../../client/game/camera/ccamera_follow';
-import { CSprite } from '../../../client/rendering/csprite';
-import { CInput } from '../component/cinput';
-import { CPhysics } from '../component/cphysics';
-import { CThrottle } from '../component/cthrottle';
-import { CSync } from '../component/ctags';
-import * as Constants from '../../constants';
-import { IEntitySyncPacket } from '../../../shared/protocol';
-import { CTerrainCollider } from '../component/cterrain_collider';
-import { Vec2 } from '../../math/vector';
+import { World, Entity, Component, ComponentConstructor } from 'ecsy';
+import { CPosition } from './../component/cposition.js';
+import { CPlayer } from './../component/cplayer.js';
+import { IVec2 } from './../../math/vector.js';
+import { CNetworkEntity } from '../component/cnetwork_entity.js';
+import { CCameraFollow } from '../../../client/game/camera/ccamera_follow.js';
+import { CSprite } from '../../../client/rendering/csprite.js';
+import { CInput } from '../component/cinput.js';
+import { CPhysics } from '../component/cphysics.js';
+import { CThrottle } from '../component/cthrottle.js';
+import { CSync } from '../component/ctags.js';
+import * as Constants from '../../constants.js';
+import { IEntitySyncPacket } from '../../../shared/protocol.js';
+import { CTerrainCollider } from '../component/cterrain_collider.js';
+import * as CopyUtils from '../component/copy_utils.js';
 
 // TODO: Clear server / client separation
 
@@ -23,7 +23,7 @@ export class EntityFactory {
     this.world = world;
   }
 
-  public createEntity(components: any[]) {
+  public createEntity(components: ComponentConstructor<Component<any>>[]) {
     const entity = this.world.createEntity(null);
     for (const component of components) {
       entity.addComponent(component);
@@ -77,7 +77,8 @@ export class EntityFactory {
       sync.player.color,
       sync.pos
     );
-    player.getMutableComponent(CPhysics).copy(sync.physics);
+    const physics = player.getMutableComponent(CPhysics)
+    CopyUtils.copyPhysicsData(sync.physics, physics);
     return player;
   }
 

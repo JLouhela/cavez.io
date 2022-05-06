@@ -1,6 +1,6 @@
-import { IEntityUpdate, IEntityUpdateEvent } from '../../shared/protocol';
-import { negativeMod } from '../../shared/math/math_utils';
-import * as Protocol from '../../shared/protocol';
+import { IEntityUpdate, IEntityUpdateEvent } from '../../shared/protocol.js';
+import { negativeMod } from '../../shared/math/math_utils.js';
+import * as Protocol from '../../shared/protocol.js';
 
 export interface InterpolateState {
   previous: Protocol.IEntityUpdateEvent;
@@ -11,8 +11,8 @@ export class SyncHistory {
   // Ring buffer similar to input history
   // No generic implementation to allow store by values without heap allocation
   private updates: IEntityUpdateEvent[] = null;
-  private updateCount: number = 0;
-  private firstIndex: number = 0;
+  private updateCount = 0;
+  private firstIndex = 0;
 
   constructor(size: number) {
     this.updates = [];
@@ -109,7 +109,7 @@ export class SyncHistory {
         return this.updates[prevIndex];
       }
     }
-    console.log('Active sync events on timestamp ' + timestamp + ' not found');
+    console.log(`Active sync events on timestamp ${timestamp} not found`);
     return null;
   }
 }

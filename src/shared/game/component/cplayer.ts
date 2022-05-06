@@ -1,14 +1,18 @@
 import {
   Component,
   Types,
-  createType,
-  copyCopyable,
-  cloneClonable,
 } from 'ecsy';
 
-export class CPlayer extends Component<CPlayer> {
+export interface IPlayer {
+  // TODO number instead of string -> transfers through network
   color: string;
   name: string;
+}
+
+
+export class CPlayer extends Component<CPlayer> implements IPlayer {
+  declare color: string;
+  declare name: string;
 }
 
 CPlayer.schema = {

@@ -1,9 +1,9 @@
-import { IVec2 } from '../../shared/math/vector';
-import { Level } from '../../shared/game/level/level';
-import { LevelSource } from '../../shared/game/level/level_source';
-import { Levels } from '../../shared/levels';
-import * as LevelParser from '../utils/level_parser';
-import { ILevelProvider } from '../../shared/game/level/level_provider_interface';
+import { IVec2 } from '../../shared/math/vector.js';
+import { Level } from '../../shared/game/level/level.js';
+import { LevelSource } from '../../shared/game/level/level_source.js';
+import { Levels } from '../../shared/levels.js';
+import * as LevelParser from '../utils/level_parser.js';
+import { ILevelProvider } from '../../shared/game/level/level_provider_interface.js';
 
 export class ServerLevelManager implements ILevelProvider {
   private currentLevel: Level;
@@ -16,16 +16,15 @@ export class ServerLevelManager implements ILevelProvider {
   }
 
   public loadLevel() {
-    const levelLoadPromise = new Promise((resolve) => {
-      const self = this;
+    const levelLoadPromise = new Promise<void>((resolve) => {
       LevelParser.readPng(this.levelNameMapping[this.currentLevelName])
         .then((result) => {
           return new Promise(() => {
-            self.initLevel(result);
+            this.initLevel(result);
             resolve();
           });
         })
-        .catch((error) => console.log(error.message));
+        .catch(() => console.error(`Failed to read png from ${this.levelNameMapping[this.currentLevelName]}`));
     });
     return levelLoadPromise;
   }
