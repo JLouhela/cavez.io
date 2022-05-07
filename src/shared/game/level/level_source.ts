@@ -1,16 +1,26 @@
 export class Pixel {
-  public r: number;
-  public g: number;
-  public b: number;
-  public a: number;
+  public rgba: number;
 
-  // TODO: pack into single number, divides memory consumption by 4
   constructor(r: number, g: number, b: number, a: number) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
+    this.rgba = (r << 24) + (g << 16) + (b << 8) + a;
   }
+
+  public get r(): number {
+    return (this.rgba & 0xFF000000) >> 24;
+  }
+
+  public get g(): number {
+    return (this.rgba & 0xFF0000) >> 16;
+  }
+
+  public get b(): number {
+    return (this.rgba & 0xFF00) >> 8;
+  }
+
+  public get a(): number {
+    return this.rgba & 0xFF;
+  }
+
 }
 
 export interface LevelSource {

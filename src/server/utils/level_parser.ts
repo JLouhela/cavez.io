@@ -8,22 +8,23 @@ export const readPng = (pngFile: string): Promise<LevelSource> => {
     fs.createReadStream(pngFile)
       .pipe(new PNG({ filterType: 4 }))
       .on('parsed', function () {
-        const source: LevelSource = { width: 0, height: 0, pixelData: [] };
-        source.width = this.width;
-        source.height = this.height;
+        const source: LevelSource = {
+          width: this.width,
+          height: this.height,
+          pixelData: new Array(this.width * this.height) as Pixel[]
+        }
 
         for (let y = 0; y < this.height; y++) {
           for (let x = 0; x < this.width; x++) {
             const idx = (this.width * y + x) << 2;
 
-            source.pixelData.push(
+            source.pixelData[this.width * y + x] =
               new Pixel(
                 this.data[idx],
                 this.data[idx + 1],
                 this.data[idx + 2],
                 this.data[idx + 3]
-              )
-            );
+              );
           }
         }
         console.log(`Level image data parsed from ${pngFile}`);
