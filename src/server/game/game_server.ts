@@ -9,6 +9,9 @@ import * as webpackConfig from '../../../webpack.dev.js';
 import { RoomManager } from '../room/room_manager.js';
 import { GeckosSocketServer } from '../socket/geckos_socket_server.js';
 import { GeckosSocketEmit } from '../socket/geckos_socket_emit.js';
+import * as url from 'url';
+
+const dirName = url.fileURLToPath(new URL('.', import.meta.url));
 
 export class GameServer {
   private _app: express.Application;
@@ -39,7 +42,7 @@ export class GameServer {
       this._app.use(webpackDevMiddleware(compiler));
     } else {
       // Static serve the dist/ folder in production
-      this._app.use(express.static(__dirname + '/../../../dist'));
+      this._app.use(express.static(dirName + '/../../../dist'));
     }
   }
 

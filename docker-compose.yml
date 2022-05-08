@@ -22,6 +22,11 @@ services:
     extends:
       service: base
     command: npm run start
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
     ports:
       - '1234:1234/tcp'
       - '19900:20000/udp'
