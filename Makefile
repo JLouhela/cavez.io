@@ -3,7 +3,7 @@ install:
 dev:
 	docker-compose -f docker-compose_dev.yml up
 prod:
-	docker-compose -f docker-compose.yml up
+	docker-compose -f docker-compose.yml up -d
 kill:
 	docker-compose -f docker-compose.yml stop && \
 	docker-compose -f docker-compose_dev.yml stop && \
