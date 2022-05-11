@@ -1,27 +1,11 @@
 version: '3'
 services:
-  base:
-    image: node:17
+  start:
+    image: cavez_prod:latest
     volumes:
-      - nodemodules:/usr/src/node_modules
       - .:/usr/src
     working_dir: /usr/src
-  install:
-    extends:
-      service: base
-    command: npm install
-  build:
-    extends:
-      service: base
-    command: npm run build
-  compile:
-    extends:
-      service: base
-    command: npm run tsc
-  start:
-    extends:
-      service: base
-    command: npm run start
+    command: 'npm run start'
     deploy:
       resources:
         limits:
@@ -30,6 +14,3 @@ services:
     ports:
       - '1234:1234/tcp'
       - '19900:20000/udp'
-volumes:
-  nodemodules:
-    external: true

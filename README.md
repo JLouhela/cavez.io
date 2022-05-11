@@ -11,12 +11,18 @@ Unfortunately I'm a bit stuck deploying this on a server and I am not able to te
 
 
 # Install instructions
-npm install
 
-make install
+## Development
 
+
+make setup_dev
 make dev
 
 Head to http://0.0.0.0:1234
 
-Note: npm install should not be needed (make install performs the fetch), but this is not working currently.
+
+## Production
+
+make prod
+
+Head to http://0.0.0.0:1234

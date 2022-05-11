@@ -26,7 +26,7 @@
     "@geckos.io/client": "^2.2.0",
     "@geckos.io/server": "^2.2.0",
     "@types/pngjs": "^6.0.1",
-    "ecsy": "git+https://github.com/JLouhela/ecsy.git",
+    "ecsy": "^0.4.2",
     "eslint-plugin-react": "^7.29.4",
     "express": "^4.17.3",
     "keycode-js": "^3.1.0",
