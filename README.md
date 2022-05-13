@@ -15,7 +15,7 @@ Unfortunately I'm a bit stuck deploying this on a server and I am not able to te
 ## Development
 
 
-make setup_dev
+make setup
 make dev
 
 Head to http://0.0.0.0:1234
