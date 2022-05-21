@@ -2,9 +2,6 @@ version: '3'
 services:
   start:
     image: cavez_prod:latest
-    volumes:
-      - .:/usr/src
-    working_dir: /usr/src
     command: 'npm run start'
     deploy:
       resources:
