@@ -8,11 +8,11 @@ export class GeckosSocketServer {
   private io: GeckosServer;
   private roomManager: IRoomManager;
 
-  constructor(server: Server) {
-    // TODO check & study ice
-    console.log(iceServers);
+  constructor(server: Server, ownIceServer: RTCIceServer[]) {
+    const ices : RTCIceServer[] = ownIceServer ? ownIceServer : iceServers;
+    console.log("Using following ice servers: %j", ices);
     this.io = geckos({
-      iceServers,
+      iceServers: ices,
       portRange: {
         min: 19900,
         max: 20000,
@@ -30,6 +30,7 @@ export class GeckosSocketServer {
   }
 
   public registerEvents(): void {
+    console.log("Registering socket events..");
     this.io.onConnection((channel: ServerChannel) => {
       channel.onDisconnect(() => {
         this.roomManager.removeFromRoom(channel);
@@ -39,6 +40,7 @@ export class GeckosSocketServer {
       channel.on(
         Protocol.SOCKET_EVENT.JOIN_GAME,
         (event: Protocol.IJoinGameEvent) => {
+	  console.log(`Join game event received from player ${event.name}`);
           const ok = this.roomManager.addToRoom(
             {
               name: event.name,

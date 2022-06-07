@@ -2,6 +2,7 @@ import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { createServer, Server } from 'http';
+import * as dotenv from 'dotenv';
 
 import * as Constants from '../../shared/constants.js';
 import * as webpackConfig from '../../../webpack.dev.js';
@@ -27,7 +28,13 @@ export class GameServer {
     this.server = createServer(this._app);
     this.serveIndex();
 
-    this.socketServer = new GeckosSocketServer(this.server);
+    let iceServer: RTCIceServer[] = null;
+    const result = dotenv.config();
+    if (result && process.env.STUN_SERVER) {
+      iceServer = [{ urls: process.env.STUN_SERVER, username: process.env.STUN_USER, credential: process.env.STUN_PW}]; 
+    }
+
+    this.socketServer = new GeckosSocketServer(this.server, iceServer);
     this.socketEmit = new GeckosSocketEmit(this.socketServer.getIO());
     this.roomManager = new RoomManager(1, 10, this.socketEmit);
 
