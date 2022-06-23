@@ -34,13 +34,44 @@ let spriteCache: SpriteCache = null;
 let worldManager: ClientWorldManager = null;
 let levelManager: ClientLevelManager = null;
 
+const calculateScreenSize = (): { 'width': number, 'height': number } => {
+  const widthToHeight = 1920 / 1080;
+  let newWidth = window.innerWidth;
+  let newHeight = window.innerHeight;
+  const newWidthToHeight = newWidth / newHeight;
+
+  if (newWidthToHeight > widthToHeight) {
+    newWidth = newHeight * widthToHeight;
+  } else {
+    newHeight = newWidth / widthToHeight;
+  }
+
+  return { width: newWidth, height: newHeight }
+}
+
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
-const renderer = new PIXI.Renderer({ view: canvas, clearBeforeRender: false });
+const body = document.body as HTMLBodyElement;
+const initScreenSize = calculateScreenSize();
+const renderer = new PIXI.Renderer({
+  view: canvas,
+  clearBeforeRender: false,
+  width: initScreenSize.width,
+  height: initScreenSize.height
+});
 
 camera.setSize({
   x: canvas.width,
   y: canvas.height,
 });
+
+body.onresize = (ev: UIEvent) => {
+  const screenSize = calculateScreenSize();
+  renderer.resize(screenSize.width, screenSize.height);
+  camera.setSize({
+    x: canvas.width,
+    y: canvas.height,
+  });
+}
 
 Promise.all([assetManager.loadAssets()]).then(() => {
   Promise.all([

@@ -17,6 +17,7 @@ export class RenderSystem extends System {
   private parallaxBg: ParallaxBg = null;
   private environment: EnvironmentTexture = null;
   private camera: Camera;
+  private prevCameraSize: { w: number, h: number } = { w: 0, h: 0 };
 
   // TODO pass in level manager for current level
   constructor(world: World<Entity>, attributes?: Attributes) {
@@ -35,16 +36,30 @@ export class RenderSystem extends System {
       TODO_PASS_AS_ARG_LEVEL
     );
 
+    const cameraBounds = this.camera.getBounds();
+
     this.parallaxBg = new ParallaxBg(
       this.spriteCache.getAssetManager(),
-      this.camera.getBounds().w,
-      this.camera.getBounds().h
+      cameraBounds.w,
+      cameraBounds.h
     );
+    this.prevCameraSize = { w: cameraBounds.w, h: cameraBounds.h };
+  }
+
+  private checkCameraSize() {
+    // TODO use an event instead of polling, this is fast solution to get things rolling
+    const bounds = this.camera.getBounds();
+    if (this.prevCameraSize.w !== bounds.w || this.prevCameraSize.h !== bounds.h) {
+      this.onCameraResize();
+    }
+    this.prevCameraSize.w = bounds.w;
+    this.prevCameraSize.h = bounds.h;
   }
 
   execute(_delta: number, _time: number) {
     // TODO optimize: re-add on each frame is costly
     // Could use access by name
+    this.checkCameraSize();
     this.container.removeChildren();
 
     const cameraDelta: IVec2 = this.camera.getMovementDelta();
@@ -91,7 +106,17 @@ export class RenderSystem extends System {
     // Render all
     this.renderer.render(this.container);
   }
+
+  onCameraResize(): void {
+    this.parallaxBg = new ParallaxBg(
+      this.spriteCache.getAssetManager(),
+      this.camera.getBounds().w,
+      this.camera.getBounds().h
+    );
+  }
+
 }
+
 
 RenderSystem.queries = {
   renderable: {

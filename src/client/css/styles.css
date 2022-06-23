@@ -4,7 +4,6 @@ body {
   padding: 0;
   overflow: hidden;
   overscroll-behavior: none;
-  background-color: black;
 }
 
 hr {
@@ -29,9 +28,27 @@ button:hover {
   display: none !important;
 }
 
+#game-area {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #77f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #game-canvas {
-  width: 800px;
-  height: 600px;
+  margin: 0;
+  display:block;
+  background: black;
+}
+
+#game-chat {
+  position: relative;
+  bottom: 0;
 }
 
 #play-menu {

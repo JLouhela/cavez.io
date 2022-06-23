@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>cavez.io</title>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-  </head>
-  <body>
+
+<head>
+  <title>cavez.io</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+</head>
+
+<body>
+  <div id="game-area">
     <canvas id="game-canvas"></canvas>
+    <div id="game-chat" class="hidden">
+      <input type="text" id="game-chat-input" placeholder=">" />
+      <input type="submit" id="game-chat-submit" value="Send" />
+      </form>
+    </div>
     <div id="play-menu" class="hidden">
       <input type="text" id="username-input" placeholder="Username" />
       <button id="play-button">PLAY</button>
     </div>
-  </body>
+</body>
+
 </html>
