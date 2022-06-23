@@ -35,9 +35,13 @@ let worldManager: ClientWorldManager = null;
 let levelManager: ClientLevelManager = null;
 
 const calculateScreenSize = (): { 'width': number, 'height': number } => {
-  const widthToHeight = 1920 / 1080;
-  let newWidth = window.innerWidth;
-  let newHeight = window.innerHeight;
+  const targetWidth = 1920;
+  const targetHeight = 1080;
+  const widthToHeight = targetWidth / targetHeight;
+  // TODO instead, use the full innerwidth / innerheight but scale the content
+  // -> requires scale handling to camera 
+  let newWidth = window.innerWidth > targetWidth ? targetWidth : window.innerWidth;
+  let newHeight = window.innerHeight > targetHeight ? targetHeight : window.innerHeight;
   const newWidthToHeight = newWidth / newHeight;
 
   if (newWidthToHeight > widthToHeight) {
