@@ -7,7 +7,9 @@ Currently contains very immature framework of
 - Geckos.io sockets (WebRTC) with default configuration, only works on chrome?
 - Support for multiple connections (immature interpolation)
 
-Unfortunately I'm a bit stuck deploying this on a server and I am not able to test the network behavior in real environment. WebRTC seems a bit frustrating from this point of view and the project is on hold until I find the time and strength to battle it.
+# Live deployment
+
+This may or may not work, depending on the server status and certificates: http://cavez.jlouhela.com:1234/
 
 
 # Install instructions
